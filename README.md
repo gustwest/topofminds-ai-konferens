@@ -14,6 +14,7 @@ git clone https://github.com/gustwest/topofminds-ai-konferens.git
 *(Om någon deltagares dator saknar `git` klickar de bara på **Code -> Download ZIP** på samma GitHub-sida!)*
 
 **Gratis Online-demo (0 kr/mån via GitHub Pages):**  
+👉 **Live-adress:** [https://gustwest.github.io/topofminds-ai-konferens/](https://gustwest.github.io/topofminds-ai-konferens/)  
 Varje `git push` till `main` bygger automatiskt `3-live-rollout-app` via `.github/workflows/deploy.yml` och publicerar senaste versionen (inklusive **v0.2** direkt efter fikapausen!) på GitHub Pages.
 
 > **NDA-skydd:** Mappen `underlag-fran-connie/` är hårt exkluderad i `.gitignore` och lämnar aldrig din lokala dator. All data i repot är 100 % anonymiserad (*Nordic Home & Retail – SE / NO / FI*).
