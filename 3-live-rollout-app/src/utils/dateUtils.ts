@@ -1,3 +1,5 @@
+import type { CountryCode, StoreRollout } from '../types/rollout';
+
 /**
  * Timezone-safe kalenderhjälpare för YYYY-MM-DD.
  * Använder UTC-matematik så att sommar-/vintertidsomställningen aldrig
@@ -10,6 +12,7 @@ const SWEDISH_MONTHS_SHORT = [
 ];
 
 const SWEDISH_WEEKDAYS_SHORT = ['sön', 'mån', 'tis', 'ons', 'tors', 'fre', 'lör'];
+const SWEDISH_WEEKDAYS_LONG = ['söndag', 'måndag', 'tisdag', 'onsdag', 'torsdag', 'fredag', 'lördag'];
 
 export function parseIsoToUtcMs(isoDate: string): number {
   const [y, m, d] = isoDate.split('-').map(Number);
@@ -42,18 +45,20 @@ export function getUtcWeekday(isoDate: string): number {
 }
 
 /**
- * Från Connies "Overall Rollout Plan":
- * "Days to avoid (Public holidays etc.) - No rollout on (Mondays or) Fridays!"
+ * Kontrollerar om Go-Live ligger på en olämplig veckodag (måndag, fredag eller helg).
  */
 export function isRestrictedRolloutWeekday(isoDate: string): {
   restricted: boolean;
   weekdayName: string;
+  weekdayLong: string;
 } {
   const wd = getUtcWeekday(isoDate);
   const weekdayName = SWEDISH_WEEKDAYS_SHORT[wd] ?? '';
+  const weekdayLong = SWEDISH_WEEKDAYS_LONG[wd] ?? '';
   return {
     restricted: wd === 1 || wd === 5 || wd === 0 || wd === 6,
     weekdayName,
+    weekdayLong,
   };
 }
 
@@ -90,7 +95,69 @@ export function formatSwedishDate(isoDate: string, includeWeekday = false): stri
 }
 
 export function formatRelativeDayOffset(dayOffset: number): string {
-  if (dayOffset === 0) return 'T-0 (Cut-over)';
-  if (dayOffset < 0) return `T${dayOffset}d`;
-  return `T+${dayOffset}d`;
+  if (dayOffset === 0) return 'Go-Live-dagen';
+  if (dayOffset === -1) return 'Dagen före';
+  if (dayOffset === -7) return '1 vecka före';
+  if (dayOffset === -14) return '2 veckor före';
+  if (dayOffset < 0) return `${Math.abs(dayOffset)} dagar före`;
+  if (dayOffset === 1) return 'Dagen efter';
+  if (dayOffset === 7) return '1 vecka efter';
+  return `${dayOffset} dagar efter`;
+}
+
+export function formatCountryPlain(country: CountryCode): { code: 'SE' | 'NO' | 'FI'; label: string } {
+  if (country.startsWith('SE')) return { code: 'SE', label: 'Sverige' };
+  if (country.startsWith('NO')) return { code: 'NO', label: 'Norge' };
+  return { code: 'FI', label: 'Finland' };
+}
+
+export function formatShiftSummary(deltaDays: number): string | null {
+  if (deltaDays === 0) return null;
+  if (deltaDays % 7 === 0) {
+    const weeks = deltaDays / 7;
+    const absWeeks = Math.abs(weeks);
+    const unit = absWeeks === 1 ? 'vecka' : 'veckor';
+    return weeks > 0 ? `+${weeks} ${unit}` : `${weeks} ${unit}`;
+  }
+  const absDays = Math.abs(deltaDays);
+  const unit = absDays === 1 ? 'dag' : 'dagar';
+  return deltaDays > 0 ? `+${deltaDays} ${unit}` : `${deltaDays} ${unit}`;
+}
+
+/**
+ * Utvärderar i vanlig begriplig svenska om en butik är redo eller om något behöver åtgärdas.
+ * Om en butik som låg på måndag/fredag flyttas till tis–tors försvinner den varningen direkt!
+ */
+export function evaluateStoreHealth(store: StoreRollout): {
+  needsAttention: boolean;
+  issues: string[];
+} {
+  const issues: string[] = [];
+
+  const weekdayCheck = isRestrictedRolloutWeekday(store.goLiveDate);
+  if (weekdayCheck.restricted) {
+    issues.push(`Inbokad på en ${weekdayCheck.weekdayLong} (byt till tis–tors)`);
+  }
+  if (store.hardwareStatus === 'Avvikelse') {
+    issues.push('Hårdvara försenad');
+  }
+  if (store.sdwanStatus === 'Avvikelse') {
+    issues.push('Nätverk ej klart');
+  }
+  if (store.trainingStatus === 'Avvikelse') {
+    issues.push('Utbildning saknas');
+  }
+  if (
+    store.preCareStatus === 'Avvikelse' &&
+    store.hardwareStatus !== 'Avvikelse' &&
+    store.sdwanStatus !== 'Avvikelse' &&
+    store.trainingStatus !== 'Avvikelse'
+  ) {
+    issues.push('Förberedelse släpar');
+  }
+
+  return {
+    needsAttention: issues.length > 0,
+    issues,
+  };
 }

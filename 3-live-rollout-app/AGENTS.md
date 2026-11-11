@@ -20,5 +20,5 @@ Detta är den sammanhållna 3-lagersapplikationen för **Nordic Home & Retail (S
 ## 2. Tekniska krav vid Live-utbyggnad (v0.2)
 * Stack: **React 19 + TypeScript (strict) + Tailwind CSS v4 + `lucide-react`**. Installera inga externa tunga paket.
 * Spara gärna användarens interaktiva ändringar i `localStorage` (med en tydlig **"Återställ Baslinje (v0.1)"**-knapp i headern) så att sidan minns omplaneringar även när den visas på GitHub Pages!
-* Behåll semantisk `<table>` med `role="region"` i Lager 2 och native `<dialog>` med `showModal()` i `CutoverQuickDialog.tsx`.
+* Håll gränssnittet lugnt, självförklarande och fritt från intern jargong: en tydlig sak per vy (`1. Tidplan (Månader)`, `2. Butiker per våg (Veckor)`, `3. Checklista (Dagar & tid)`), semantisk `<table>` med `role="region"` i Steg 2 samt native `<dialog>` med `showModal()` och `closedby="any"` i `ExcelDialog.tsx` och `FeedbackDialog.tsx`.
 * **Obligatorisk verifiering före klarrapport:** Kör alltid `npm run typecheck` och `npm run build` med 0 fel!

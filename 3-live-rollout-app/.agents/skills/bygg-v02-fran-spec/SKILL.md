@@ -20,7 +20,7 @@ När styrgruppen i konferensrummet har godkänt `SPEC_DELTA.md` bygger du **v0.2
      * **Train-the-Trainer & Våg-luft:** Kontrollera att regionala pilotbutiker (`isPilotTrainer`) är klara före `Våg 1` i samma land och räkna ut hur många butiker som befinner sig i `Pre-care + Cut-over + Hypercare` samtidigt per vecka.
      * **Ekonomisk effekt & Styrgrupps-Diff:** Räkna antal flyttade butiker jämfört med `baselineGoLiveDate`, utbrutna Catch-up-butiker samt beräknat förseningsvite efter `2027-10-22` (`95 000 SEK/vecka`).
 3. **Uppdatera UI:t enligt `SPEC_DELTA.md`:**
-   * Uppdatera versionsbadgen i headern från `v0.1 Baslinje` till `v0.2 Interaktiv Omplanering & 70-butikersstyrning`, spara state i `localStorage`, och lägg in en **"Återställ Baslinje (v0.1)"**-knapp i headern.
+   * Behåll det rena, lugna 3-stegsgränssnittet utan onödig jargong, lägg till en diskret `v0.2`-indikator bredvid titeln i `App.tsx`, och behåll `localStorage`-sparande samt **"Återställ ursprungsplan"**-knappen.
    * **Kaskad-omplanering & Snabbscenarier:** Gör det busenkelt att skjuta en hel våg (`±1 vecka`, `+3 veckor UAT-försening`) eller ett enskilt butiksdatum, plus en **"Smart Auto-planera (Tis–Tors & Undvik Frys)"**-knapp som automatiskt lägger Mån/Fre-butiker på giltiga tisdag–torsdag-datum!
    * **70-butikers Batch-Readiness & 1-klicks Rollback / Catch-up (Lager 2 & 3):**
      * Lägg till **Masskvittering per fas/våg** (t.ex. *"Kvittera Pre-care för alla gröna butiker i Våg 1"*).

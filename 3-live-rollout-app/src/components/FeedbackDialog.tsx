@@ -103,7 +103,7 @@ export function FeedbackDialog({
     comments.length === 0
       ? ''
       : [
-          'Hej Gustav! Här kommer mina tankar/kommentarer på Rollout Studio (v0.1):',
+          'Hej Gustav! Här kommer mina tankar/kommentarer på Utrullningsplanen:',
           '',
           ...comments.map((c, idx) => `${idx + 1}. [${c.contextLabel}] ${c.text}`),
         ].join('\n');
@@ -178,7 +178,7 @@ export function FeedbackDialog({
               rows={3}
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
-              placeholder="T.ex. 'Snyggt med 3-veckorstrappan! I Lager 2 vore det även toppen att kunna...' "
+              placeholder="T.ex. 'Snyggt att hela planen flyttas när man skjuter på en våg! Under butikerna vore det även bra att se...' "
               className="w-full rounded-xl border border-slate-300 bg-white p-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none"
             />
             <div className="flex justify-end">

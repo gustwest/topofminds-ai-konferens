@@ -1,390 +1,371 @@
 import { useMemo, useState } from 'react';
 import {
-  AlertTriangle,
+  AlertCircle,
+  ArrowLeft,
+  ArrowRight,
   CheckCircle2,
-  ClipboardList,
-  Eye,
-  Filter,
+  ChevronLeft,
+  ChevronRight,
   Search,
-  Table2,
 } from 'lucide-react';
-import { ROLLOUT_WAVES } from '../data/rolloutData';
-import type { CountryCode, StoreFormat, StoreRollout, WaveId } from '../types/rollout';
+import type { CountryCode, StoreRollout, WaveId } from '../types/rollout';
 import {
-  addDaysIso,
+  daysBetweenIso,
+  evaluateStoreHealth,
+  formatCountryPlain,
+  formatShiftSummary,
   formatShortWeek,
   formatSwedishDate,
-  getIsoWeekAndYear,
-  isRestrictedRolloutWeekday,
 } from '../utils/dateUtils';
-import { CountryBadge, FormatBadge, PrepStatusBadge } from './StatusBadge';
 
 interface Layer2StoreMatrixProps {
   stores: StoreRollout[];
   selectedWave: WaveId | 'ALL';
+  onlyIssuesInitial?: boolean;
+  getCompletedCountForStore: (storeId: string) => number;
   onChangeWave: (wave: WaveId | 'ALL') => void;
-  onQuickInspect: (storeId: string) => void;
+  onShiftStoreDays: (storeId: string, deltaDays: number) => void;
+  onBackToLayer1: () => void;
   onOpenLayer3: (storeId: string) => void;
 }
 
-function hasStoreException(s: StoreRollout): boolean {
-  return (
-    s.sdwanStatus === 'Avvikelse' ||
-    s.hardwareStatus === 'Avvikelse' ||
-    s.trainingStatus === 'Avvikelse' ||
-    s.preCareStatus === 'Avvikelse' ||
-    isRestrictedRolloutWeekday(s.goLiveDate).restricted
-  );
-}
+const WAVE_FILTERS: Array<{ id: WaveId | 'ALL'; label: string }> = [
+  { id: 'ALL', label: 'Alla vågor' },
+  { id: 'Pilot', label: 'Pilot' },
+  { id: 'Våg 1', label: 'Våg 1' },
+  { id: 'Våg 2', label: 'Våg 2' },
+  { id: 'Våg 3', label: 'Våg 3' },
+];
 
 export function Layer2StoreMatrix({
   stores,
   selectedWave,
+  onlyIssuesInitial = false,
+  getCompletedCountForStore,
   onChangeWave,
-  onQuickInspect,
+  onShiftStoreDays,
+  onBackToLayer1,
   onOpenLayer3,
 }: Layer2StoreMatrixProps) {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedFormat, setSelectedFormat] = useState<StoreFormat | 'ALL'>('ALL');
-  const [selectedCountry, setSelectedCountry] = useState<CountryCode | 'ALL'>('ALL');
-  const [selectedWeek, setSelectedWeek] = useState<string>('ALL');
-  const [onlyExceptions, setOnlyExceptions] = useState<boolean>(false);
+  const [onlyIssues, setOnlyIssues] = useState<boolean>(onlyIssuesInitial);
+  const [countryFilter, setCountryFilter] = useState<CountryCode | 'ALL'>('ALL');
+  const [query, setQuery] = useState<string>('');
 
-  const weeklyCounts = useMemo(() => {
-    const map = new Map<string, { count: number; exceptions: number }>();
-    for (const s of stores) {
-      const { label } = getIsoWeekAndYear(s.goLiveDate);
-      const prev = map.get(label) ?? { count: 0, exceptions: 0 };
-      map.set(label, {
-        count: prev.count + 1,
-        exceptions: prev.exceptions + (hasStoreException(s) ? 1 : 0),
-      });
+  // Synka om användaren klickade på "Visa X st ->" från Steg 1
+  const [prevInitial, setPrevInitial] = useState(onlyIssuesInitial);
+  if (onlyIssuesInitial !== prevInitial) {
+    setPrevInitial(onlyIssuesInitial);
+    setOnlyIssues(onlyIssuesInitial);
+  }
+
+  const waveScopedStores = useMemo(() => {
+    return selectedWave === 'ALL' ? stores : stores.filter((s) => s.wave === selectedWave);
+  }, [stores, selectedWave]);
+
+  const waveHealthCounts = useMemo(() => {
+    let issues = 0;
+    for (const s of waveScopedStores) {
+      if (evaluateStoreHealth(s).needsAttention) issues++;
     }
-    return Array.from(map.entries()).sort((a, b) => a[0].localeCompare(b[0]));
-  }, [stores]);
-
-  const totalExceptionCount = useMemo(
-    () => stores.filter((s) => (selectedWave === 'ALL' ? true : s.wave === selectedWave)).filter(hasStoreException).length,
-    [stores, selectedWave]
-  );
+    return {
+      total: waveScopedStores.length,
+      ok: waveScopedStores.length - issues,
+      issues,
+    };
+  }, [waveScopedStores]);
 
   const filteredStores = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
-    return stores
-      .filter((s) => (selectedWave === 'ALL' ? true : s.wave === selectedWave))
-      .filter((s) => (selectedCountry === 'ALL' ? true : s.country === selectedCountry))
-      .filter((s) => (selectedFormat === 'ALL' ? true : s.format === selectedFormat))
-      .filter((s) => (selectedWeek === 'ALL' ? true : getIsoWeekAndYear(s.goLiveDate).label === selectedWeek))
-      .filter((s) => (onlyExceptions ? hasStoreException(s) : true))
-      .filter((s) =>
-        !q
-          ? true
-          : s.id.toLowerCase().includes(q) ||
-            s.name.toLowerCase().includes(q) ||
-            s.city.toLowerCase().includes(q) ||
-            s.country.toLowerCase().includes(q)
-      )
-      .sort((a, b) => a.goLiveDate.localeCompare(b.goLiveDate) || a.id.localeCompare(b.id));
-  }, [stores, selectedWave, selectedCountry, selectedFormat, selectedWeek, onlyExceptions, searchQuery]);
+    const q = query.trim().toLowerCase();
+    return waveScopedStores
+      .filter((store) => {
+        if (countryFilter !== 'ALL' && store.country !== countryFilter) return false;
+        if (onlyIssues && !evaluateStoreHealth(store).needsAttention) return false;
+        if (q) {
+          const countryName = formatCountryPlain(store.country).label.toLowerCase();
+          const matches =
+            store.name.toLowerCase().includes(q) ||
+            store.city.toLowerCase().includes(q) ||
+            countryName.includes(q) ||
+            store.wave.toLowerCase().includes(q);
+          if (!matches) return false;
+        }
+        return true;
+      })
+      .sort((a, b) => a.goLiveDate.localeCompare(b.goLiveDate) || a.name.localeCompare(b.name));
+  }, [waveScopedStores, countryFilter, onlyIssues, query]);
 
   return (
     <div className="space-y-5">
-      {/* Governance Rules Banner (Från Connies "Overall Rollout Plan") */}
-      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-2xs">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-sky-50 px-2.5 py-0.5 text-xs font-semibold text-sky-700">
-              <Table2 className="h-3.5 w-3.5" />
-              Lager 2 · Ersätter 480-kolumners Excel (&quot;Overall Rollout Plan&quot; – Veckor, Vågor &amp; 70 butiker/våg)
-            </div>
-            <h2 className="mt-1 text-base font-bold text-slate-900">
-              Planerade Cut-over-veckor &amp; Vågbelastning (Klicka på en vecka för att filtrera)
-            </h2>
-          </div>
+      {/* Tillbaka-länk + Vågväljare */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <button
+          type="button"
+          onClick={onBackToLayer1}
+          className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+          Tillbaka till tidplanen (Månader)
+        </button>
 
-          <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className="inline-flex items-center gap-1 rounded-lg bg-amber-50 px-2.5 py-1 font-semibold text-amber-900 ring-1 ring-amber-600/20 ring-inset">
-              <AlertTriangle className="h-3.5 w-3.5 text-amber-700" />
-              Regel: Ingen utrullning på Måndagar eller Fredagar!
-            </span>
-            <span className="inline-flex items-center gap-1 rounded-lg bg-emerald-50 px-2.5 py-1 font-semibold text-emerald-800 ring-1 ring-emerald-600/20 ring-inset">
-              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-700" />
-              Pilotbutiker utbildar sin region (Train-the-Trainer)
-            </span>
-          </div>
-        </div>
-
-        <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
-          {weeklyCounts.map(([weekLabel, info]) => {
-            const active = selectedWeek === weekLabel;
-            const shortLabel = weekLabel.replace('2027-', '');
+        <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Filtrera på våg">
+          {WAVE_FILTERS.map((wf) => {
+            const count =
+              wf.id === 'ALL' ? stores.length : stores.filter((s) => s.wave === wf.id).length;
+            const active = selectedWave === wf.id;
             return (
               <button
-                key={weekLabel}
+                key={wf.id}
                 type="button"
-                onClick={() => setSelectedWeek(active ? 'ALL' : weekLabel)}
-                className={`flex min-w-[76px] flex-col items-center rounded-xl border px-2.5 py-2 transition ${
+                onClick={() => onChangeWave(wf.id)}
+                className={`rounded-xl px-3.5 py-2 text-xs font-semibold transition ${
                   active
-                    ? 'border-indigo-600 bg-indigo-600 text-white shadow-xs'
-                    : info.exceptions > 0
-                      ? 'border-rose-200 bg-rose-50/50 text-slate-900 hover:border-rose-400'
-                      : 'border-slate-200 bg-slate-50 text-slate-800 hover:border-indigo-300 hover:bg-white'
+                    ? 'bg-slate-900 text-white shadow-2xs'
+                    : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                 }`}
               >
-                <span className={`text-[11px] font-semibold ${active ? 'text-indigo-100' : 'text-slate-500'}`}>
-                  {shortLabel}
-                </span>
-                <span className="mt-0.5 text-lg font-bold">{info.count}</span>
-                <span className={`text-[10px] ${active ? 'text-indigo-100' : 'text-slate-500'}`}>
-                  {info.exceptions > 0 ? `${info.exceptions} avvik.` : 'butiker'}
-                </span>
+                {wf.label} ({count})
               </button>
             );
           })}
         </div>
-      </section>
+      </div>
 
-      {/* Filter Bar + Exception-First Toggle */}
-      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs">
-        <div className="flex flex-wrap items-center justify-between gap-3 pb-4">
-          <div className="flex flex-wrap items-center gap-1.5">
-            <Filter className="mr-1 h-4 w-4 text-slate-400" />
-            <button
-              type="button"
-              onClick={() => onChangeWave('ALL')}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
-                selectedWave === 'ALL'
-                  ? 'bg-slate-900 text-white'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-              }`}
-            >
-              Alla vågor ({stores.length})
-            </button>
-            {ROLLOUT_WAVES.map((w) => {
-              const count = stores.filter((s) => s.wave === w.id).length;
-              if (count === 0) return null;
-              return (
-                <button
-                  key={w.id}
-                  type="button"
-                  onClick={() => onChangeWave(w.id)}
-                  className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
-                    selectedWave === w.id
-                      ? 'bg-indigo-600 text-white'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                  }`}
-                >
-                  {w.id} ({count})
-                </button>
-              );
-            })}
+      {/* Två tydliga statuskort: I fas vs Behöver ses över */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <button
+          type="button"
+          onClick={() => setOnlyIssues(false)}
+          className={`flex items-center justify-between rounded-2xl border p-4 text-left transition ${
+            !onlyIssues
+              ? 'border-indigo-500 bg-white ring-2 ring-indigo-500/15'
+              : 'border-slate-200 bg-white hover:bg-slate-50'
+          }`}
+        >
+          <div>
+            <div className="flex items-center gap-2 text-xs font-semibold text-emerald-700">
+              <CheckCircle2 className="h-4 w-4 text-emerald-600" aria-hidden="true" />
+              Visa hela urvalet ({waveHealthCounts.total} butiker)
+            </div>
+            <div className="mt-1 text-lg font-bold text-slate-900">
+              {waveHealthCounts.ok} av {waveHealthCounts.total} butiker helt i fas
+            </div>
+            <p className="mt-0.5 text-xs text-slate-500">
+              Hårdvara, nätverk, utbildning och Go-Live-dag rullar enligt plan.
+            </p>
+          </div>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setOnlyIssues((prev) => !prev)}
+          className={`flex items-center justify-between rounded-2xl border p-4 text-left transition ${
+            onlyIssues
+              ? 'border-rose-500 bg-rose-50/50 ring-2 ring-rose-500/15'
+              : 'border-slate-200 bg-white hover:bg-slate-50'
+          }`}
+        >
+          <div>
+            <div className="flex items-center gap-2 text-xs font-semibold text-rose-700">
+              <AlertCircle className="h-4 w-4 text-rose-600" aria-hidden="true" />
+              {onlyIssues ? 'Visar endast avvikelser (klicka för att visa alla)' : 'Filtrera på hinder'}
+            </div>
+            <div className="mt-1 text-lg font-bold text-slate-900">
+              {waveHealthCounts.issues === 0
+                ? '0 butiker med hinder!'
+                : `${waveHealthCounts.issues} butiker behöver ses över`}
+            </div>
+            <p className="mt-0.5 text-xs text-slate-500">
+              {waveHealthCounts.issues === 0
+                ? 'Alla butiker i denna våg är gröna inför start.'
+                : 'Saknar utrustning/utbildning eller ligger på olämplig veckodag (mån/fre).'}
+            </p>
+          </div>
+        </button>
+      </div>
+
+      {/* Huvudlista med sök & butiksrader */}
+      <section
+        aria-labelledby="stores-heading"
+        className="rounded-2xl border border-slate-200 bg-white shadow-xs"
+      >
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 px-5 py-4">
+          <div>
+            <h2 id="stores-heading" className="text-base font-bold text-slate-900">
+              {selectedWave === 'ALL' ? 'Alla planerade butiker' : `Butiker i ${selectedWave}`} (
+              {filteredStores.length} st)
+            </h2>
+            <p className="text-xs text-slate-500">
+              Justera enskild butiks Go-Live-dag med <strong>-1d / +1d</strong> eller öppna butikens checklista.
+            </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            {/* Management by Exception Filter – Kritiskt vid 70 butiker/våg! */}
-            <button
-              type="button"
-              onClick={() => setOnlyExceptions((v) => !v)}
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition ${
-                onlyExceptions
-                  ? 'bg-rose-600 text-white shadow-xs'
-                  : 'bg-rose-50 text-rose-800 ring-1 ring-rose-600/25 ring-inset hover:bg-rose-100'
-              }`}
-            >
-              <AlertTriangle className="h-3.5 w-3.5" />
-              Visa endast avvikelser ({totalExceptionCount})
-            </button>
-
+          <search className="flex flex-wrap items-center gap-2">
+            <label htmlFor="country-select" className="sr-only">
+              Filtrera land
+            </label>
             <select
-              aria-label="Filtrera på land"
-              value={selectedCountry}
-              onChange={(e) => setSelectedCountry(e.target.value as CountryCode | 'ALL')}
-              className="rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700"
+              id="country-select"
+              value={countryFilter}
+              onChange={(e) => setCountryFilter(e.target.value as CountryCode | 'ALL')}
+              className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-700 focus:border-indigo-500 focus:outline-none"
             >
-              <option value="ALL">Alla länder (SE/NO/FI)</option>
-              <option value="SE (Land A)">SE (Land A)</option>
-              <option value="NO (Land B)">NO (Land B)</option>
-              <option value="FI (Land C)">FI (Land C)</option>
-            </select>
-
-            <select
-              aria-label="Filtrera på butikstyp"
-              value={selectedFormat}
-              onChange={(e) => setSelectedFormat(e.target.value as StoreFormat | 'ALL')}
-              className="rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700"
-            >
-              <option value="ALL">Alla typer (Easy/Large/Feeder)</option>
-              <option value="Easy store">Easy store</option>
-              <option value="Large store">Large store</option>
-              <option value="Feeder store">Feeder store</option>
+              <option value="ALL">Alla länder</option>
+              <option value="SE (Land A)">Sverige</option>
+              <option value="NO (Land B)">Norge</option>
+              <option value="FI (Land C)">Finland</option>
             </select>
 
             <div className="relative">
-              <Search className="pointer-events-none absolute top-1/2 left-2.5 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
+              <Search
+                className="pointer-events-none absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-slate-400"
+                aria-hidden="true"
+              />
+              <label htmlFor="store-search" className="sr-only">
+                Sök butik eller stad
+              </label>
               <input
+                id="store-search"
                 type="search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Sök butik, stad, W1-014..."
-                aria-label="Sök butik, stad eller ID"
-                className="rounded-lg border border-slate-300 bg-white py-1.5 pr-3 pl-8 text-xs text-slate-800 placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Sök butik eller stad..."
+                className="w-52 rounded-xl border border-slate-200 bg-slate-50 py-2 pr-3 pl-8 text-xs text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:bg-white focus:outline-none"
               />
             </div>
+          </search>
+        </div>
+
+        {filteredStores.length === 0 ? (
+          <div className="p-10 text-center text-sm text-slate-500">
+            Inga butiker matchar ditt filter just nu.
           </div>
-        </div>
+        ) : (
+          <div className="overflow-x-auto" role="region" aria-labelledby="stores-heading">
+            <table className="w-full border-collapse text-left">
+              <thead>
+                <tr className="border-b border-slate-200 bg-slate-50/80 text-[11px] font-semibold tracking-wide text-slate-500 uppercase">
+                  <th scope="col" className="px-5 py-3">
+                    Butik &amp; land
+                  </th>
+                  <th scope="col" className="px-4 py-3">
+                    Planerad Go-Live
+                  </th>
+                  <th scope="col" className="px-4 py-3">
+                    Status inför start
+                  </th>
+                  <th scope="col" className="px-5 py-3 text-right">
+                    Checklista (Dagar &amp; tid)
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 text-sm">
+                {filteredStores.map((store) => {
+                  const country = formatCountryPlain(store.country);
+                  const health = evaluateStoreHealth(store);
+                  const deltaDays = daysBetweenIso(store.baselineGoLiveDate, store.goLiveDate);
+                  const shiftText = formatShiftSummary(deltaDays);
+                  const doneCount = getCompletedCountForStore(store.id);
 
-        {/* Sticky Responsive Store Matrix */}
-        <div
-          tabIndex={0}
-          role="region"
-          aria-labelledby="store-matrix-caption"
-          className="table-wrapper rounded-xl border border-slate-200"
-        >
-          <table className="rollout-table text-left text-sm">
-            <caption id="store-matrix-caption" className="sr-only">
-              Utrullningsplan per våg, land och butik ({filteredStores.length} butiker visas)
-            </caption>
-            <thead className="bg-slate-100 text-xs font-semibold tracking-wide text-slate-600 uppercase">
-              <tr>
-                <th scope="col" className="border-b border-slate-200 bg-slate-100 px-4 py-3">
-                  Butik &amp; Land
-                </th>
-                <th scope="col" className="border-b border-slate-200 px-3 py-3">
-                  Våg &amp; Typ
-                </th>
-                <th scope="col" className="border-b border-slate-200 px-3 py-3">
-                  Cut-over (T-0)
-                </th>
-                <th scope="col" className="border-b border-slate-200 px-3 py-3">
-                  Hårdvara (T-10d)
-                </th>
-                <th scope="col" className="border-b border-slate-200 px-3 py-3">
-                  Nätverk (T-8d)
-                </th>
-                <th scope="col" className="border-b border-slate-200 px-3 py-3">
-                  Utbildning (T-5d)
-                </th>
-                <th scope="col" className="border-b border-slate-200 px-3 py-3">
-                  Pre-care (T-3d)
-                </th>
-                <th scope="col" className="border-b border-slate-200 px-4 py-3 text-right">
-                  23 Aktiviteter (Lager 3)
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-200 bg-white">
-              {filteredStores.map((s) => {
-                const hwDate = formatSwedishDate(addDaysIso(s.goLiveDate, -10));
-                const netDate = formatSwedishDate(addDaysIso(s.goLiveDate, -8));
-                const trainDate = formatSwedishDate(addDaysIso(s.goLiveDate, -5));
-                const preCareDate = formatSwedishDate(addDaysIso(s.goLiveDate, -3));
-                const weekdayCheck = isRestrictedRolloutWeekday(s.goLiveDate);
-                const rowHasIssue = hasStoreException(s);
-
-                return (
-                  <tr
-                    key={s.id}
-                    className={`group transition ${
-                      rowHasIssue
-                        ? 'bg-rose-50/30 hover:bg-rose-50/60'
-                        : 'hover:bg-indigo-50/35'
-                    }`}
-                  >
-                    <th
-                      scope="row"
-                      className={`px-4 py-3 font-medium text-slate-900 ${
-                        rowHasIssue
-                          ? 'bg-rose-50/30 group-hover:bg-rose-50/60'
-                          : 'bg-white group-hover:bg-indigo-50/40'
-                      }`}
+                  return (
+                    <tr
+                      key={store.id}
+                      className={
+                        health.needsAttention
+                          ? 'bg-rose-50/30 hover:bg-rose-50/60'
+                          : 'hover:bg-slate-50/80'
+                      }
                     >
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        <span className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-xs font-semibold text-slate-700">
-                          {s.id}
-                        </span>
-                        <CountryBadge country={s.country} />
-                        <span className="font-semibold">{s.name}</span>
-                      </div>
-                      <div className="mt-0.5 text-xs font-normal text-slate-500">
-                        {s.city} · {s.registers} kassor · BC: {s.storeManager}
-                      </div>
-                      {s.note ? (
-                        <div
-                          className={`mt-1 text-[11px] font-medium ${
-                            rowHasIssue ? 'text-rose-700' : 'text-indigo-700'
-                          }`}
-                        >
-                          {s.note}
-                        </div>
-                      ) : null}
-                    </th>
-
-                    <td className="px-3 py-3">
-                      <div className="flex flex-col items-start gap-1">
-                        <span className="text-xs font-semibold text-slate-800">{s.wave}</span>
-                        <FormatBadge format={s.format} />
-                      </div>
-                    </td>
-
-                    <td className="px-3 py-3 whitespace-nowrap">
-                      <div className="font-semibold text-slate-900">
-                        {formatSwedishDate(s.goLiveDate, true)}
-                      </div>
-                      <div className="mt-0.5 flex items-center gap-1.5">
-                        <span className="text-xs font-medium text-indigo-700">
-                          {formatShortWeek(s.goLiveDate)}
-                        </span>
-                        {weekdayCheck.restricted ? (
-                          <span className="rounded bg-rose-600 px-1.5 py-0.5 text-[10px] font-bold text-white">
-                            EJ {weekdayCheck.weekdayName.toUpperCase()}!
+                      {/* Kolumn 1: Butik & Land */}
+                      <th scope="row" className="px-5 py-3.5 font-normal">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="font-bold text-slate-900">{store.name}</span>
+                          <span className="rounded-md bg-slate-100 px-1.5 py-0.5 text-[11px] font-semibold text-slate-600">
+                            {country.label}
                           </span>
-                        ) : null}
-                      </div>
-                    </td>
+                          <span className="text-xs text-slate-400">· {store.wave}</span>
+                        </div>
+                        <div className="mt-0.5 text-xs text-slate-500">
+                          {store.city} · Butikschef: {store.storeManager}
+                        </div>
+                      </th>
 
-                    <td className="px-3 py-3">
-                      <PrepStatusBadge status={s.hardwareStatus} dateLabel={hwDate} />
-                    </td>
+                      {/* Kolumn 2: Go-Live-datum med direkt -1d / +1d */}
+                      <td className="px-4 py-3.5">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <div className="inline-flex items-center rounded-lg border border-slate-200 bg-white shadow-2xs">
+                            <button
+                              type="button"
+                              onClick={() => onShiftStoreDays(store.id, -1)}
+                              aria-label={`Flytta ${store.name} 1 dag bakåt`}
+                              className="rounded-l-lg px-2 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-100"
+                            >
+                              <ChevronLeft className="h-3.5 w-3.5" aria-hidden="true" />
+                            </button>
+                            <span className="min-w-[92px] border-x border-slate-200 px-2.5 py-1 text-center text-xs font-bold text-slate-900">
+                              {formatSwedishDate(store.goLiveDate, true)}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => onShiftStoreDays(store.id, 1)}
+                              aria-label={`Flytta ${store.name} 1 dag framåt`}
+                              className="rounded-r-lg px-2 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-100"
+                            >
+                              <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
+                            </button>
+                          </div>
 
-                    <td className="px-3 py-3">
-                      <PrepStatusBadge status={s.sdwanStatus} dateLabel={netDate} />
-                    </td>
+                          <span className="text-xs font-medium text-slate-500">
+                            {formatShortWeek(store.goLiveDate)}
+                          </span>
 
-                    <td className="px-3 py-3">
-                      <PrepStatusBadge status={s.trainingStatus} dateLabel={trainDate} />
-                    </td>
+                          {shiftText ? (
+                            <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-800">
+                              {shiftText}
+                            </span>
+                          ) : null}
+                        </div>
+                      </td>
 
-                    <td className="px-3 py-3">
-                      <PrepStatusBadge status={s.preCareStatus} dateLabel={preCareDate} />
-                    </td>
+                      {/* Kolumn 3: Begriplig status på ren svenska */}
+                      <td className="px-4 py-3.5">
+                        {!health.needsAttention ? (
+                          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
+                            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
+                            Allt i fas
+                          </span>
+                        ) : (
+                          <div className="flex flex-wrap gap-1.5">
+                            {health.issues.map((issue) => (
+                              <span
+                                key={issue}
+                                className="inline-flex items-center gap-1 rounded-full bg-rose-100/80 px-2.5 py-1 text-xs font-semibold text-rose-800"
+                              >
+                                <AlertCircle className="h-3.5 w-3.5 shrink-0 text-rose-600" aria-hidden="true" />
+                                {issue}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </td>
 
-                    <td className="px-4 py-3 text-right whitespace-nowrap">
-                      <div className="inline-flex items-center gap-1.5">
+                      {/* Kolumn 4: Öppna checklista */}
+                      <td className="px-5 py-3.5 text-right">
                         <button
                           type="button"
-                          onClick={() => onQuickInspect(s.id)}
-                          className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap text-slate-700 hover:border-indigo-300 hover:text-indigo-700"
-                          title="Snabbgranska butikens 4 faser i dialog"
+                          onClick={() => onOpenLayer3(store.id)}
+                          className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-indigo-700 shadow-2xs hover:border-indigo-200 hover:bg-indigo-50"
                         >
-                          <Eye className="h-3.5 w-3.5 shrink-0" />
-                          Snabbvy
+                          Checklista ({doneCount}/23)
+                          <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                         </button>
-                        <button
-                          type="button"
-                          onClick={() => onOpenLayer3(s.id)}
-                          className="inline-flex items-center gap-1 rounded-lg bg-indigo-50 px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap text-indigo-700 hover:bg-indigo-100"
-                        >
-                          <ClipboardList className="h-3.5 w-3.5 shrink-0" />
-                          23 steg
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
       </section>
     </div>
   );

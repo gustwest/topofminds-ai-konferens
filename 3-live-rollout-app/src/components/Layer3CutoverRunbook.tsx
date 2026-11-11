@@ -1,479 +1,305 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
+import { ArrowLeft, Calendar, Check, ChevronLeft, ChevronRight, Clock } from 'lucide-react';
+import type { ComputedCutoverStep, CutoverPhase, StoreRollout } from '../types/rollout';
 import {
-  CheckSquare,
-  ChevronLeft,
-  ChevronRight,
-  ClipboardCheck,
-  Layers,
-  ShieldAlert,
-  Square,
-  UserCheck,
-} from 'lucide-react';
-import { FORGOTTEN_TRACKS } from '../data/rolloutData';
-import type {
-  ComputedCutoverStep,
-  CutoverPhase,
-  ResponsibleParty,
-  StoreRollout,
-  WaveId,
-} from '../types/rollout';
-import { formatShortWeek, formatSwedishDate } from '../utils/dateUtils';
-import { CountryBadge, FormatBadge } from './StatusBadge';
+  daysBetweenIso,
+  formatCountryPlain,
+  formatShiftSummary,
+  formatShortWeek,
+  formatSwedishDate,
+} from '../utils/dateUtils';
 
 interface Layer3CutoverRunbookProps {
   stores: StoreRollout[];
-  selectedStoreId: string;
-  onSelectStoreId: (storeId: string) => void;
+  selectedStore: StoreRollout;
   steps: ComputedCutoverStep[];
-  buildStepsForStore: (store: StoreRollout) => ComputedCutoverStep[];
+  onSelectStoreId: (storeId: string) => void;
+  onShiftStoreDays: (storeId: string, deltaDays: number) => void;
+  onSetStoreDate: (storeId: string, newIsoDate: string) => void;
   onToggleStepComplete: (storeId: string, stepId: string) => void;
+  onBackToLayer2: () => void;
 }
 
-const PHASES: CutoverPhase[] = [
-  '1. Innan Go-Live (Pre-care)',
-  '2. Cut-over (Go-Live)',
-  '3. Hypercare',
-  '4. Exit (Överlämning till linjen)',
+const PHASE_META: Array<{
+  phase: CutoverPhase;
+  plainTitle: string;
+  subtitle: string;
+  highlight?: boolean;
+}> = [
+  {
+    phase: '1. Innan Go-Live (Pre-care)',
+    plainTitle: '1. Förberedelser inför Go-Live',
+    subtitle: '2 veckor före till dagen före driftsättning',
+  },
+  {
+    phase: '2. Cut-over (Go-Live)',
+    plainTitle: '2. Go-Live-morgonen (Timme för timme)',
+    subtitle: 'Själva skiftet i butiken innan och vid öppning',
+    highlight: true,
+  },
+  {
+    phase: '3. Hypercare',
+    plainTitle: '3. Tät uppföljning dagarna efter',
+    subtitle: 'Extra stöd till butikspersonalen första veckan',
+  },
+  {
+    phase: '4. Exit (Överlämning till linjen)',
+    plainTitle: '4. Avslut & överlämning till ordinarie drift',
+    subtitle: 'Formellt godkännande en vecka efter Go-Live',
+  },
 ];
 
 export function Layer3CutoverRunbook({
   stores,
-  selectedStoreId,
-  onSelectStoreId,
+  selectedStore,
   steps,
-  buildStepsForStore,
+  onSelectStoreId,
+  onShiftStoreDays,
+  onSetStoreDate,
   onToggleStepComplete,
+  onBackToLayer2,
 }: Layer3CutoverRunbookProps) {
-  const [viewMode, setViewMode] = useState<'STORE_DETAIL' | 'WAVE_OVERVIEW'>('STORE_DETAIL');
-  const [partyFilter, setPartyFilter] = useState<ResponsibleParty | 'ALL'>('ALL');
-  const [phaseFilter, setPhaseFilter] = useState<CutoverPhase | 'ALL'>('ALL');
-  const [overviewWave, setOverviewWave] = useState<WaveId>('Våg 1');
-
-  const sortedStores = useMemo(
-    () => [...stores].sort((a, b) => a.goLiveDate.localeCompare(b.goLiveDate) || a.id.localeCompare(b.id)),
-    [stores]
-  );
-
-  const currentIndex = sortedStores.findIndex((s) => s.id === selectedStoreId);
-  const currentStore = sortedStores[currentIndex] ?? sortedStores[0];
-
-  const visibleSteps = useMemo(() => {
-    return steps
-      .filter((s) => (partyFilter === 'ALL' ? true : s.responsibleParty === partyFilter))
-      .filter((s) => (phaseFilter === 'ALL' ? true : s.phase === phaseFilter));
-  }, [steps, partyFilter, phaseFilter]);
-
-  const groupedByPhase = useMemo(() => {
-    return PHASES.map((phase) => ({
-      phase,
-      items: visibleSteps.filter((s) => s.phase === phase),
-    })).filter((g) => g.items.length > 0);
-  }, [visibleSteps]);
-
-  const completedCount = steps.filter((s) => s.completed).length;
-
-  const waveStoresForMatrix = useMemo(
-    () => stores.filter((s) => s.wave === overviewWave),
-    [stores, overviewWave]
-  );
+  const completedCount = useMemo(() => steps.filter((s) => s.completed).length, [steps]);
+  const progressPct = Math.round((completedCount / Math.max(1, steps.length)) * 100);
+  const country = formatCountryPlain(selectedStore.country);
+  const deltaDays = daysBetweenIso(selectedStore.baselineGoLiveDate, selectedStore.goLiveDate);
+  const shiftText = formatShiftSummary(deltaDays);
 
   return (
     <div className="space-y-5">
-      {/* Store / Wave Selector & Mode Switcher */}
-      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">
-          <div>
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-violet-50 px-2.5 py-0.5 text-xs font-semibold text-violet-700">
-              <ClipboardCheck className="h-3.5 w-3.5" />
-              Lager 3 · Ersätter Mastodont-Excelen (&quot;List of all activities&quot; – 23 steg i 4 faser)
-            </div>
-            <h2 className="mt-1 text-lg font-bold text-slate-900">
-              Aktivitetsuppföljning per Butik &amp; Våg (Pre-care → Cut-over → Hypercare → Exit)
-            </h2>
-          </div>
+      {/* Tillbaka-knapp + Snabbval av butik */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <button
+          type="button"
+          onClick={onBackToLayer2}
+          className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+          Tillbaka till butiker per våg (Veckor)
+        </button>
 
-          <div className="flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-100 p-1">
-            <button
-              type="button"
-              onClick={() => setViewMode('STORE_DETAIL')}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
-                viewMode === 'STORE_DETAIL'
-                  ? 'bg-indigo-600 text-white shadow-2xs'
-                  : 'text-slate-700 hover:text-slate-900'
-              }`}
-            >
-              Per Butik (23 steg)
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setOverviewWave(currentStore.wave);
-                setViewMode('WAVE_OVERVIEW');
-              }}
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
-                viewMode === 'WAVE_OVERVIEW'
-                  ? 'bg-indigo-600 text-white shadow-2xs'
-                  : 'text-slate-700 hover:text-slate-900'
-              }`}
-            >
-              <Layers className="h-3.5 w-3.5" />
-              Hel Våg-matris (t.ex. 70 butiker)
-            </button>
-          </div>
+        <div className="flex items-center gap-2">
+          <label htmlFor="store-picker" className="text-xs font-semibold text-slate-600">
+            Byt butik:
+          </label>
+          <select
+            id="store-picker"
+            value={selectedStore.id}
+            onChange={(e) => onSelectStoreId(e.target.value)}
+            className="max-w-xs rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-900 shadow-2xs focus:border-indigo-500 focus:outline-none"
+          >
+            {stores.map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.name} ({s.wave} · {formatSwedishDate(s.goLiveDate)})
+              </option>
+            ))}
+          </select>
         </div>
+      </div>
 
-        {viewMode === 'STORE_DETAIL' ? (
-          <>
-            {/* Store Picker */}
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex flex-wrap items-center gap-2">
-                <button
-                  type="button"
-                  disabled={currentIndex <= 0}
-                  onClick={() => {
-                    if (currentIndex > 0) onSelectStoreId(sortedStores[currentIndex - 1].id);
-                  }}
-                  aria-label="Föregående butik"
-                  className="rounded-lg border border-slate-300 bg-white p-2 text-slate-700 hover:bg-slate-50 disabled:opacity-40"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </button>
-
-                <select
-                  aria-label="Välj butik för 23-stegschecklista"
-                  value={currentStore.id}
-                  onChange={(e) => onSelectStoreId(e.target.value)}
-                  className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-900"
-                >
-                  {sortedStores.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.id} · {s.name} [{s.country.split(' ')[0]}] ({s.wave} – {formatSwedishDate(s.goLiveDate)})
-                    </option>
-                  ))}
-                </select>
-
-                <button
-                  type="button"
-                  disabled={currentIndex >= sortedStores.length - 1}
-                  onClick={() => {
-                    if (currentIndex < sortedStores.length - 1) onSelectStoreId(sortedStores[currentIndex + 1].id);
-                  }}
-                  aria-label="Nästa butik"
-                  className="rounded-lg border border-slate-300 bg-white p-2 text-slate-700 hover:bg-slate-50 disabled:opacity-40"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </button>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2">
-                <UserCheck className="h-4 w-4 text-slate-400" />
-                <select
-                  aria-label="Filtrera på ansvarig part"
-                  value={partyFilter}
-                  onChange={(e) => setPartyFilter(e.target.value as ResponsibleParty | 'ALL')}
-                  className="rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700"
-                >
-                  <option value="ALL">Alla parter (Kund + Leverantör)</option>
-                  <option value="Kund (Store Ops)">Kund (Store Ops)</option>
-                  <option value="Systemleverantör (RetailCore/EG)">Systemleverantör (RetailCore/EG)</option>
-                  <option value="Gemensam (Kund + Leverantör)">Gemensam (Kund + Leverantör)</option>
-                </select>
-
-                <select
-                  aria-label="Filtrera på fas"
-                  value={phaseFilter}
-                  onChange={(e) => setPhaseFilter(e.target.value as CutoverPhase | 'ALL')}
-                  className="rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700"
-                >
-                  <option value="ALL">Alla 4 faser (23 steg)</option>
-                  {PHASES.map((ph) => (
-                    <option key={ph} value={ph}>
-                      {ph}
-                    </option>
-                  ))}
-                </select>
-              </div>
+      {/* Översiktskort för vald butik + Go-Live-datumstyrning */}
+      <section
+        aria-labelledby="store-runbook-heading"
+        className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs sm:p-6"
+      >
+        <div className="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-semibold text-indigo-700">
+                {selectedStore.wave}
+              </span>
+              <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700">
+                {country.label}
+              </span>
             </div>
-
-            {/* Selected Store Summary Banner */}
-            <div className="mt-4 grid grid-cols-1 gap-4 rounded-xl bg-slate-50 p-4 sm:grid-cols-4">
-              <div>
-                <span className="text-[11px] font-semibold text-slate-500 uppercase">Vald Butik &amp; Land</span>
-                <div className="mt-0.5 flex flex-wrap items-center gap-1.5 font-bold text-slate-900">
-                  <CountryBadge country={currentStore.country} />
-                  <span>{currentStore.name}</span>
-                </div>
-                <div className="mt-1 flex items-center gap-1.5 text-xs text-slate-600">
-                  <FormatBadge format={currentStore.format} />
-                  <span>· {currentStore.registers} kassor</span>
-                </div>
-              </div>
-
-              <div>
-                <span className="text-[11px] font-semibold text-slate-500 uppercase">Cut-over Datum (T-0)</span>
-                <div className="mt-0.5 font-bold text-indigo-700">
-                  {formatSwedishDate(currentStore.goLiveDate, true)} ({formatShortWeek(currentStore.goLiveDate)})
-                </div>
-                <div className="text-xs text-slate-600">
-                  {currentStore.wave} · T-14d Pre-care till T+8d Exit
-                </div>
-              </div>
-
-              <div>
-                <span className="text-[11px] font-semibold text-slate-500 uppercase">Team &amp; Butikschef</span>
-                <div className="mt-0.5 font-semibold text-slate-900">{currentStore.fieldTeam}</div>
-                <div className="text-xs text-slate-600">BC: {currentStore.storeManager}</div>
-              </div>
-
-              <div>
-                <span className="text-[11px] font-semibold text-slate-500 uppercase">Total Readiness (23 steg)</span>
-                <div className="mt-0.5 font-bold text-emerald-700">
-                  {completedCount} av {steps.length} klara ({Math.round((completedCount / steps.length) * 100)} %)
-                </div>
-                <div className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-slate-200">
-                  <div
-                    style={{ width: `${Math.round((completedCount / steps.length) * 100)}%` }}
-                    className="h-full bg-emerald-600 transition-all"
-                  />
-                </div>
-              </div>
-            </div>
-          </>
-        ) : (
-          /* WAVE OVERVIEW HEADER (70-butikers överblick!) */
-          <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-            <div className="flex flex-wrap items-center gap-1.5">
-              {(['Pilot', 'Våg 1', 'Våg 2', 'Våg 3'] as WaveId[]).map((wId) => {
-                const cnt = stores.filter((s) => s.wave === wId).length;
-                return (
-                  <button
-                    key={wId}
-                    type="button"
-                    onClick={() => setOverviewWave(wId)}
-                    className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
-                      overviewWave === wId
-                        ? 'bg-indigo-600 text-white'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                    }`}
-                  >
-                    {wId} ({cnt} butiker)
-                  </button>
-                );
-              })}
-            </div>
-            <p className="text-xs text-slate-600">
-              Överblick över samtliga <strong>{waveStoresForMatrix.length} butiker i {overviewWave}</strong> över de 4 faserna ({waveStoresForMatrix.length * 23} checkpunkter totalt!)
+            <h2
+              id="store-runbook-heading"
+              className="mt-1.5 text-xl font-bold text-slate-900 sm:text-2xl"
+            >
+              {selectedStore.name}
+            </h2>
+            <p className="mt-0.5 text-xs text-slate-500">
+              {selectedStore.city} · {selectedStore.registers} kassor · Butikschef:{' '}
+              {selectedStore.storeManager}
             </p>
           </div>
-        )}
-      </section>
 
-      {viewMode === 'STORE_DETAIL' ? (
-        /* 4-Phase Activity Runbook for Selected Store */
-        <div className="space-y-4">
-          {groupedByPhase.map((group) => {
-            const isCutover = group.phase.startsWith('2.');
-            const doneInPhase = group.items.filter((i) => i.completed).length;
-
-            return (
-              <section
-                key={group.phase}
-                className={`rollout-card-region rounded-2xl border p-5 shadow-2xs ${
-                  isCutover ? 'border-indigo-300 bg-indigo-50/25' : 'border-slate-200 bg-white'
-                }`}
-              >
-                <div className="mb-3 flex flex-wrap items-center justify-between gap-2 border-b border-slate-200/80 pb-2.5">
-                  <div className="flex items-center gap-2.5">
-                    <span
-                      className={`rounded-md px-2.5 py-1 text-xs font-bold ${
-                        isCutover ? 'bg-indigo-600 text-white' : 'bg-slate-900 text-white'
-                      }`}
-                    >
-                      {group.phase}
-                    </span>
-                    <span className="text-xs font-semibold text-slate-600">
-                      {doneInPhase} / {group.items.length} klarmarkerade
-                    </span>
-                  </div>
-                  <span className="text-xs text-slate-500">
-                    Klicka på en rad för att kvittera/avmarkera aktivitet
-                  </span>
-                </div>
-
-                <div className="space-y-2.5">
-                  {group.items.map((step) => (
-                    <div
-                      key={step.id}
-                      onClick={() => onToggleStepComplete(currentStore.id, step.id)}
-                      role="button"
-                      tabIndex={0}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          onToggleStepComplete(currentStore.id, step.id);
-                        }
-                      }}
-                      className={`flex cursor-pointer items-start gap-3.5 rounded-xl border p-3.5 transition ${
-                        step.completed
-                          ? 'border-emerald-200 bg-emerald-50/40 text-slate-600'
-                          : 'border-slate-200 bg-white hover:border-indigo-300'
-                      }`}
-                    >
-                      <div className="mt-0.5 text-indigo-600">
-                        {step.completed ? (
-                          <CheckSquare className="h-5 w-5 text-emerald-600" />
-                        ) : (
-                          <Square className="h-5 w-5 text-slate-400" />
-                        )}
-                      </div>
-
-                      <div className="min-w-[122px] rounded-lg bg-slate-100 px-2.5 py-1.5 text-center">
-                        <div className="text-[11px] font-bold text-indigo-700">
-                          {formatSwedishDate(step.calendarDate)} ({step.relativeLabel.split(' ')[0]})
-                        </div>
-                        <div className="font-mono text-xs font-semibold text-slate-700">
-                          {step.startTime}–{step.endTime}
-                        </div>
-                      </div>
-
-                      <div className="min-w-0 flex-1">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="font-mono text-xs text-slate-400">{step.id}</span>
-                          <span
-                            className={`text-sm font-semibold ${
-                              step.completed ? 'line-through text-slate-500' : 'text-slate-900'
-                            }`}
-                          >
-                            {step.activity}
-                          </span>
-                          <span
-                            className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${
-                              step.responsibleParty === 'Kund (Store Ops)'
-                                ? 'bg-sky-100 text-sky-800'
-                                : step.responsibleParty === 'Systemleverantör (RetailCore/EG)'
-                                  ? 'bg-purple-100 text-purple-800'
-                                  : 'bg-teal-100 text-teal-800'
-                            }`}
-                          >
-                            {step.responsibleParty}
-                          </span>
-                          {step.mandatoryGate ? (
-                            <span className="inline-flex items-center gap-1 rounded bg-amber-50 px-1.5 py-0.5 text-[11px] font-semibold text-amber-800 ring-1 ring-amber-600/20 ring-inset">
-                              <ShieldAlert className="h-3 w-3" /> Gate
-                            </span>
-                          ) : null}
-                        </div>
-
-                        <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-600">
-                          <span>
-                            Roll: <strong>{step.ownerRole}</strong>
-                          </span>
-                          <span>
-                            Beroende: <strong>{step.systemDependency}</strong>
-                          </span>
-                        </div>
-                        <p className="mt-1 text-xs text-slate-500">{step.ruleNote}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            );
-          })}
-        </div>
-      ) : (
-        /* WAVE-LEVEL 4-PHASE MATRIX (70 stores in one wave!) */
-        <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs">
-          <div className="overflow-x-auto rounded-xl border border-slate-200">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-slate-100 font-semibold tracking-wide text-slate-600 uppercase">
-                <tr>
-                  <th className="px-3 py-2.5">Butik</th>
-                  <th className="px-3 py-2.5">Cut-over</th>
-                  <th className="px-3 py-2.5">1. Pre-care (8)</th>
-                  <th className="px-3 py-2.5">2. Cut-over (6)</th>
-                  <th className="px-3 py-2.5">3. Hypercare (5)</th>
-                  <th className="px-3 py-2.5">4. Exit till linjen (4)</th>
-                  <th className="px-3 py-2.5 text-right">Detalj</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-200 bg-white">
-                {waveStoresForMatrix.map((st) => {
-                  const stSteps = buildStepsForStore(st);
-                  const p1 = stSteps.filter((x) => x.phase.startsWith('1.') && x.completed).length;
-                  const p2 = stSteps.filter((x) => x.phase.startsWith('2.') && x.completed).length;
-                  const p3 = stSteps.filter((x) => x.phase.startsWith('3.') && x.completed).length;
-                  const p4 = stSteps.filter((x) => x.phase.startsWith('4.') && x.completed).length;
-                  const hasIssue =
-                    st.hardwareStatus === 'Avvikelse' ||
-                    st.sdwanStatus === 'Avvikelse' ||
-                    st.trainingStatus === 'Avvikelse';
-
-                  return (
-                    <tr
-                      key={st.id}
-                      className={hasIssue ? 'bg-rose-50/40 hover:bg-rose-50/70' : 'hover:bg-slate-50'}
-                    >
-                      <td className="px-3 py-2.5">
-                        <div className="flex items-center gap-1.5">
-                          <span className="font-mono font-bold text-slate-700">{st.id}</span>
-                          <CountryBadge country={st.country} />
-                          <span className="font-semibold text-slate-900">{st.name}</span>
-                        </div>
-                        {st.note ? (
-                          <div className="mt-0.5 text-[11px] font-medium text-rose-700">{st.note}</div>
-                        ) : null}
-                      </td>
-                      <td className="px-3 py-2.5 whitespace-nowrap font-medium text-slate-800">
-                        {formatSwedishDate(st.goLiveDate, true)}
-                      </td>
-                      <td className="px-3 py-2.5 font-mono font-semibold text-slate-700">{p1} / 8</td>
-                      <td className="px-3 py-2.5 font-mono font-semibold text-slate-700">{p2} / 6</td>
-                      <td className="px-3 py-2.5 font-mono font-semibold text-slate-700">{p3} / 5</td>
-                      <td className="px-3 py-2.5 font-mono font-semibold text-slate-700">{p4} / 4</td>
-                      <td className="px-3 py-2.5 text-right">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            onSelectStoreId(st.id);
-                            setViewMode('STORE_DETAIL');
-                          }}
-                          className="rounded-lg bg-indigo-50 px-2.5 py-1 font-semibold text-indigo-700 hover:bg-indigo-100"
-                        >
-                          Öppna
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      )}
-
-      {/* Separata spår som ofta glöms bort (Från Connies "Utkast - utrullningsplan.xlsx" rad 105–135) */}
-      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-2xs">
-        <h3 className="text-sm font-bold text-slate-900">
-          Separata tvärgående spår (från &quot;Utkast - utrullningsplan.xlsx&quot; – sådant som ofta glöms bort)
-        </h3>
-        <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-3">
-          {FORGOTTEN_TRACKS.map((track) => (
-            <div key={track.id} className="rounded-xl border border-slate-200 bg-slate-50/70 p-3.5">
-              <div className="text-xs font-bold text-slate-900">{track.title}</div>
-              <div className="text-[11px] text-slate-500">{track.subtitle}</div>
-              <ul className="mt-2 space-y-1 text-xs text-slate-700">
-                {track.items.map((it) => (
-                  <li key={it} className="flex items-center gap-1.5">
-                    <span className="h-1.5 w-1.5 rounded-full bg-indigo-600" />
-                    <span>{it}</span>
-                  </li>
-                ))}
-              </ul>
+          {/* Go-Live-datumväljare som räknar om hela körschemat live */}
+          <div className="rounded-xl border border-slate-200 bg-slate-50/80 px-4 py-3">
+            <div className="flex items-center gap-2 text-xs font-semibold text-slate-600">
+              <Calendar className="h-3.5 w-3.5 text-indigo-600" aria-hidden="true" />
+              <span>Go-Live-datum (styr alla datum nedan)</span>
+              {shiftText ? (
+                <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-800">
+                  {shiftText}
+                </span>
+              ) : null}
             </div>
-          ))}
+
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <div className="inline-flex items-center rounded-lg border border-slate-200 bg-white shadow-2xs">
+                <button
+                  type="button"
+                  onClick={() => onShiftStoreDays(selectedStore.id, -1)}
+                  aria-label="Flytta butikens Go-Live 1 dag bakåt"
+                  className="inline-flex items-center gap-0.5 rounded-l-lg px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+                >
+                  <ChevronLeft className="h-3.5 w-3.5" aria-hidden="true" />
+                  -1d
+                </button>
+                <span className="border-x border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-900">
+                  {formatSwedishDate(selectedStore.goLiveDate, true)} ({formatShortWeek(selectedStore.goLiveDate)})
+                </span>
+                <button
+                  type="button"
+                  onClick={() => onShiftStoreDays(selectedStore.id, 1)}
+                  aria-label="Flytta butikens Go-Live 1 dag framåt"
+                  className="inline-flex items-center gap-0.5 rounded-r-lg px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+                >
+                  +1d
+                  <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
+                </button>
+              </div>
+
+              <label htmlFor="exact-golive-date" className="sr-only">
+                Välj exakt Go-Live-datum
+              </label>
+              <input
+                id="exact-golive-date"
+                type="date"
+                value={selectedStore.goLiveDate}
+                onChange={(e) => {
+                  if (e.target.value) onSetStoreDate(selectedStore.id, e.target.value);
+                }}
+                className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 shadow-2xs focus:border-indigo-500 focus:outline-none"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Enkel förloppsmätare */}
+        <div className="mt-5 border-t border-slate-100 pt-4">
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-semibold text-slate-700">
+              Genomförda aktiviteter: {completedCount} av {steps.length} ({progressPct} %)
+            </span>
+            <span className="text-slate-500">Klicka på en aktivitet för att bocka av</span>
+          </div>
+          <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-100">
+            <div
+              style={{ width: `${progressPct}%` }}
+              className="h-full rounded-full bg-emerald-500 transition-all duration-300"
+            />
+          </div>
         </div>
       </section>
+
+      {/* De 4 faserna i rena, lättlästa kort */}
+      {PHASE_META.map((meta) => {
+        const phaseSteps = steps.filter((s) => s.phase === meta.phase);
+        const phaseDone = phaseSteps.filter((s) => s.completed).length;
+
+        return (
+          <section
+            key={meta.phase}
+            className={`rounded-2xl border bg-white shadow-xs ${
+              meta.highlight ? 'border-indigo-300 ring-1 ring-indigo-500/10' : 'border-slate-200'
+            }`}
+          >
+            <div
+              className={`flex flex-wrap items-center justify-between gap-2 rounded-t-2xl border-b px-5 py-3.5 ${
+                meta.highlight
+                  ? 'border-indigo-100 bg-indigo-50/70'
+                  : 'border-slate-100 bg-slate-50/70'
+              }`}
+            >
+              <div>
+                <h3
+                  className={`text-sm font-bold ${
+                    meta.highlight ? 'text-indigo-950' : 'text-slate-900'
+                  }`}
+                >
+                  {meta.plainTitle}
+                </h3>
+                <p className="text-xs text-slate-500">{meta.subtitle}</p>
+              </div>
+              <span className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-slate-700 ring-1 ring-slate-200 ring-inset">
+                {phaseDone} / {phaseSteps.length} klara
+              </span>
+            </div>
+
+            <ul className="divide-y divide-slate-100">
+              {phaseSteps.map((step) => {
+                return (
+                  <li key={step.id}>
+                    <label
+                      className={`flex cursor-pointer flex-col gap-3 px-5 py-3.5 transition sm:flex-row sm:items-start sm:gap-5 ${
+                        step.completed ? 'bg-slate-50/60' : 'hover:bg-slate-50'
+                      }`}
+                    >
+                      {/* Kryssruta + Uträknat datum & klockslag */}
+                      <div className="flex shrink-0 items-start gap-3 sm:w-52">
+                        <span
+                          className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition ${
+                            step.completed
+                              ? 'border-emerald-600 bg-emerald-600 text-white'
+                              : 'border-slate-300 bg-white'
+                          }`}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={step.completed}
+                            onChange={() => onToggleStepComplete(selectedStore.id, step.id)}
+                            className="sr-only"
+                          />
+                          {step.completed ? (
+                            <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                          ) : null}
+                        </span>
+
+                        <div>
+                          <div className="text-xs font-bold text-slate-900">
+                            {formatSwedishDate(step.calendarDate, true)}
+                          </div>
+                          <div className="mt-0.5 flex items-center gap-1.5 text-[11px] font-medium text-slate-500">
+                            <Clock className="h-3 w-3 text-slate-400" aria-hidden="true" />
+                            <span>
+                              {step.startTime}–{step.endTime}
+                            </span>
+                            <span>·</span>
+                            <span
+                              className={
+                                step.dayOffset === 0 ? 'font-semibold text-indigo-700' : ''
+                              }
+                            >
+                              {step.relativeLabel}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Själva aktiviteten + vem som ansvarar */}
+                      <div className="min-w-0 flex-1">
+                        <div
+                          className={`text-sm font-semibold ${
+                            step.completed ? 'text-slate-400 line-through' : 'text-slate-900'
+                          }`}
+                        >
+                          {step.activity}
+                        </div>
+                        <p className="mt-0.5 text-xs text-slate-500">{step.ruleNote}</p>
+                        <div className="mt-1 text-[11px] font-medium text-slate-400">
+                          Ansvar: {step.ownerRole}
+                        </div>
+                      </div>
+                    </label>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        );
+      })}
     </div>
   );
 }
