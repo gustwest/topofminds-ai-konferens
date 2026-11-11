@@ -1,0 +1,6 @@
+{
+  "name": "nordic-retail-pmo",
+  "displayName": "Nordic Retail PMO & Ärendesystem",
+  "version": "1.0.0",
+  "description": "Lokal, nyckelfri PMO- och ärendehanterings-MCP för Projekt OmniPOS (simulerar Jira/ServiceNow på konferensen)."
+}

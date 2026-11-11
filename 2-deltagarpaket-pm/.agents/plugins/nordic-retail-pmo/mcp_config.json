@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "nordic_retail_pmo": {
+      "command": "agy-node",
+      "args": ["mcp_server.cjs"]
+    }
+  }
+}

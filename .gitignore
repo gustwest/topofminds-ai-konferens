@@ -1,0 +1,21 @@
+# =====================================================================
+# STRIKT NDA-SPÄRR: Pusha ALDRIG råa originalbilagor med kundnamn!
+# =====================================================================
+underlag-fran-connie/
+
+# Dependencies & Build artifacts
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+*.tsbuildinfo
+
+# OS & Editor files
+.DS_Store
+**/.DS_Store
+.env
+.env.*
+*.log
+**/.graphify_python
+**/.graphify_root
+2-deltagarpaket-pm/projektfiler/graphify-out/

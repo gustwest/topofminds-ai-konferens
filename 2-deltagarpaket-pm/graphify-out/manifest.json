@@ -1,0 +1,44 @@
+{
+  "projektfiler/01_SOW_Kundavtal_OmniPOS.md": {
+    "mtime": 1793816261.674021,
+    "seen": 1793817255.01659,
+    "ast_hash": "961f53fc5b76c40262f6c9613fbd314b",
+    "semantic_hash": "961f53fc5b76c40262f6c9613fbd314b"
+  },
+  "projektfiler/02_Leverantorsavtal_TeliaNet.md": {
+    "mtime": 1793816263.5961857,
+    "seen": 1793817255.016593,
+    "ast_hash": "9e16f156f1eba9d0d237f0004356fab2",
+    "semantic_hash": "9e16f156f1eba9d0d237f0004356fab2"
+  },
+  "projektfiler/03_Styrgruppsprotokoll_2026-10-15.md": {
+    "mtime": 1793816264.9428272,
+    "seen": 1793817255.016595,
+    "ast_hash": "b0e5c90e632eb521e213b3a7ee6ba379",
+    "semantic_hash": "b0e5c90e632eb521e213b3a7ee6ba379"
+  },
+  "projektfiler/04_Mejl_Marknadschef_Kampanjplan.md": {
+    "mtime": 1793816266.3841257,
+    "seen": 1793817255.016595,
+    "ast_hash": "de643a4ac94ac8bf9bdd0a0ce2c05fbc",
+    "semantic_hash": "de643a4ac94ac8bf9bdd0a0ce2c05fbc"
+  },
+  "projektfiler/05_Intervju_Driftchef_ButiksIT.md": {
+    "mtime": 1793816267.908123,
+    "seen": 1793817255.016596,
+    "ast_hash": "accbc568dba46675764b10e87c060206",
+    "semantic_hash": "accbc568dba46675764b10e87c060206"
+  },
+  "projektfiler/06_Gammal_PPT_Roadmap_Sammanfattning.md": {
+    "mtime": 1793816269.0982006,
+    "seen": 1793817255.016597,
+    "ast_hash": "f889af05b58f292e242596261e07fe0a",
+    "semantic_hash": "f889af05b58f292e242596261e07fe0a"
+  },
+  "projektfiler/09_Bilaga_Nyckelbutiker_och_Systemkopplingar.md": {
+    "mtime": 1793816518.726077,
+    "seen": 1793817255.016597,
+    "ast_hash": "59e9ae434253177ffff08b5367788ec7",
+    "semantic_hash": "59e9ae434253177ffff08b5367788ec7"
+  }
+}

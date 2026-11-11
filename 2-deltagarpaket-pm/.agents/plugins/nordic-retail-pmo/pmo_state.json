@@ -1,0 +1,43 @@
+{
+  "project": "Projekt OmniPOS v4.2 – Nordic Retail AB (42 butiker)",
+  "sponsor": "Anna Lindqvist (COO)",
+  "lastUpdated": "2026-11-04T08:00:00Z",
+  "tickets": [
+    {
+      "id": "PMO-101",
+      "type": "INCIDENT",
+      "severity": "P1_CRITICAL",
+      "status": "OPEN",
+      "title": "Adyen Terminal API v4.2.4 fryser vid kombinerad Presentkort + Swish-betalning i Pilot NR-001 Uppsala",
+      "affectedStores": ["NR-001", "NR-002"],
+      "financialRiskSek": 0,
+      "owner": "Johan Nilsson (RetailCore)",
+      "createdAt": "2026-11-02",
+      "recommendedAction": "Pausa godkännande av Gate G2 tills RetailCore levererat och verifierat patch v4.2.5 i Uppsala under 14 dagar."
+    },
+    {
+      "id": "PMO-102",
+      "type": "ACTION_ITEM",
+      "severity": "P2_HIGH",
+      "status": "OPEN",
+      "title": "AP-302: Korsgranska Excel-tidplanen mot marknadsfrysen och TeliaNets ombokningsvillkor",
+      "affectedStores": [],
+      "financialRiskSek": 0,
+      "owner": "PMO Projektledare",
+      "createdAt": "2026-10-15",
+      "recommendedAction": "Kör go-live-readiness kontroll och eskalera alla regelbrott inför styrgruppen."
+    },
+    {
+      "id": "PMO-103",
+      "type": "RISK",
+      "severity": "P3_MEDIUM",
+      "status": "MITIGATED",
+      "title": "Trångt baklager i City-butiker om kassahårdvara levereras tidigare än T-16 dagar",
+      "affectedStores": ["NR-003", "NR-008", "NR-009"],
+      "financialRiskSek": 15000,
+      "owner": "Centrallager Örebro",
+      "createdAt": "2026-10-19",
+      "recommendedAction": "SAP-spärr inlagd så att plockorder släpps tidigast T-15 kalenderdagar före Go-Live."
+    }
+  ]
+}

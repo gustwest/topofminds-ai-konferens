@@ -1,0 +1,43 @@
+ButiksID,Butiksnamn,Stad,Region,Format,Kassalinjer,Vag,Planerad_Vecka,GoLive_Datum,Faltteam,Status_T21d_SDWAN,Status_T14d_Hardvara,Status_T7d_Utbildning,Butikschef,Kommentar
+NR-001,Nordic Retail Uppsala City,Uppsala,Mälardalen,City,4,Pilot,2026-v43,2026-10-21,Team Nord/Öst,Klar,Klar,Klar,elin.lindberg@nordicretail-example.se,Pilotbutik 1 - Adyen referensinstallation
+NR-002,Nordic Retail Västerås Erikslund,Västerås,Mälardalen,Handelspark,4,Pilot,2026-v43,2026-10-22,Team Nord/Öst,Klar,Klar,Klar,johan.kvarnstrom@nordicretail-example.se,Pilotbutik 2 - Click & Collect flöde
+NR-003,Nordic Retail Södertälje Centrum,Södertälje,Mälardalen,City,3,Våg 1,2026-v44,2026-10-27,Team Nord/Öst,Klar,Levererad,Pågår,sara.holm@nordicretail-example.se,Första butik i Våg 1
+NR-004,Nordic Retail Eskilstuna Tuna Park,Eskilstuna,Mälardalen,Handelspark,3,Våg 1,2026-v44,2026-10-29,Team Nord/Öst,Klar,Levererad,Pågår,martin.ek@nordicretail-example.se,
+NR-005,Nordic Retail Örebro Marieberg,Örebro,Mälardalen,Handelspark,4,Våg 1,2026-v45,2026-11-03,Team Nord/Öst,Klar,Skickad,Ej startad,linda.forsberg@nordicretail-example.se,Nära centrallagret
+NR-006,Nordic Retail Norrköping Linden,Norrköping,Mälardalen,City,4,Våg 1,2026-v45,2026-11-03,Team Väst/Syd,Klar,Skickad,Ej startad,oskar.nyberg@nordicretail-example.se,
+NR-007,Nordic Retail Linköping Tornby,Linköping,Mälardalen,Handelspark,4,Våg 1,2026-v45,2026-11-05,Team Väst/Syd,Klar,Skickad,Ej startad,hanna.sjogren@nordicretail-example.se,
+NR-008,Nordic Retail Täby Centrum,Stockholm,Mälardalen,City,5,Våg 1,2026-v45,2026-11-05,Team Nord/Öst,Klar,Skickad,Ej startad,daniel.bergman@nordicretail-example.se,
+NR-009,Nordic Retail Nacka Forum,Stockholm,Mälardalen,City,4,Våg 1,2026-v46,2026-11-10,Team Nord/Öst,Bokad,Planerad,Ej startad,camilla.lund@nordicretail-example.se,
+NR-010,Nordic Retail Kungens Kurva,Stockholm,Mälardalen,Handelspark,4,Våg 1,2026-v46,2026-11-10,Team Nord/Öst,Bokad,Planerad,Ej startad,fredrik.wallin@nordicretail-example.se,Dubbelbokning Team Nord/Öst samma dag!
+NR-011,Nordic Retail Barkarby Gate,Stockholm,Mälardalen,Handelspark,3,Våg 1,2026-v46,2026-11-12,Team Nord/Öst,Bokad,Planerad,Ej startad,petra.sandstrom@nordicretail-example.se,
+NR-012,Nordic Retail Bromma Blocks,Stockholm,Mälardalen,City,4,Våg 1,2026-v46,2026-11-12,Team Nord/Öst,Bokad,Planerad,Ej startad,andreas.lind@nordicretail-example.se,
+NR-013,Nordic Retail Borås Knalleland,Borås,Väst & Syd,Handelspark,3,Våg 2,2026-v46,2026-11-10,Team Väst/Syd,Bokad,Planerad,Ej startad,maja.olsson@nordicretail-example.se,Start Våg 2 parallellt med Våg 1 slut
+NR-014,Nordic Retail Jönköping Asecs,Jönköping,Väst & Syd,City,4,Våg 2,2026-v46,2026-11-12,Team Väst/Syd,Bokad,Planerad,Ej startad,viktor.hedlund@nordicretail-example.se,
+NR-015,Nordic Retail Halmstad Hallarna,Halmstad,Väst & Syd,Handelspark,3,Våg 2,2026-v47,2026-11-17,Team Väst/Syd,Bokad,Planerad,Ej startad,emma.claesson@nordicretail-example.se,
+NR-016,Nordic Retail Kalmar Hansa City,Kalmar,Väst & Syd,Handelspark,3,Våg 2,2026-v47,2026-11-19,Team Väst/Syd,Bokad,Planerad,Ej startad,niklas.apelqvist@nordicretail-example.se,
+NR-017,Nordic Retail Växjö Samarkand,Växjö,Väst & Syd,City,3,Våg 2,2026-v48,2026-11-24,Team Väst/Syd,Ej bokad,Planerad,Ej startad,sofie.magnusson@nordicretail-example.se,
+NR-018,Nordic Retail Kristianstad C4,Kristianstad,Väst & Syd,Handelspark,3,Våg 2,2026-v48,2026-11-26,Team Väst/Syd,Ej bokad,Planerad,Ej startad,jonas.persson@nordicretail-example.se,
+NR-019,Nordic Retail Kungsbacka Kungsmässan,Kungsbacka,Väst & Syd,City,4,Våg 2,2026-v49,2026-12-01,Team Väst/Syd,Ej bokad,Planerad,Ej startad,klara.sundqvist@nordicretail-example.se,
+NR-020,Nordic Retail Uddevalla Torp,Uddevalla,Väst & Syd,Handelspark,3,Våg 2,2026-v49,2026-12-01,Team Väst/Syd,Ej bokad,Planerad,Ej startad,tobias.eriksson@nordicretail-example.se,
+NR-021,Nordic Retail Skövde Commerce,Skövde,Väst & Syd,City,3,Våg 2,2026-v49,2026-12-03,Team Väst/Syd,Ej bokad,Planerad,Ej startad,ellen.larsson@nordicretail-example.se,
+NR-022,Nordic Retail Karlstad Bergvik,Karlstad,Väst & Syd,Handelspark,4,Våg 2,2026-v49,2026-12-03,Team Nord/Öst,Ej bokad,Planerad,Ej startad,henrik.dahl@nordicretail-example.se,
+NR-023,Nordic Retail Trollhättan Överby,Trollhättan,Väst & Syd,Handelspark,3,Våg 2,2026-v50,2026-12-08,Team Väst/Syd,Ej bokad,Planerad,Ej startad,ida.norberg@nordicretail-example.se,
+NR-024,Nordic Retail Varberg City,Varberg,Väst & Syd,City,3,Våg 2,2026-v50,2026-12-10,Team Väst/Syd,Ej bokad,Planerad,Ej startad,anton.bjork@nordicretail-example.se,
+NR-025,Nordic Retail Stockholm Sergels Torg,Stockholm,Storstad,Flagship,10,Våg 3,2026-v47,2026-11-17,Team Nord/Öst,Bokad,Planerad,Ej startad,lovisa.engstrom@nordicretail-example.se,Kedjans största Flagship-butik!
+NR-026,Nordic Retail Göteborg Nordstan,Göteborg,Storstad,Flagship,9,Våg 3,2026-v47,2026-11-19,Team Nord/Öst,Bokad,Planerad,Ej startad,patrik.lindholm@nordicretail-example.se,Flagship Västkustens huvudbutik
+NR-027,Nordic Retail Mall of Scandinavia,Stockholm,Storstad,Flagship,8,Våg 3,2026-v48,2026-11-24,Team Nord/Öst,Ej bokad,Planerad,Ej startad,therese.wahlstrom@nordicretail-example.se,Flagship - Black Friday vecka!
+NR-028,Nordic Retail Malmö Triangeln,Malmö,Storstad,Flagship,7,Våg 3,2026-v48,2026-11-26,Team Nord/Öst,Ej bokad,Planerad,Ej startad,amir.hassan@nordicretail-example.se,Flagship Syd - dagen före Black Friday!
+NR-029,Nordic Retail Malmö Emporia,Malmö,Storstad,Flagship,8,Våg 3,2026-v49,2026-12-01,Team Nord/Öst,Ej bokad,Planerad,Ej startad,rebecka.palm@nordicretail-example.se,Flagship
+NR-030,Nordic Retail Göteborg Frölunda Torg,Göteborg,Storstad,Flagship,7,Våg 3,2026-v49,2026-12-03,Team Nord/Öst,Ej bokad,Planerad,Ej startad,simon.granath@nordicretail-example.se,Flagship
+NR-031,Nordic Retail Stockholm Gallerian,Stockholm,Storstad,Flagship,8,Våg 3,2026-v50,2026-12-08,Team Nord/Öst,Ej bokad,Planerad,Ej startad,josefin.akerman@nordicretail-example.se,Flagship
+NR-032,Nordic Retail Uppsala Gränby,Uppsala,Storstad,City,5,Våg 3,2026-v50,2026-12-10,Team Nord/Öst,Ej bokad,Planerad,Ej startad,erik.sandberg@nordicretail-example.se,Stor City-butik
+NR-033,Nordic Retail Helsingborg Väla,Helsingborg,Storstad,Flagship,6,Våg 3,2026-v51,2026-12-15,Team Väst/Syd,Ej bokad,Planerad,Ej startad,maria.kronqvist@nordicretail-example.se,Flagship - ligger mitt i julhandeln!
+NR-034,Nordic Retail Lund Nova,Lund,Storstad,City,4,Våg 3,2026-v51,2026-12-17,Team Väst/Syd,Ej bokad,Planerad,Ej startad,gustav.malm@nordicretail-example.se,Ligger mitt i julhandeln!
+NR-035,Nordic Retail Barkarby Stockholm Outlet,Stockholm,Norr & Outlet,Outlet,3,Våg 4,2027-v02,2027-01-12,Team Nord/Öst,Ej bokad,Planerad,Ej startad,nina.bergstrom@nordicretail-example.se,Start efter nyår
+NR-036,Nordic Retail Kungsbacka Hede Outlet,Kungsbacka,Norr & Outlet,Outlet,3,Våg 4,2027-v02,2027-01-14,Team Väst/Syd,Ej bokad,Planerad,Ej startad,carl.wester@nordicretail-example.se,
+NR-037,Nordic Retail Vingåker Factory Outlet,Vingåker,Norr & Outlet,Outlet,2,Våg 4,2027-v03,2027-01-19,Team Nord/Öst,Ej bokad,Planerad,Ej startad,ulrika.svensson@nordicretail-example.se,
+NR-038,Nordic Retail Gävle Valbo,Gävle,Norr & Outlet,Handelspark,3,Våg 4,2027-v03,2027-01-21,Team Nord/Öst,Ej bokad,Planerad,Ej startad,pontus.ask@nordicretail-example.se,
+NR-039,Nordic Retail Sundsvall Birsta,Sundsvall,Norr & Outlet,Handelspark,4,Våg 4,2027-v04,2027-01-26,Team Nord/Öst,Ej bokad,Planerad,Ej startad,helena.wikstrom@nordicretail-example.se,
+NR-040,Nordic Retail Umeå Avion,Umeå,Norr & Outlet,City,4,Våg 4,2027-v04,2027-01-28,Team Nord/Öst,Ej bokad,Planerad,Ej startad,mattias.nystrom@nordicretail-example.se,
+NR-041,Nordic Retail Luleå Storheden,Luleå,Norr & Outlet,Outlet,3,Våg 4,2027-v05,2027-02-02,Team Nord/Öst,Ej bokad,Planerad,Ej startad,asa.lindmark@nordicretail-example.se,
+NR-042,Nordic Retail Östersund Lillänge,Östersund,Norr & Outlet,Outlet,2,Våg 4,2027-v05,2027-02-04,Team Nord/Öst,Ej bokad,Planerad,Ej startad,jorgen.falk@nordicretail-example.se,Sista butik före avveckling av LegacyCash

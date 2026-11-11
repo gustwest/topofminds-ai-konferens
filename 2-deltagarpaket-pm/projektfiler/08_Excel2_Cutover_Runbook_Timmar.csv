@@ -1,0 +1,17 @@
+StegID,Fas,Relativ_Dag,Starttid,Sluttid,Aktivitet,Ansvarig_Roll,System_Beroende,Obligatorisk_Gate,Anteckning_och_Regel
+CUT-01,Förberedelse,T-21,09:00,11:30,Fjärrkonfigurering SD-WAN & Brandväggsöppning Adyen,TeliaNet Tekniker,SD-WAN / Brandvägg,Ja,Förutsätter låst Go-Live-datum i butiksplanen
+CUT-02,Förberedelse,T-15,13:00,14:00,Slutbekräftelse Nattjour VLAN-omkoppling,Projektledare PMO,TeliaNet Bokningsportal,Ja,"GAMMAL KOMMENTAR FRÅN 2023: Kan ombokas kostnadsfritt fram till 3 dagar före Go-Live"
+CUT-03,Förberedelse,T-14,08:00,16:00,Leverans av kassahårdvara & Adyen-terminaler från Örebro,Centrallager SAP,SAP Logistik,Ja,Får ej levereras mer än 16 dagar innan pga trångt butikslager
+CUT-04,Förberedelse,T-7,10:00,17:00,Verifiera 80% genomförd E-learning & Övningskassa i butik,Butikschef,OmniPOS Academy,Ja,Spärr för Go-Live om under 80%
+CUT-05,Förberedelse,T-2,14:00,15:30,Laddning av lokal artikel- pris- och kampanjkatalog,Central IT,OmniPOS Cloud / SAP,Ja, Kräver godkänd Adyen kedjeprofil från Pilot NR-001
+CUT-06,Kvällen före Go-Live,T-1,19:00,19:45,Stängning av LegacyCash & utskrift av sista Z-rapport,Butikschef,LegacyCash 2014,Ja,Alla pågående parkerade kvitton måste avslutas
+CUT-07,Kvällen före Go-Live,T-1,19:45,21:30,Demontering av gamla kassaskärmar & kablage i kassalinje,Fältteam,Butiksdisk,Nej,Sker efter ordinarie stängning
+CUT-08,Go-Live Morgon,T-0,05:30,06:15,Skarp omkoppling av kassaportar till VLAN-POS-40,TeliaNet Nattjour,VLAN-POS-40,Ja,Bryter anslutning för LegacyCash permanent om ej rollback sker före 09:15
+CUT-09,Go-Live Morgon,T-0,06:15,07:30,Montering & uppstart av OmniPOS v4.2 kassor + kvittoskrivare,Fältteam,OmniPOS v4.2,Ja,Samtliga kassalinjer ska boota till inloggningsskärm
+CUT-10,Go-Live Morgon,T-0,07:30,08:15,Parning av Adyen-kortterminaler & skarpt 1-kronas röktest (Kort + Swish + Presentkort),Fältteam,Adyen Terminal API,Ja,Kritiskt steg - testa även offline-fallback genom att dra ur WAN i 30 sek
+CUT-11,Go-Live Morgon,T-0,08:15,08:40,Test av Click & Collect utlämning samt retur mot SAP,Central IT,SAP S/4HANA,Ja,Endast obligatoriskt för Flagship och Handelspark
+CUT-12,Go-Live Morgon,T-0,08:45,09:00,Formellt Go / No-Go beslut inför butiksöppning,Projektledare PMO & Butikschef,Go/No-Go Protokoll,Ja,Vid No-Go anropas TeliaNet omedelbart före 09:15 för VLAN-rollback!
+CUT-13,Go-Live Öppning,T-0,09:30,10:00,Morgonbriefing med butikspersonal vid kassorna,Butikschef & Fältteam,Butiksgolv,Nej,Genomgång av snabbknappar och presentkortsflöde
+CUT-14,Go-Live Öppning,T-0,10:00,14:00,Butiksöppning med fysisk Hypercare vid kassalinjen,Fältteam,OmniPOS v4.2,Ja,Fältteam stannar på plats minst 4 timmar efter öppning
+CUT-15,Uppföljning,T+1,09:00,10:00,Kontroll av första skarpa nattkörningen & SAP IDoc kassadiff,Central IT & Ekonomi,SAP S/4HANA IDoc,Ja,Verifiera 0 kr differens mellan Adyen settlement och SAP Z-rapport
+CUT-16,Överlämning,T+5,15:00,15:30,Signering av överlämningsprotokoll till ordinarie IT-support,Butikschef & PMO,PMO Portfölj,Ja,Frigör fältteam och avslutar Hypercare för butiken
