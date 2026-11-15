@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kunskapsgraf i praktiken – Från ordsökning till konsekvensröntgen | Top of Minds</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --text-soft: #64748b;
+      --accent: #4f46e5;
+      --accent-hover: #4338ca;
+      --accent-soft: #eef2ff;
+      --accent-border: #c7d2fe;
+      --emerald: #047857;
+      --emerald-soft: #ecfdf5;
+      --emerald-border: #a7f3d0;
+      --amber: #b45309;
+      --amber-soft: #fffbeb;
+      --amber-border: #fde68a;
+      --rose: #be123c;
+      --rose-soft: #fff1f2;
+      --rose-border: #fecdd3;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --shadow-xs: 0 1px 2px rgb(15 23 42 / 0.05);
+      --shadow-sm: 0 4px 12px rgb(15 23 42 / 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      container-type: scroll-state;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-block-size: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Visually hidden utility (accessible skip link & screen-reader helpers) */
+    .visually-hidden:where(:not(:focus-within, :active)) {
+      position: absolute !important;
+      clip-path: inset(50%) !important;
+      overflow: hidden !important;
+      width: 1px !important;
+      height: 1px !important;
+      margin: -1px !important;
+      padding: 0 !important;
+      border: 0 !important;
+      white-space: nowrap !important;
+    }
+
+    .skip-link:is(:focus, :active) {
+      position: fixed;
+      inset-block-start: 0.75rem;
+      inset-inline-start: 0.75rem;
+      z-index: 100;
+      background: var(--accent);
+      color: #ffffff;
+      padding: 0.5rem 0.875rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: var(--shadow-sm);
+    }
+
+    :where(a:any-link, button, summary, [tabindex="0"]):focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    /* Compact single-row sticky header (<12% viewport height) */
+    .top-bar {
+      position: sticky;
+      inset-block-start: 0;
+      z-index: 30;
+      background: rgb(255 255 255 / 0.96);
+      backdrop-filter: blur(8px);
+      border-block-end: 1px solid var(--border);
+      transition: transform 0.22s ease;
+    }
+
+    @container scroll-state((scrolled: bottom) and (scrollable: top)) {
+      .top-bar {
+        transform: translateY(-100%);
+      }
+    }
+
+    .top-bar:focus-within {
+      transform: none;
+    }
+
+    .top-bar.is-hidden:not(:focus-within) {
+      transform: translateY(-100%);
+    }
+
+    .top-bar-inner {
+      max-inline-size: 80rem;
+      margin-inline: auto;
+      padding: 0.5rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      flex-shrink: 0;
+    }
+
+    .brand-mark {
+      inline-size: 2rem;
+      block-size: 2rem;
+      border-radius: 0.5rem;
+      background: var(--accent);
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .brand h1 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .brand-pill {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      padding: 0.125rem 0.5rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    @property --fade-start {
+      syntax: "<length>";
+      inherits: false;
+      initial-value: 0px;
+    }
+
+    @property --fade-end {
+      syntax: "<length>";
+      inherits: false;
+      initial-value: 0px;
+    }
+
+    /* Single-row accessible tablist with scroll-driven edge fades when overflowing on narrow screens */
+    .tablist {
+      --fade-size: 2.25rem;
+      --fade-dir: right;
+      --fade-start-pos: 0;
+      --fade-end-pos: 100%;
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      scrollbar-width: none;
+      scroll-snap-type: inline proximity;
+      scroll-padding-inline: var(--fade-size);
+      border-radius: 0.75rem;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      padding-inline: 0.25rem;
+      mask:
+        linear-gradient(black, black) no-clip subtract,
+        linear-gradient(to var(--fade-dir), black, transparent) var(--fade-start-pos) 0 / var(--fade-start) 100% no-repeat no-clip,
+        linear-gradient(to var(--fade-dir), transparent, black) var(--fade-end-pos) 0 / var(--fade-end) 100% no-repeat no-clip;
+      animation: reveal-fade-start linear both, hide-fade-end linear both;
+      animation-timeline: scroll(self inline);
+      animation-range: 0 var(--fade-size), calc(100% - var(--fade-size)) 100%;
+    }
+
+    @keyframes reveal-fade-start {
+      to {
+        --fade-start: var(--fade-size);
+      }
+    }
+
+    @keyframes hide-fade-end {
+      from {
+        --fade-end: var(--fade-size);
+      }
+    }
+
+    .tablist.more-start {
+      --fade-start: var(--fade-size);
+    }
+
+    .tablist.more-end {
+      --fade-end: var(--fade-size);
+    }
+
+    .tablist::-webkit-scrollbar {
+      display: none;
+    }
+
+    [role="tab"] {
+      position: relative;
+      flex: none;
+      scroll-snap-align: start;
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--text-muted);
+      font: inherit;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      padding: 0.5rem 0.85rem;
+      min-block-size: 2.25rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.15s ease;
+    }
+
+    [role="tab"]:hover {
+      color: var(--text);
+    }
+
+    [role="tab"][aria-selected="true"] {
+      color: var(--accent);
+    }
+
+    [role="tab"][aria-selected="true"]::after {
+      content: "";
+      position: absolute;
+      inset: auto 0.5rem 0;
+      border-block-end: 3px solid var(--accent);
+      border-radius: 3px 3px 0 0;
+    }
+
+    .header-cta {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.45rem 0.85rem;
+      min-block-size: 2.125rem;
+      border-radius: 0.625rem;
+      background: var(--accent);
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow: var(--shadow-xs);
+      transition: background-color 0.15s ease;
+    }
+
+    .header-cta:hover {
+      background: var(--accent-hover);
+    }
+
+    /* Main content area */
+    main {
+      flex: 1;
+      max-inline-size: 80rem;
+      inline-size: 100%;
+      margin-inline: auto;
+      padding: 1.25rem 1.25rem 2.5rem;
+    }
+
+    /* IMPORTANT: No padding, border, margin, background, or parent gap on [role="tabpanel"]
+       so hidden="until-found" leaves zero empty strip */
+    .panels-host {
+      display: block;
+    }
+
+    .panel-shell {
+      display: flex;
+      flex-direction: column;
+      gap: 1.125rem;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .panel-shell {
+        animation: panel-fade 0.18s ease-out;
+      }
+    }
+
+    @keyframes panel-fade {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Shared cards & badges */
+    .prompt-banner {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 0.95rem 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      box-shadow: var(--shadow-xs);
+    }
+
+    .prompt-banner-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .prompt-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .prompt-question {
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .prompt-sub {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* Tab 1: Side-by-side comparison */
+    .ab-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.38fr);
+      gap: 1.125rem;
+      align-items: stretch;
+    }
+
+    @media (max-width: 960px) {
+      .ab-grid {
+        grid-template-columns: 1fr;
+      }
+      .top-bar-inner {
+        flex-wrap: wrap;
+      }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-xs);
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .card-graph {
+      border-color: var(--accent-border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.625rem;
+    }
+
+    .card-kicker {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      margin-block-end: 0.3rem;
+    }
+
+    .kicker-plain {
+      background: var(--surface-subtle);
+      color: var(--text-muted);
+      border: 1px solid var(--border-strong);
+    }
+
+    .kicker-graph {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid var(--accent-border);
+    }
+
+    .card h2 {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .card-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Left column: Word search dead-end */
+    .doc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      flex: 1;
+    }
+
+    .doc-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      padding: 0.65rem 0.8rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      font-size: 0.83rem;
+    }
+
+    .doc-row.hit {
+      background: #f8fafc;
+      border-color: #94a3b8;
+    }
+
+    .doc-row.miss {
+      background: #fafafa;
+      border-style: dashed;
+      color: var(--text-soft);
+    }
+
+    .doc-badge {
+      flex-shrink: 0;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.15rem 0.45rem;
+      border-radius: 6px;
+      margin-block-start: 0.05rem;
+    }
+
+    .badge-hit {
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .badge-miss {
+      background: var(--rose-soft);
+      color: var(--rose);
+      border: 1px solid var(--rose-border);
+    }
+
+    .doc-file {
+      font-weight: 600;
+      color: var(--text);
+      display: block;
+    }
+
+    .doc-row.miss .doc-file {
+      color: var(--text-muted);
+    }
+
+    .doc-note {
+      font-size: 0.77rem;
+      color: var(--text-soft);
+      display: block;
+    }
+
+    .verdict-box {
+      border-radius: var(--radius-md);
+      padding: 0.75rem 0.9rem;
+      font-size: 0.83rem;
+      line-height: 1.45;
+    }
+
+    .verdict-bad {
+      background: var(--rose-soft);
+      border: 1px solid var(--rose-border);
+      color: #881337;
+    }
+
+    .verdict-good {
+      background: var(--emerald-soft);
+      border: 1px solid var(--emerald-border);
+      color: #064e3b;
+    }
+
+    /* Right column: Domino controls & 5-step chain */
+    .domino-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-sm {
+      appearance: none;
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
+      color: var(--text);
+      font: inherit;
+      font-size: 0.77rem;
+      font-weight: 600;
+      padding: 0.35rem 0.65rem;
+      min-block-size: 1.9rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-sm:hover {
+      background: var(--surface-subtle);
+    }
+
+    .btn-sm.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .btn-sm.primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .domino-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      flex: 1;
+    }
+
+    .domino-item {
+      position: relative;
+    }
+
+    .domino-btn {
+      inline-size: 100%;
+      text-align: start;
+      appearance: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.6rem 0.85rem;
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+      display: grid;
+      grid-template-columns: 1.75rem minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 0.7rem;
+      transition: border-color 0.18s ease, background-color 0.18s ease, opacity 0.2s ease, transform 0.18s ease;
+    }
+
+    .domino-btn:hover {
+      border-color: var(--accent-border);
+      background: #fafaff;
+    }
+
+    .domino-num {
+      inline-size: 1.75rem;
+      block-size: 1.75rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid var(--accent-border);
+      display: grid;
+      place-items: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .domino-item.is-active .domino-btn {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .domino-item.is-active .domino-num {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .domino-item.is-current .domino-btn {
+        transform: translateX(3px);
+      }
+    }
+
+    .domino-item.is-dimmed .domino-btn {
+      opacity: 0.36;
+      background: var(--surface-subtle);
+    }
+
+    .domino-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+      display: block;
+    }
+
+    .domino-bridge {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      display: block;
+    }
+
+    .domino-doc {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-soft);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 0.15rem 0.5rem;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .domino-doc.impact-high {
+      background: var(--rose-soft);
+      color: var(--rose);
+      border-color: var(--rose-border);
+    }
+
+    /* Footer bar inside panels for crisp next-step flow */
+    .panel-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1.1rem;
+    }
+
+    @media (max-width: 720px) {
+      .panel-footer {
+        flex-wrap: wrap;
+      }
+    }
+
+    .panel-footer-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      min-inline-size: 0;
+    }
+
+    .panel-footer-text strong {
+      color: var(--text);
+    }
+
+    .btn-next {
+      appearance: none;
+      border: 1px solid var(--accent-border);
+      background: var(--accent-soft);
+      color: var(--accent);
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.45rem 0.9rem;
+      min-block-size: 2.125rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background-color 0.15s ease;
+    }
+
+    .btn-next:hover {
+      background: #e0e7ff;
+    }
+
+    /* Tab 2: Architecture diagram + 3 building blocks */
+    .section-intro {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.15rem 1.35rem;
+      box-shadow: var(--shadow-xs);
+    }
+
+    .section-intro h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-block-end: 0.25rem;
+    }
+
+    .section-intro p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .diagram-card {
+      background: #0f172a;
+      color: #f8fafc;
+      border-radius: var(--radius-lg);
+      padding: 1.1rem 1.35rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .diagram-caption {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-block-end: 0.6rem;
+      font-size: 0.8rem;
+      color: #cbd5e1;
+    }
+
+    .diagram-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.76rem;
+    }
+
+    .legend-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .arch-svg {
+      inline-size: 100%;
+      block-size: auto;
+      max-block-size: 190px;
+      display: block;
+    }
+
+    .three-cols {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    @media (max-width: 900px) {
+      .three-cols {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .block-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.15rem;
+      box-shadow: var(--shadow-xs);
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .block-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .stat-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      background: var(--surface-subtle);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    .block-card p {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+
+    .stamp-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      font-size: 0.8rem;
+    }
+
+    .stamp-list li {
+      padding: 0.45rem 0.6rem;
+      border-radius: var(--radius-sm);
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+    }
+
+    .stamp-list li.ambiguous-highlight {
+      background: var(--amber-soft);
+      border-color: var(--amber-border);
+      color: #78350f;
+    }
+
+    /* Tab 3: When to use + 3 levels */
+    .two-cols {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    @media (max-width: 860px) {
+      .two-cols {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .check-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .check-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.55rem;
+    }
+
+    .check-icon {
+      flex-shrink: 0;
+      font-weight: 700;
+      margin-block-start: 0.05rem;
+    }
+
+    .level-num {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.73rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+    }
+
+    /* Native details disclosure for secondary FAQ */
+    details.deep-dive {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1.1rem;
+    }
+
+    details.deep-dive summary {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      list-style-position: inside;
+    }
+
+    details.deep-dive[open] summary {
+      margin-block-end: 0.65rem;
+      color: var(--accent);
+    }
+
+    .deep-dive-body {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.85rem;
+      padding-block-start: 0.5rem;
+      border-block-start: 1px solid var(--border);
+    }
+
+    @media (max-width: 760px) {
+      .deep-dive-body {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Tab 4: Launch pad into graph.html */
+    .launch-hero {
+      background: linear-gradient(135deg, #eef2ff 0%, #ffffff 65%);
+      border: 1px solid var(--accent-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .launch-hero h2 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-block-end: 0.3rem;
+    }
+
+    .launch-hero p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      max-inline-size: 42rem;
+    }
+
+    .btn-launch-lg {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.35rem;
+      border-radius: var(--radius-md);
+      background: var(--accent);
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: var(--shadow-sm);
+      transition: background-color 0.15s ease;
+    }
+
+    .btn-launch-lg:hover {
+      background: var(--accent-hover);
+    }
+
+    .prompt-copy-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.15rem 1.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .prompt-copy-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .prompt-copy-head h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .prompt-quote {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    footer {
+      max-inline-size: 80rem;
+      inline-size: 100%;
+      margin-inline: auto;
+      padding: 0.75rem 1.25rem 1.5rem;
+      font-size: 0.76rem;
+      color: var(--text-soft);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="top-bar">
+    <a href="#main-heading" class="skip-link visually-hidden">Hoppa till huvudinnehåll</a>
+    <div class="top-bar-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">KG</div>
+        <h1 id="main-heading" tabindex="-1">Kunskapsgraf i praktiken</h1>
+      </div>
+
+      <div class="tablist" role="tablist" focusgroup="tablist nomemory" aria-label="Introduktion till kunskapsgrafen">
+        <button type="button" role="tab" id="tab-1" aria-selected="true" focusgroupstart tabindex="0">1. Utan vs Med graf</button>
+        <button type="button" role="tab" id="tab-2" aria-selected="false" tabindex="-1">2. Så är den uppbyggd</button>
+        <button type="button" role="tab" id="tab-3" aria-selected="false" tabindex="-1">3. När gör den nytta?</button>
+        <button type="button" role="tab" id="tab-4" aria-selected="false" tabindex="-1">4. Öppna skarpa grafen</button>
+      </div>
+
+      <a class="header-cta" href="./graphify-out/graph.html" target="_blank" rel="noopener">
+        Öppna graph.html ↗
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <div class="panels-host">
+      <!-- PANEL 1: Utan vs Med Kunskapsgraf -->
+      <div role="tabpanel" id="panel-1" aria-labelledby="tab-1" tabindex="0">
+        <div class="panel-shell">
+          <div class="prompt-banner">
+            <div class="prompt-banner-left">
+              <span class="prompt-tag">Testfråga i projektet</span>
+              <div>
+                <p class="prompt-question">”Vad händer i Projekt OmniPOS om Johan Nilsson blir försenad i 2 veckor?”</p>
+                <p class="prompt-sub">Samma fråga ställd mot exakt samma 8 projektfiler i mappen <code>projektfiler/</code>.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="ab-grid">
+            <!-- Vänster: Utan kunskapsgraf -->
+            <section class="card" aria-labelledby="plain-ai-heading">
+              <div class="card-head">
+                <div>
+                  <span class="card-kicker kicker-plain">Utan kunskapsgraf</span>
+                  <h2 id="plain-ai-heading">Vanlig AI-chatt / Copilot / Ordsök</h2>
+                  <p class="card-desc">Letar efter textstycken där orden <strong>”Johan Nilsson”</strong> finns med.</p>
+                </div>
+              </div>
+
+              <ul class="doc-list" role="list">
+                <li class="doc-row hit">
+                  <span class="doc-badge badge-hit">Hittas</span>
+                  <div>
+                    <span class="doc-file">03_Styrgruppsprotokoll_2026-10-15.md</span>
+                    <span class="doc-note">Nämner att Johan Nilsson levererar Adyen-hotfix v4.2.4 till Uppsala.</span>
+                  </div>
+                </li>
+                <li class="doc-row miss">
+                  <span class="doc-badge badge-miss">Missas</span>
+                  <div>
+                    <span class="doc-file">07_Excel1_Butiksutrullning_Veckor.csv</span>
+                    <span class="doc-note">Orden ”Johan Nilsson” förekommer inte i kalkylbladet.</span>
+                  </div>
+                </li>
+                <li class="doc-row miss">
+                  <span class="doc-badge badge-miss">Missas</span>
+                  <div>
+                    <span class="doc-file">01_SOW_Kundavtal_OmniPOS.md (§ 2.1 Gate G2)</span>
+                    <span class="doc-note">Avtalet nämner varken Johan eller hotfix v4.2.4.</span>
+                  </div>
+                </li>
+                <li class="doc-row miss">
+                  <span class="doc-badge badge-miss">Missas</span>
+                  <div>
+                    <span class="doc-file">04_Mejl_Marknadschef_Kampanjplan.md</span>
+                    <span class="doc-note">Handlar om Black Week – ingen textkoppling till Johan.</span>
+                  </div>
+                </li>
+                <li class="doc-row miss">
+                  <span class="doc-badge badge-miss">Missas</span>
+                  <div>
+                    <span class="doc-file">02_Leverantorsavtal_TeliaNet.md (§ 2.1)</span>
+                    <span class="doc-note">Handlar om nätverksjour – noll gemensamma sökord.</span>
+                  </div>
+                </li>
+              </ul>
+
+              <div class="verdict-box verdict-bad">
+                <strong>Farligt svar:</strong> AI:n sammanfattar bara protokollet och tror att förseningen enbart är en isolerad teknisk detalj i Uppsala.
+              </div>
+            </section>
+
+            <!-- Höger: Med kunskapsgraf -->
+            <section class="card card-graph" aria-labelledby="graph-ai-heading">
+              <div class="card-head">
+                <div>
+                  <span class="card-kicker kicker-graph">Med kunskapsgraf</span>
+                  <h2 id="graph-ai-heading">Domino-röntgen över 5 dokument</h2>
+                  <p class="card-desc">Följer hur personer, butiker, avtalsregler och datum hänger ihop i 5 led.</p>
+                </div>
+                <div class="domino-controls">
+                  <button type="button" class="btn-sm primary" id="btn-play-domino">Spela upp kedjan</button>
+                  <button type="button" class="btn-sm" id="btn-next-domino">Stega 1 → 5</button>
+                  <button type="button" class="btn-sm" id="btn-all-domino">Visa alla 5</button>
+                </div>
+              </div>
+
+              <ol class="domino-list" id="domino-list" role="list">
+                <li class="domino-item is-active" data-step="1">
+                  <button type="button" class="domino-btn" data-select-step="1">
+                    <span class="domino-num" aria-hidden="true">1</span>
+                    <span>
+                      <span class="domino-title">Johan Nilsson försenad 2 veckor med Adyen-hotfix v4.2.4</span>
+                      <span class="domino-bridge">Brygga vidare: Hotfixen är ett krav för Pilotbutik NR-001 Uppsala →</span>
+                    </span>
+                    <span class="domino-doc">Protokoll #3</span>
+                  </button>
+                </li>
+                <li class="domino-item is-active" data-step="2">
+                  <button type="button" class="domino-btn" data-select-step="2">
+                    <span class="domino-num" aria-hidden="true">2</span>
+                    <span>
+                      <span class="domino-title">Pilotbutik NR-001 Uppsala City skjuts fram 2 veckor</span>
+                      <span class="domino-bridge">Brygga vidare: Pilotens Go-Live styr kontraktsvillkoret Gate G2 →</span>
+                    </span>
+                    <span class="domino-doc">Excel 1: Veckoplan</span>
+                  </button>
+                </li>
+                <li class="domino-item is-active" data-step="3">
+                  <button type="button" class="domino-btn" data-select-step="3">
+                    <span class="domino-num" aria-hidden="true">3</span>
+                    <span>
+                      <span class="domino-title">Låser Gate G2 (kräver 14 dagars felfri pilotdrift före Våg 1)</span>
+                      <span class="domino-bridge">Brygga vidare: Hela Våg 1–3 trycks framåt i kalendern →</span>
+                    </span>
+                    <span class="domino-doc">Kundavtal SOW § 2.1</span>
+                  </button>
+                </li>
+                <li class="domino-item is-active" data-step="4">
+                  <button type="button" class="domino-btn" data-select-step="4">
+                    <span class="domino-num" aria-hidden="true">4</span>
+                    <span>
+                      <span class="domino-title">Knuffar Flagship-butiker rakt in i Black Week-frysen (v.47–48)</span>
+                      <span class="domino-bridge">Brygga vidare: 450 000 kr/h i intäktsrisk tvingar fram sen flytt →</span>
+                    </span>
+                    <span class="domino-doc impact-high">Marknadsmejl Q4</span>
+                  </button>
+                </li>
+                <li class="domino-item is-active" data-step="5">
+                  <button type="button" class="domino-btn" data-select-step="5">
+                    <span class="domino-num" aria-hidden="true">5</span>
+                    <span>
+                      <span class="domino-title">Spränger TeliaNets bokningsfönster (15 arbetsdagar före Go-Live)</span>
+                      <span class="domino-bridge">Ekonomisk smäll: 35 000 kr per ombokad butik i straffavgift för nattjour.</span>
+                    </span>
+                    <span class="domino-doc impact-high">TeliaNet SLA § 2.1</span>
+                  </button>
+                </li>
+              </ol>
+
+              <div class="verdict-box verdict-good" id="domino-status" aria-live="polite">
+                <strong>Kärnan på 5 sekunder:</strong> Vanlig AI letar <em>liknande ord</em>. Kunskapsgrafen följer <em>konsekvenser</em> mellan dokument som inte ens delar ett enda sökord.
+              </div>
+            </section>
+          </div>
+
+          <div class="panel-footer">
+            <p class="panel-footer-text">
+              <strong>Tips:</strong> Klicka på valfri bricka (1–5) ovan för att belysa exakt hur stafettpinnen lämnas över från fil till fil.
+            </p>
+            <button type="button" class="btn-next" data-goto-tab="tab-2">Nästa: Så är grafen uppbyggd →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 2: Så är den uppbyggd -->
+      <div role="tabpanel" id="panel-2" aria-labelledby="tab-2" hidden="until-found">
+        <div class="panel-shell">
+          <div class="section-intro">
+            <h2>Tre enkla byggstenar – som polisens utredningstavla</h2>
+            <p>När du skapar en kunskapsgraf läser AI:n igenom dina dokument en gång och ritar upp en karta av <strong>prickar (noder)</strong> och <strong>trådar (relationer)</strong>. Så här läser du det du strax ser i <code>graph.html</code>:</p>
+          </div>
+
+          <div class="diagram-card">
+            <div class="diagram-caption">
+              <strong>Visuell nyckel till grafen (utsnitt ur ert riktiga projekt):</strong>
+              <div class="diagram-legend">
+                <span class="legend-chip">━━ Heldragen linje = Står rakt ut i filen</span>
+                <span class="legend-chip">╌╌ Streckad linje = Logisk slutsats / gråzon mellan filer</span>
+                <span class="legend-chip">⬤ Stor cirkel = Flaskhals (”God Node”)</span>
+              </div>
+            </div>
+
+            <svg class="arch-svg" viewBox="0 0 920 175" role="img" aria-labelledby="svg-arch-title svg-arch-desc">
+              <title id="svg-arch-title">Exempel på noder, heldragna och streckade relationer samt en stor flaskhalsnod i Projekt OmniPOS</title>
+              <desc id="svg-arch-desc">Fyra sammankopplade noder från vänster till höger: Johan Nilsson Hotfix kopplas med heldragen linje till NR-001 Uppsala, som kopplas till den stora röda flaskhalsnoden Gate G2 i SOW paragraf 2.1, som i sin tur kopplas med streckad linje till Våg 1 till 3 och Black Week-frysen.</desc>
+
+              <!-- Edges -->
+              <line x1="145" y1="88" x2="320" y2="88" stroke="#94a3b8" stroke-width="3" />
+              <line x1="395" y1="88" x2="565" y2="88" stroke="#94a3b8" stroke-width="3" />
+              <line x1="655" y1="88" x2="805" y2="88" stroke="#fbbf24" stroke-width="2.5" stroke-dasharray="7 6" />
+
+              <!-- Edge labels -->
+              <rect x="182" y="60" width="112" height="20" rx="5" fill="#1e293b" stroke="#475569" />
+              <text x="238" y="74" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">EXTRACTED</text>
+
+              <rect x="424" y="60" width="112" height="20" rx="5" fill="#1e293b" stroke="#475569" />
+              <text x="480" y="74" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600">EXTRACTED</text>
+
+              <rect x="670" y="60" width="118" height="20" rx="5" fill="#451a03" stroke="#f59e0b" />
+              <text x="729" y="74" text-anchor="middle" fill="#fde68a" font-size="11" font-weight="600">INFERRED / GRÅZON</text>
+
+              <!-- Node 1 -->
+              <circle cx="110" cy="88" r="24" fill="#4E79A7" stroke="#ffffff" stroke-width="2" />
+              <text x="110" y="132" text-anchor="middle" fill="#f8fafc" font-size="12.5" font-weight="700">Adyen Hotfix v4.2.4</text>
+              <text x="110" y="149" text-anchor="middle" fill="#94a3b8" font-size="11">Protokoll #3 (Johan)</text>
+
+              <!-- Node 2 -->
+              <circle cx="358" cy="88" r="27" fill="#4E79A7" stroke="#ffffff" stroke-width="2" />
+              <text x="358" y="132" text-anchor="middle" fill="#f8fafc" font-size="12.5" font-weight="700">NR-001 Uppsala</text>
+              <text x="358" y="149" text-anchor="middle" fill="#94a3b8" font-size="11">Pilotbutik (7 kopplingar)</text>
+
+              <!-- Node 3: God Node -->
+              <circle cx="610" cy="88" r="38" fill="#E15759" stroke="#ffffff" stroke-width="3" />
+              <text x="610" y="34" text-anchor="middle" fill="#fca5a5" font-size="11" font-weight="700">★ GOD NODE (10 KOPPLINGAR)</text>
+              <text x="610" y="143" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="700">Gate G2: 14 dgr Pilot</text>
+              <text x="610" y="160" text-anchor="middle" fill="#cbd5e1" font-size="11">Kundavtal SOW § 2.1</text>
+
+              <!-- Node 4 -->
+              <circle cx="835" cy="88" r="26" fill="#F28E2B" stroke="#ffffff" stroke-width="2" />
+              <text x="835" y="132" text-anchor="middle" fill="#f8fafc" font-size="12.5" font-weight="700">Black Week-frys</text>
+              <text x="835" y="149" text-anchor="middle" fill="#94a3b8" font-size="11">Marknadsmejl Q4</text>
+            </svg>
+          </div>
+
+          <div class="three-cols">
+            <article class="block-card">
+              <h3>
+                <span>1. Noder (”Post-it-lappar”)</span>
+                <span class="stat-pill">49 st i ert case</span>
+              </h3>
+              <p>Varje viktig pusselbit i projektet blir en egen cirkel: en butik (<code>NR-001</code>), en person (<code>Marcus Berg</code>), ett system (<code>Adyen</code>) eller en avtalsregel (<code>Gate G2</code>).</p>
+              <p>Grafen färglägger dem automatiskt i <strong>6 kluster (Communities)</strong> efter vilka delar som hänger tätast ihop.</p>
+            </article>
+
+            <article class="block-card">
+              <h3>
+                <span>2. Trådar med ärlighetsstämpel</span>
+                <span class="stat-pill">117 kopplingar</span>
+              </h3>
+              <ul class="stamp-list" role="list">
+                <li><strong>EXTRACTED (74 %):</strong> Heldragen linje – står ordagrant i dokumentet.</li>
+                <li><strong>INFERRED (24 %):</strong> Streckad linje – logisk brygga mellan två olika filer.</li>
+                <li class="ambiguous-highlight"><strong>AMBIGUOUS (3 % – Guld för PM!):</strong> Flaggar tvetydiga avtal! <em>Exempel i ert case:</em> Ger julstoppet v.51–01 befrielse från vitet på <strong>75 000 kr/v</strong> i SOW § 3?</li>
+              </ul>
+            </article>
+
+            <article class="block-card">
+              <h3>
+                <span>3. Knutpunkter (”God Nodes”)</span>
+                <span class="stat-pill">Flaskhalsar</span>
+              </h3>
+              <p>Ju fler trådar som strålar samman i samma cirkel, desto <strong>större</strong> ritas den på skärmen.</p>
+              <p>Som ny projektledare ser du projektets akilleshälar på 3 sekunder: <strong>Excel-planen (17 trådar)</strong>, <strong>Gate G2 (10)</strong>, <strong>Marcus Berg (9)</strong> och <strong>TeliaNet 15 dgr (7)</strong>.</p>
+            </article>
+          </div>
+
+          <div class="panel-footer">
+            <p class="panel-footer-text">
+              <strong>Varför kallas den ”ärlig”?</strong> Till skillnad från en chatt som gissar självsäkert ser du direkt vad som är fakta (<code>EXTRACTED</code>) och vad du själv måste syna (<code>AMBIGUOUS</code>).
+            </p>
+            <button type="button" class="btn-next" data-goto-tab="tab-3">Nästa: När gör den nytta? →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 3: Var gör den störst nytta & 3 nivåer -->
+      <div role="tabpanel" id="panel-3" aria-labelledby="tab-3" hidden="until-found">
+        <div class="panel-shell">
+          <div class="two-cols">
+            <section class="card" aria-labelledby="skip-graph-heading">
+              <div>
+                <span class="card-kicker kicker-plain">Ärlig avgränsning</span>
+                <h2 id="skip-graph-heading">När behövs INTE en kunskapsgraf?</h2>
+              </div>
+              <ul class="check-list" role="list">
+                <li>
+                  <span class="check-icon" aria-hidden="true">–</span>
+                  <span>Du vill bara sammanfatta ett enskilt mötesprotokoll eller formulera om ett mejl.</span>
+                </li>
+                <li>
+                  <span class="check-icon" aria-hidden="true">–</span>
+                  <span>Du har 2–4 korta dokument som enkelt ryms direkt i ett vanligt chattfönster.</span>
+                </li>
+                <li>
+                  <span class="check-icon" aria-hidden="true">–</span>
+                  <span>Engångsuppgifter utan korsberoenden mellan tidplan, avtal, teknik och ekonomi.</span>
+                </li>
+              </ul>
+            </section>
+
+            <section class="card card-graph" aria-labelledby="high-impact-heading">
+              <div>
+                <span class="card-kicker kicker-graph">Störst effekt (10× värde)</span>
+                <h2 id="high-impact-heading">Här förändrar kunskapsgrafen spelplanen</h2>
+              </div>
+              <ul class="check-list" role="list">
+                <li>
+                  <span class="check-icon" aria-hidden="true">✓</span>
+                  <span><strong>Onboarding i rörigt uppdrag:</strong> Ta över 30–200 avtal, Excel-ark och protokoll – hitta flaskhalsarna på <strong>1 timme istället för 3 veckor</strong>.</span>
+                </li>
+                <li>
+                  <span class="check-icon" aria-hidden="true">✓</span>
+                  <span><strong>Konsekvensanalys i flera led:</strong> Se kedjereaktioner över dokumentgränser innan beslut fattas i styrgruppen.</span>
+                </li>
+                <li>
+                  <span class="check-icon" aria-hidden="true">✓</span>
+                  <span><strong>Avtals- &amp; beslutsrevision:</strong> Upptäck direkt var operativ Excel-plan bryter mot SOW, SLA eller frysperioder.</span>
+                </li>
+                <li>
+                  <span class="check-icon" aria-hidden="true">✓</span>
+                  <span><strong>Snabbt &amp; billigt vid stora datamängder:</strong> Agenten läser kartan (~70× mindre textmassa per fråga) istället för att tugga om alla råfiler varje gång.</span>
+                </li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="three-cols">
+            <article class="block-card">
+              <span class="level-num">Nivå 1 · Privat på din dator</span>
+              <h3>Din egen ”Konsult-Atlas”</h3>
+              <p>Ditt personliga, långsiktiga arbetsminne över dina egna metoder, mallar, kontaktvägar och lärdomar mellan år och uppdrag.</p>
+              <p><em>Döpt efter kartboken Atlas:</em> ligger 100 % lokalt hos dig, helt separerat från kunddata.</p>
+            </article>
+
+            <article class="block-card">
+              <span class="level-num">Nivå 2 · I kunduppdraget</span>
+              <h3>Projektets röntgen</h3>
+              <p>En isolerad kunskapsgraf inne i kundens godkända uppdragsmapp över SOW, styrgruppsbeslut, risklogg och utrullningsplan.</p>
+              <p>Uppdateras med ett kommando när nya mötesprotokoll eller reviderade planer kommer in.</p>
+            </article>
+
+            <article class="block-card">
+              <span class="level-num">Nivå 3 · Gemensamt på bolaget</span>
+              <h3>Top of Minds bolagsminne</h3>
+              <p>Gemensam kunskapsbas över anonymiserade referensuppdrag, ramavtalskrav, checklistor och paketerade <code>Skills</code>.</p>
+              <p>Gör att hela bolagets samlade erfarenhet blir sökbar inför varje nytt anbud eller uppdragsstart.</p>
+            </article>
+          </div>
+
+          <details class="deep-dive">
+            <summary>Fördjupning: Vad är skillnaden mellan lokal kunskapsgraf (graphify) och Google Cloud Enterprise?</summary>
+            <div class="deep-dive-body">
+              <div>
+                <strong>Lokal kunskapsgraf i Antigravity (<code>graphify</code>):</strong> Kostar 0 kr extra, körs direkt i en projektmapp (eller privat <code>Atlas</code>) och ritar ut explicita beroendekedjor, <em>God Nodes</em> och <em>Ambiguous Edges</em> som du kan inspektera visuellt.
+              </div>
+              <div>
+                <strong>Google Cloud Gemini Enterprise (~$30/mån):</strong> Företagsplattform som kopplar ihop hela bolagets Google Drive, SharePoint, Jira och mejl med behörighetsstyrning (du ser bara dokument du har rätt att läsa), men ger inte samma visuella beroenderöntgen per projektmapp. Bäst effekt får man när de kombineras.
+              </div>
+            </div>
+          </details>
+
+          <div class="panel-footer">
+            <p class="panel-footer-text">
+              <strong>Redo att testa själva?</strong> Nu öppnar vi den skarpa grafen för Projekt OmniPOS!
+            </p>
+            <button type="button" class="btn-next" data-goto-tab="tab-4">Nästa: Öppna skarpa grafen →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 4: Öppna skarpa grafen -->
+      <div role="tabpanel" id="panel-4" aria-labelledby="tab-4" hidden="until-found">
+        <div class="panel-shell">
+          <div class="launch-hero">
+            <div>
+              <span class="card-kicker kicker-graph">Hands-on · Uppdrag 2 (Pass 2A)</span>
+              <h2>Öppna projektets skarpa kunskapsgraf</h2>
+              <p>Nu kliver ni in i den verkliga kartan (<strong>49 noder, 117 kopplingar, 6 kluster</strong>) som genererats rakt ur era 8 projektfiler i <code>projektfiler/</code>.</p>
+            </div>
+            <a class="btn-launch-lg" href="./graphify-out/graph.html" target="_blank" rel="noopener">
+              Öppna skarpa grafen (graph.html) ↗
+            </a>
+          </div>
+
+          <div class="three-cols">
+            <article class="block-card">
+              <span class="level-num">Steg 1 i graph.html</span>
+              <h3>Släck bruset i högerspalten</h3>
+              <p>Bocka ur <strong>Select All</strong> under <em>Communities</em> till höger och kryssa bara i två kluster: <strong>Kundavtal SOW &amp; Pilot Gate G2</strong> (röd) och <strong>Kampanjfrys Q4</strong> (orange).</p>
+            </article>
+
+            <article class="block-card">
+              <span class="level-num">Steg 2 i graph.html</span>
+              <h3>Klicka på största bollarna</h3>
+              <p>Klicka på den stora röda bollen <strong>Gate G2: 14 dagars felfri Pilot</strong> (eller sök på <code>Johan</code> högst upp till höger) för att se alla grannar under <em>Node Info</em>.</p>
+            </article>
+
+            <article class="block-card">
+              <span class="level-num">Steg 3 i Antigravity</span>
+              <h3>Låt agenten räkna ut kedjan</h3>
+              <p>Kopiera flerstegsfrågan nedan och klistra in i Antigravity-chatten – se hur agenten använder <code>GRAPH_REPORT.md</code> och <code>graph.json</code> för att svara med exakta källor.</p>
+            </article>
+          </div>
+
+          <section class="prompt-copy-card" aria-labelledby="copy-prompt-heading">
+            <div class="prompt-copy-head">
+              <h3 id="copy-prompt-heading">Färdig prompt att klistra in i Antigravity (Uppdrag 2):</h3>
+              <button type="button" class="btn-sm primary" id="btn-copy-prompt">Kopiera fråga till Antigravity</button>
+            </div>
+            <p class="prompt-quote" id="prompt-text">Utgå från kunskapsgrafen i graphify-out/ (GRAPH_REPORT.md och graph.json): Vilka är projektets absolut farligaste flaskhalsar ("God Nodes"), och vad händer i andra och tredje ledet om Adyen-certifieringen i NR-001 Uppsala försenas med 3 veckor?</p>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <span>Top of Minds AI-konferens · Visuell introduktion till Kunskapsgraf (Pass 2A)</span>
+    <span>100 % anonymiserat övningsunderlag (Projekt OmniPOS – Nordic Retail AB)</span>
+  </footer>
+
+  <script>
+    (() => {
+      // Fallback for hiding compact top-bar on scroll where container scroll-state queries aren't supported
+      if (typeof CSS !== 'undefined' && !CSS.supports('container-type', 'scroll-state')) {
+        const bar = document.querySelector('.top-bar');
+        let lastY = window.scrollY;
+        window.addEventListener('scroll', () => {
+          const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+          const y = Math.max(0, Math.min(window.scrollY, maxScroll));
+          if (y === lastY || !bar) return;
+          bar.classList.toggle('is-hidden', y > lastY && y > bar.offsetHeight);
+          lastY = y;
+        }, { passive: true });
+      }
+
+      // Fallback for scroll-driven edge fades on .tablist when animation-timeline: scroll() is unsupported
+      if (typeof CSS !== 'undefined' && !CSS.supports('animation-timeline', 'scroll()')) {
+        const scroller = document.querySelector('.tablist');
+        if (scroller && scroller.firstElementChild && scroller.lastElementChild) {
+          const first = scroller.firstElementChild;
+          const last = scroller.lastElementChild;
+          const observer = new IntersectionObserver((entries) => {
+            for (const { target, intersectionRatio } of entries) {
+              scroller.classList.toggle(target === first ? 'more-start' : 'more-end', intersectionRatio < 1);
+            }
+          }, { root: scroller, threshold: 1, rootMargin: '1px' });
+          observer.observe(first);
+          observer.observe(last);
+        }
+      }
+
+      // Accessible Tablist (supports native focusgroup + cross-browser roving tabindex + hidden="until-found")
+      const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+      const panels = tabs.map((tab) => document.querySelector(`[aria-labelledby="${tab.id}"]`));
+
+      function selectTab(nextTab, moveFocus = false) {
+        if (!nextTab) return;
+        for (let i = 0; i < tabs.length; i++) {
+          const tab = tabs[i];
+          const panel = panels[i];
+          const isSelected = tab === nextTab;
+          tab.setAttribute('aria-selected', String(isSelected));
+          tab.toggleAttribute('focusgroupstart', isSelected);
+          tab.tabIndex = isSelected ? 0 : -1;
+
+          if (panel) {
+            if (isSelected) {
+              panel.removeAttribute('hidden');
+              panel.tabIndex = 0;
+            } else {
+              panel.setAttribute('hidden', 'until-found');
+              panel.removeAttribute('tabindex');
+            }
+          }
+        }
+
+        try {
+          nextTab.scrollIntoView({ block: 'nearest', inline: 'nearest', container: 'nearest' });
+        } catch {
+          nextTab.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+        }
+
+        if (moveFocus) {
+          nextTab.focus();
+        }
+      }
+
+      for (const tab of tabs) {
+        tab.addEventListener('click', () => selectTab(tab, false));
+      }
+
+      // Keyboard fallback when native focusgroup is unavailable (Firefox / Safari / older Chromium)
+      if (!Object.hasOwn(HTMLElement.prototype, 'focusGroup')) {
+        const tablist = document.querySelector('[role="tablist"]');
+        tablist?.addEventListener('keydown', (event) => {
+          const currentIndex = tabs.indexOf(document.activeElement);
+          if (currentIndex === -1) return;
+          let targetIndex = -1;
+          if (event.key === 'ArrowRight') {
+            targetIndex = (currentIndex + 1) % tabs.length;
+          } else if (event.key === 'ArrowLeft') {
+            targetIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+          } else if (event.key === 'Home') {
+            targetIndex = 0;
+          } else if (event.key === 'End') {
+            targetIndex = tabs.length - 1;
+          }
+          if (targetIndex !== -1) {
+            event.preventDefault();
+            selectTab(tabs[targetIndex], true);
+          }
+        });
+      } else {
+        // With native focusgroup, selection follows focus
+        for (const tab of tabs) {
+          tab.addEventListener('focus', () => selectTab(tab, false));
+        }
+      }
+
+      // Sync tab state when browser Find-in-page reveals a hidden="until-found" panel
+      panels.forEach((panel, index) => {
+        panel?.addEventListener('beforematch', () => selectTab(tabs[index], false));
+      });
+
+      // Next-tab helper buttons inside panels
+      for (const btn of document.querySelectorAll('[data-goto-tab]')) {
+        btn.addEventListener('click', () => {
+          const targetId = btn.getAttribute('data-goto-tab');
+          const targetTab = document.getElementById(targetId);
+          if (targetTab) {
+            selectTab(targetTab, true);
+            window.scrollTo({ top: 0, behavior: 'instant' });
+          }
+        });
+      }
+
+      // Interactive 5-step Domino Chain on Tab 1
+      const dominoItems = Array.from(document.querySelectorAll('.domino-item'));
+      const statusBox = document.getElementById('domino-status');
+      const btnPlay = document.getElementById('btn-play-domino');
+      const btnNext = document.getElementById('btn-next-domino');
+      const btnAll = document.getElementById('btn-all-domino');
+
+      const stepExplanations = {
+        0: '<strong>Kärnan på 5 sekunder:</strong> Vanlig AI letar <em>liknande ord</em>. Kunskapsgrafen följer <em>konsekvenser</em> mellan dokument som inte ens delar ett enda sökord.',
+        1: '<strong>Led 1 av 5 (Styrgruppsprotokoll #3):</strong> Grafen ser noden <em>Johan Nilsson</em> och kopplar hans Adyen-hotfix v4.2.4 direkt till <em>Pilotbutik NR-001 Uppsala</em>.',
+        2: '<strong>Led 2 av 5 (Protokoll → Excel 1):</strong> Trots att Johan inte nämns i Excel-filen vet grafen att <em>NR-001 Uppsala</em> ligger i vecka 43 och nu förskjuts 2 veckor.',
+        3: '<strong>Led 3 av 5 (Excel 1 → Kundavtal SOW § 2.1):</strong> Grafen följer kopplingen till kontraktsnoden <em>Gate G2</em>: Våg 1 får inte starta förrän piloten gått felfritt i 14 dagar!',
+        4: '<strong>Led 4 av 5 (SOW → Marknadsmejl Q4):</strong> När vågorna skjuts fram krockar Flagship-butikerna med <em>Black Week-frysen</em> (affärsrisk 450 000 kr/timme).',
+        5: '<strong>Led 5 av 5 (Marknadsmejl → TeliaNet SLA § 2.1):</strong> Sen flytt spränger <em>15 arbetsdagars bokningsfönster</em> = <strong>35 000 kr/butik</strong> i ombokningsavgift!'
+      };
+
+      let currentStep = 0; // 0 = show all 5 lit up
+      let playTimer = null;
+
+      function stopPlayback() {
+        if (playTimer !== null) {
+          clearInterval(playTimer);
+          playTimer = null;
+        }
+        if (btnPlay) {
+          btnPlay.textContent = 'Spela upp kedjan';
+        }
+      }
+
+      function renderDominoState(step) {
+        currentStep = step;
+        for (const item of dominoItems) {
+          const itemStep = Number(item.getAttribute('data-step'));
+          if (step === 0) {
+            item.classList.add('is-active');
+            item.classList.remove('is-dimmed', 'is-current');
+          } else {
+            const reached = itemStep <= step;
+            item.classList.toggle('is-active', reached);
+            item.classList.toggle('is-dimmed', !reached);
+            item.classList.toggle('is-current', itemStep === step);
+          }
+        }
+        if (statusBox && stepExplanations[step]) {
+          statusBox.innerHTML = stepExplanations[step];
+        }
+      }
+
+      btnPlay?.addEventListener('click', () => {
+        if (playTimer !== null) {
+          stopPlayback();
+          return;
+        }
+        renderDominoState(1);
+        btnPlay.textContent = 'Pausa uppspelning';
+        playTimer = window.setInterval(() => {
+          if (currentStep < 5) {
+            renderDominoState(currentStep + 1);
+          } else {
+            stopPlayback();
+          }
+        }, 1600);
+      });
+
+      btnNext?.addEventListener('click', () => {
+        stopPlayback();
+        const next = currentStep >= 5 ? 1 : currentStep + 1;
+        renderDominoState(next);
+      });
+
+      btnAll?.addEventListener('click', () => {
+        stopPlayback();
+        renderDominoState(0);
+      });
+
+      for (const btn of document.querySelectorAll('[data-select-step]')) {
+        btn.addEventListener('click', () => {
+          stopPlayback();
+          const step = Number(btn.getAttribute('data-select-step'));
+          renderDominoState(step);
+        });
+      }
+
+      // Copy prompt button on Tab 4
+      const btnCopy = document.getElementById('btn-copy-prompt');
+      const promptEl = document.getElementById('prompt-text');
+      btnCopy?.addEventListener('click', async () => {
+        const text = promptEl?.textContent?.trim() ?? '';
+        if (!text) return;
+        try {
+          await navigator.clipboard.writeText(text);
+          btnCopy.textContent = 'Kopierad! Klistra in i Antigravity ✓';
+          window.setTimeout(() => {
+            btnCopy.textContent = 'Kopiera fråga till Antigravity';
+          }, 2400);
+        } catch {
+          // Fallback selection if clipboard API is restricted on file://
+          const range = document.createRange();
+          if (promptEl) {
+            range.selectNodeContents(promptEl);
+            const sel = window.getSelection();
+            sel?.removeAllRanges();
+            sel?.addRange(range);
+          }
+          btnCopy.textContent = 'Markerad – tryck Cmd+C / Ctrl+C';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

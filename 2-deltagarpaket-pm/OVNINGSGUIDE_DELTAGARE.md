@@ -31,8 +31,9 @@ Testa att öppna `AGENTS.md` (eller `.agents/skills/styrgrupps-puls/SKILL.md`) o
 
 Vanlig AI-chatt letar efter liknande ord. En **kunskapsgraf** bygger istället en karta av *noder* (butiker, system, personer, avtal, risker) och *relationer* över alla dokument.
 
-1. **Öppna den visuella grafen:** Dubbelklicka på filen `graphify-out/graph.html` i din filhanterare så att den öppnas i din webbläsare! Klicka runt bland klustren (*Communities*) och se hur **Pilotbutik Uppsala (`NR-001`)**, **Adyen**, **TeliaNet** och **Kampanjfrysen** binder ihop hela projektet.
-2. **Ställ en flerstegsfråga till agenten via grafen:** Gå tillbaka till Antigravity och skriv:
+1. **Se skillnaden visuellt på 60 sekunder:** Dubbelklicka på filen `KUNSKAPSGRAF_INTRO.html` i mappen `2-deltagarpaket-pm` så öppnas vår visuella introduktion i din webbläsare (du kan klicka på *Stega 1 → 5* för att följa hur en försening hos Johan Nilsson slår igenom fem olika dokument).
+2. **Öppna den skarpa grafen (`graph.html`):** Klicka på knappen **Öppna graph.html ↗** uppe till höger (eller dubbelklicka på `graphify-out/graph.html`). Klicka runt bland klustren (*Communities*) och se hur **Pilotbutik Uppsala (`NR-001`)**, **Gate G2**, **TeliaNet** och **Kampanjfrysen** binder ihop hela projektet.
+3. **Ställ en flerstegsfråga till agenten via grafen:** Gå tillbaka till Antigravity och skriv:
    > `Utgå från kunskapsgrafen i graphify-out/ (GRAPH_REPORT.md och graph.json): Vilka är projektets absolut farligaste flaskhalsar ("God Nodes"), och vad händer i andra och tredje ledet om Adyen-certifieringen i NR-001 Uppsala försenas med 3 veckor?`
 
 ---
