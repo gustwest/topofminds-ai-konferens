@@ -981,6 +981,108 @@
       color: #f8fafc;
     }
 
+    /* 4-layer Governance Model inside Section 02 */
+    .governance-strip {
+      margin-block-start: 2.5rem;
+      padding-block-start: 2.25rem;
+      border-block-start: 1px solid rgb(248 250 252 / 0.14);
+    }
+
+    .governance-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-block-end: 1.35rem;
+    }
+
+    .governance-head h3 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      line-height: 1.22;
+    }
+
+    .governance-trap-note {
+      max-inline-size: 34rem;
+      font-size: 0.83rem;
+      color: #ede9fe;
+      background: rgb(124 58 237 / 0.22);
+      border-inline-start: 3px solid #c4b5fd;
+      padding: 0.65rem 0.9rem;
+    }
+
+    .gov-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    @media (max-width: 1080px) {
+      .gov-grid-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .gov-grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .gov-card {
+      background: rgb(248 250 252 / 0.07);
+      border: 1px solid rgb(248 250 252 / 0.16);
+      padding: 1.25rem;
+      grid-row: span 3;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      grid-template-rows: subgrid;
+      gap: 0.75rem;
+    }
+
+    .gov-card-top {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .gov-badge-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .gov-metaphor {
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #ddd6fe;
+    }
+
+    .gov-card h4 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--tom-primary-foreground);
+    }
+
+    .gov-card p {
+      font-size: 0.82rem;
+      color: rgb(248 250 252 / 0.82);
+      line-height: 1.55;
+    }
+
+    .gov-foot {
+      font-family: var(--font-mono);
+      font-size: 0.73rem;
+      color: #c4b5fd;
+      padding-block-start: 0.65rem;
+      border-block-start: 1px solid rgb(248 250 252 / 0.14);
+      min-inline-size: 0;
+    }
+
     /* ===== SECTION 03: PERSONAS, TEAM-AGENTER & ORKESTRERING ===== */
     .subgrid-3 {
       display: grid;
@@ -1856,6 +1958,69 @@ Roll: Kritisk Senior PMO-revisor på Top of Minds.
             </div>
             <div id="node-extra-link"></div>
           </article>
+        </div>
+
+        <!-- 4-LAGERSMODELLEN FÖR DESIGNMÅLBILD, ARKITEKTUR & KOMPONENTREGLER -->
+        <div class="governance-strip">
+          <div class="governance-head">
+            <div>
+              <span class="eyebrow eyebrow-light">Arkitektens nyckelfråga · Var bor målbild &amp; regelverk?</span>
+              <h3>Så delar du upp designmålbild, målbildsarkitektur och komponentregler</h3>
+            </div>
+            <p class="governance-trap-note">
+              <strong>Vanlig fälla:</strong> Lägg aldrig tvingande komponent- eller arkitekturförbud <em>enbart</em> i en <code>Skill</code>! Eftersom Skills är valfria (<em>On-Demand</em>) kan agenten hoppa över dem vid snabba småändringar.
+            </p>
+          </div>
+
+          <div class="gov-grid-4">
+            <article class="gov-card">
+              <div class="gov-card-top">
+                <div class="gov-badge-row">
+                  <span class="map-node-num">L1</span>
+                  <span class="gov-metaphor">Trafikreglerna · Alltid på</span>
+                </div>
+                <h4>Rules (AGENTS.md)</h4>
+              </div>
+              <p>Korta, ovillkorliga ”röda linjer”: vilket komponentbibliotek som måste användas, förbjudna mönster (t.ex. inga hårdkodade hex-färger eller direktanrop mot databas) och pekare till målbilden. Kan läggas mapp-lokalt i <code>src/ui/AGENTS.md</code>!</p>
+              <span class="gov-foot">/AGENTS.md · /src/ui/AGENTS.md</span>
+            </article>
+
+            <article class="gov-card">
+              <div class="gov-card-top">
+                <div class="gov-badge-row">
+                  <span class="map-node-num">L2</span>
+                  <span class="gov-metaphor">Kartan &amp; Stadsplanen</span>
+                </div>
+                <h4>Docs + Kunskapsgraf</h4>
+              </div>
+              <p>Tunga referensdokument som inte ryms i stående minne: 40 sidor målbildsarkitektur, domänmodell, ADR-beslut och hela komponentkatalogen. Agenten slår upp rätt avsnitt och ser systemberoenden via grafen.</p>
+              <span class="gov-foot">/docs/malbild.md + graphify-out/</span>
+            </article>
+
+            <article class="gov-card">
+              <div class="gov-card-top">
+                <div class="gov-badge-row">
+                  <span class="map-node-num">L3</span>
+                  <span class="gov-metaphor">Verkstadshandboken</span>
+                </div>
+                <h4>Skills (SKILL.md)</h4>
+              </div>
+              <p>Steg-för-steg-hantverket när någon faktiskt ska <em>bygga en ny vy</em> eller <em>granska mot målbilden</em> – komplett med godkända kodmallar (<code>examples/</code>) och uppslagstabeller (<code>references/</code>).</p>
+              <span class="gov-foot">/.agents/skills/design-system/</span>
+            </article>
+
+            <article class="gov-card">
+              <div class="gov-card-top">
+                <div class="gov-badge-row">
+                  <span class="map-node-num">L4</span>
+                  <span class="gov-metaphor">Mitträcket · 100 % garanti</span>
+                </div>
+                <h4>Hooks &amp; Skriptgrindar</h4>
+              </div>
+              <p>En språkmodell följer textregler till ~95 %. Automatiska kontrollskript (<code>hooks.json</code> eller CI-checkar) stoppar bygget direkt om en otillåten komponent, rå HTML-tagg eller felaktig import smyger sig in.</p>
+              <span class="gov-foot">hooks.json · scripts/check-ui.mjs</span>
+            </article>
+          </div>
         </div>
       </div>
     </section>
