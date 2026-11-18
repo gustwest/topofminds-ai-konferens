@@ -1960,15 +1960,15 @@ Roll: Kritisk Senior PMO-revisor på Top of Minds.
           </article>
         </div>
 
-        <!-- 4-LAGERSMODELLEN FÖR DESIGNMÅLBILD, ARKITEKTUR & KOMPONENTREGLER -->
+        <!-- 4-LAGERSMODELLEN FÖR DESIGNMÅLBILD, DOMÄNKUNSKAP, PROCESSER & REGLER -->
         <div class="governance-strip">
           <div class="governance-head">
             <div>
-              <span class="eyebrow eyebrow-light">Arkitektens nyckelfråga · Var bor målbild &amp; regelverk?</span>
-              <h3>Så delar du upp designmålbild, målbildsarkitektur och komponentregler</h3>
+              <span class="eyebrow eyebrow-light">Arkitektens nyckelfråga · Var bor målbild, domän, team &amp; processer?</span>
+              <h3>Så placerar du målbild, domänkunskap, ansvariga, releaseprocess och regler</h3>
             </div>
             <p class="governance-trap-note">
-              <strong>Vanlig fälla:</strong> Lägg aldrig tvingande komponent- eller arkitekturförbud <em>enbart</em> i en <code>Skill</code>! Eftersom Skills är valfria (<em>On-Demand</em>) kan agenten hoppa över dem vid snabba småändringar.
+              <strong>Två vanliga fällor:</strong> 1) Man skriver <em>aldrig</em> för hand i kunskapsgrafen – man skriver i vanliga dokument (<code>docs/</code>) som grafen indexerar automatiskt. 2) Lägg aldrig hårda release- eller komponentförbud <em>enbart</em> i en valfri <code>Skill</code>!
             </p>
           </div>
 
@@ -1981,7 +1981,7 @@ Roll: Kritisk Senior PMO-revisor på Top of Minds.
                 </div>
                 <h4>Rules (AGENTS.md)</h4>
               </div>
-              <p>Korta, ovillkorliga ”röda linjer”: vilket komponentbibliotek som måste användas, förbjudna mönster (t.ex. inga hårdkodade hex-färger eller direktanrop mot databas) och pekare till målbilden. Kan läggas mapp-lokalt i <code>src/ui/AGENTS.md</code>!</p>
+              <p>Korta, ovillkorliga ”röda linjer”: tillåtna UI-komponenter, hårda <strong>release-spärrar</strong> (t.ex. <em>”deploya aldrig direkt till prod”</em>) samt en kort vägvisare till var team- och domändokument ligger.</p>
               <span class="gov-foot">/AGENTS.md · /src/ui/AGENTS.md</span>
             </article>
 
@@ -1989,24 +1989,24 @@ Roll: Kritisk Senior PMO-revisor på Top of Minds.
               <div class="gov-card-top">
                 <div class="gov-badge-row">
                   <span class="map-node-num">L2</span>
-                  <span class="gov-metaphor">Kartan &amp; Stadsplanen</span>
+                  <span class="gov-metaphor">Fakta &amp; Samband (Vad &amp; Vem)</span>
                 </div>
                 <h4>Docs + Kunskapsgraf</h4>
               </div>
-              <p>Tunga referensdokument som inte ryms i stående minne: 40 sidor målbildsarkitektur, domänmodell, ADR-beslut och hela komponentkatalogen. Agenten slår upp rätt avsnitt och ser systemberoenden via grafen.</p>
-              <span class="gov-foot">/docs/malbild.md + graphify-out/</span>
+              <p><strong>Målbildsarkitektur, domänkunskap, team/ansvariga</strong> och beslut skrivs i läsbara Markdown-filer (<code>docs/</code>). <strong>Kunskapsgrafen byggs automatiskt ovanpå</strong> dem så agenten ser hur personer, system och regler hänger ihop.</p>
+              <span class="gov-foot">/docs/{doman,team,malbild}.md → graphify</span>
             </article>
 
             <article class="gov-card">
               <div class="gov-card-top">
                 <div class="gov-badge-row">
                   <span class="map-node-num">L3</span>
-                  <span class="gov-metaphor">Verkstadshandboken</span>
+                  <span class="gov-metaphor">Arbetssätt steg för steg (Hur)</span>
                 </div>
                 <h4>Skills (SKILL.md)</h4>
               </div>
-              <p>Steg-för-steg-hantverket när någon faktiskt ska <em>bygga en ny vy</em> eller <em>granska mot målbilden</em> – komplett med godkända kodmallar (<code>examples/</code>) och uppslagstabeller (<code>references/</code>).</p>
-              <span class="gov-foot">/.agents/skills/design-system/</span>
+              <p>Upprepbara <strong>arbetssätt och körscheman</strong> som laddas när momentet ska utföras: hela <strong>releaseprocessen</strong>, hur en ny vy byggs enligt designsystemet, eller hur teamet gör PR- och kravgranskning.</p>
+              <span class="gov-foot">/.agents/skills/{release,design-system}/</span>
             </article>
 
             <article class="gov-card">
@@ -2017,8 +2017,8 @@ Roll: Kritisk Senior PMO-revisor på Top of Minds.
                 </div>
                 <h4>Hooks &amp; Skriptgrindar</h4>
               </div>
-              <p>En språkmodell följer textregler till ~95 %. Automatiska kontrollskript (<code>hooks.json</code> eller CI-checkar) stoppar bygget direkt om en otillåten komponent, rå HTML-tagg eller felaktig import smyger sig in.</p>
-              <span class="gov-foot">hooks.json · scripts/check-ui.mjs</span>
+              <p>En språkmodell följer textregler till ~95 %. Automatiska kontrollskript (<code>hooks.json</code> eller CI-checkar i releasepipelinen) stoppar direkt om fel komponent, rå HTML-tagg eller felaktigt projekt-ID används.</p>
+              <span class="gov-foot">hooks.json · scripts/deploy-check.mjs</span>
             </article>
           </div>
         </div>
