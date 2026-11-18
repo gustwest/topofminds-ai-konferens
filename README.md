@@ -14,6 +14,7 @@ git clone https://github.com/gustwest/topofminds-ai-konferens.git
 *(Om någon deltagares dator saknar `git` klickar de bara på **Code -> Download ZIP** på samma GitHub-sida!)*
 
 **Gratis Online-demo (0 kr/mån via GitHub Pages):**  
+👉 **Interaktiv Huvudpresentation & Agentkarta (Top of Minds-design):** [https://gustwest.github.io/topofminds-ai-konferens/presentation.html](https://gustwest.github.io/topofminds-ai-konferens/presentation.html)  
 👉 **Utrullningsplan (Live-app):** [https://gustwest.github.io/topofminds-ai-konferens/](https://gustwest.github.io/topofminds-ai-konferens/)  
 👉 **Kunskapsgraf – Visuell intro (Pass 2A på storskärm):** [https://gustwest.github.io/topofminds-ai-konferens/kunskapsgraf.html](https://gustwest.github.io/topofminds-ai-konferens/kunskapsgraf.html)  
 Varje `git push` till `main` bygger automatiskt `3-live-rollout-app` via `.github/workflows/deploy.yml` och publicerar senaste versionen (inklusive **v0.2** direkt efter fikapausen!) på GitHub Pages.
@@ -27,7 +28,8 @@ Varje `git push` till `main` bygger automatiskt `3-live-rollout-app` via `.githu
 ```text
 topofminds-ai-konferens/
 ├── .gitignore                                # Låser ute underlag-fran-connie/ (NDA-spärr)
-├── .github/workflows/deploy.yml              # Gratis auto-deploy av Rollout Studio till GitHub Pages (0 kr/mån)
+├── .github/workflows/deploy.yml              # Gratis auto-deploy till GitHub Pages (0 kr/mån)
+├── PRESENTATION_AI_AGENTER_TOPOFMINDS.html   # Delbar interaktiv huvudpresentation & agentkarta (Top of Minds-stil)
 ├── README.md                                 # Denna moderator- & körguide
 ├── 1-pre-flight-guide/
 │   └── FORBEREDELSE_INFOR_KONFERENSEN.md     # Mejlmall/Teams-post att skicka ut 3 dagar innan (10 min förberedelse)
