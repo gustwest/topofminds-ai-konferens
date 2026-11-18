@@ -1083,6 +1083,291 @@
       min-inline-size: 0;
     }
 
+    /* ===== SECTION 03: SJÄLVGÅENDE BI- & DATA VAULT-AGENT BLUEPRINT ===== */
+    .dv-pipeline-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.35rem;
+      margin-block-end: 1.4rem;
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+      padding: 0.75rem 0.9rem;
+    }
+
+    .dv-pipe-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--tom-muted-foreground);
+      margin-inline-end: 0.4rem;
+    }
+
+    .dv-stage-btn {
+      appearance: none;
+      border: 1px solid var(--tom-border);
+      background: var(--tom-background);
+      color: var(--tom-foreground);
+      font: inherit;
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 0.4rem 0.68rem;
+      min-block-size: 2rem;
+      cursor: pointer;
+      transition: background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+    }
+
+    .dv-stage-btn:hover {
+      border-color: var(--tom-purple);
+    }
+
+    .dv-stage-btn[aria-pressed="true"] {
+      background: var(--tom-primary);
+      border-color: var(--tom-primary);
+      color: var(--tom-primary-foreground);
+    }
+
+    .dv-stage-arrow {
+      font-size: 0.78rem;
+      color: var(--tom-muted-foreground);
+      font-weight: 700;
+    }
+
+    .bi-blueprint-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.95fr);
+      gap: 1.35rem;
+      align-items: start;
+    }
+
+    @media (max-width: 1080px) {
+      .bi-blueprint-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .bi-diagram-board {
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.95rem;
+      box-shadow: 0 10px 26px rgb(15 23 42 / 0.05);
+    }
+
+    .bi-zone {
+      border: 1px dashed #b8c4cf;
+      background: #f7f9fb;
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .bi-zone-label {
+      font-size: 0.69rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--tom-muted-foreground);
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .bi-row-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .bi-row-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .bi-mid-engine {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr) minmax(0, 1fr);
+      gap: 0.75rem;
+      align-items: stretch;
+    }
+
+    @media (max-width: 760px) {
+      .bi-row-2,
+      .bi-row-3,
+      .bi-mid-engine {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .bi-home-btn {
+      appearance: none;
+      text-align: start;
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+      padding: 0.85rem;
+      font: inherit;
+      color: var(--tom-foreground);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.45rem;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, opacity 0.18s ease, background-color 0.15s ease;
+    }
+
+    .bi-home-btn:hover {
+      border-color: var(--tom-purple);
+    }
+
+    .bi-home-btn.is-selected {
+      border: 2px solid var(--tom-purple);
+      padding: calc(0.85rem - 1px);
+      background: #faf7ff;
+      box-shadow: 0 8px 20px rgb(124 58 237 / 0.12);
+    }
+
+    .bi-home-btn.is-stage-lit {
+      box-shadow: inset 4px 0 0 var(--tom-purple);
+    }
+
+    .bi-home-btn.is-stage-dim {
+      opacity: 0.38;
+    }
+
+    .bi-home-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.45rem;
+    }
+
+    .bi-letter {
+      inline-size: 1.75rem;
+      block-size: 1.75rem;
+      background: var(--tom-purple-soft);
+      color: var(--tom-purple);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 800;
+    }
+
+    .bi-home-btn.is-selected .bi-letter,
+    .bi-home-btn:hover .bi-letter {
+      background: var(--tom-purple);
+      color: #ffffff;
+    }
+
+    .bi-mode-tag {
+      font-size: 0.66rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: var(--tom-background);
+      color: var(--tom-muted-foreground);
+      padding: 0.15rem 0.42rem;
+    }
+
+    .bi-home-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      display: block;
+    }
+
+    .bi-home-desc {
+      font-size: 0.76rem;
+      color: var(--tom-muted-foreground);
+      line-height: 1.42;
+      display: block;
+    }
+
+    .bi-home-path {
+      font-family: var(--font-mono);
+      font-size: 0.69rem;
+      font-weight: 700;
+      color: var(--tom-purple);
+      padding-block-start: 0.4rem;
+      border-block-start: 1px solid var(--tom-border);
+      display: block;
+      min-inline-size: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .bi-core-node {
+      background: var(--tom-primary);
+      color: var(--tom-primary-foreground);
+      border: 2px solid var(--tom-purple);
+      padding: 0.95rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.45rem;
+    }
+
+    .bi-core-node strong {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .bi-core-node p {
+      font-size: 0.76rem;
+      color: rgb(248 250 252 / 0.84);
+      line-height: 1.45;
+    }
+
+    .bi-connector-arrows {
+      display: flex;
+      justify-content: space-around;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--tom-purple);
+      line-height: 1;
+    }
+
+    /* 5-step handoff bar below blueprint */
+    .handoff-strip {
+      margin-block-start: 1.35rem;
+      background: var(--tom-primary);
+      color: var(--tom-primary-foreground);
+      padding: 1.1rem 1.25rem;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.85rem;
+    }
+
+    @media (max-width: 980px) {
+      .handoff-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .handoff-step {
+      border-inline-start: 2px solid #a78bfa;
+      padding-inline-start: 0.75rem;
+    }
+
+    .handoff-step strong {
+      display: block;
+      font-size: 0.8rem;
+      color: #ddd6fe;
+    }
+
+    .handoff-step span {
+      font-size: 0.77rem;
+      color: rgb(248 250 252 / 0.86);
+      line-height: 1.4;
+      display: block;
+      margin-block-start: 0.15rem;
+    }
+
     /* ===== SECTION 03: PERSONAS, TEAM-AGENTER & ORKESTRERING ===== */
     .subgrid-3 {
       display: grid;
@@ -1565,11 +1850,12 @@
       </a>
 
       <nav class="primary-nav" aria-label="Kapitel i presentationen">
-        <a href="#verktyg" class="nav-link is-active">01 Verktygskartan</a>
-        <a href="#anatomi" class="nav-link">02 Agentens anatomi</a>
-        <a href="#roller" class="nav-link">03 Roller &amp; Team</a>
-        <a href="#vardag" class="nav-link">04 PM i vardagen</a>
-        <a href="#konferens" class="nav-link">05 Konferens 4h</a>
+        <a href="#verktyg" class="nav-link is-active">01 Verktyg</a>
+        <a href="#anatomi" class="nav-link">02 Anatomi</a>
+        <a href="#bi-agent" class="nav-link">03 BI-Agenten</a>
+        <a href="#roller" class="nav-link">04 Roller &amp; Team</a>
+        <a href="#vardag" class="nav-link">05 PM-vardag</a>
+        <a href="#konferens" class="nav-link">06 Konferens 4h</a>
       </nav>
 
       <button type="button" class="btn-purple" id="open-lab-btn">Öppna Live-labb ↗</button>
@@ -1650,8 +1936,18 @@
               </a>
             </li>
             <li>
-              <a class="compass-link" href="#roller">
+              <a class="compass-link" href="#bi-agent">
                 <span class="compass-num">03</span>
+                <span>
+                  <span class="compass-name"> Helhetsritning: ”Självgående BI-utvecklare”</span>
+                  <span class="compass-sub">Data Vault (Lake → RDV → BV → Mart → Kub) &amp; var allt bor</span>
+                </span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </li>
+            <li>
+              <a class="compass-link" href="#roller">
+                <span class="compass-num">04</span>
                 <span>
                   <span class="compass-name">Personas, Team-agenter &amp; Orkestrering</span>
                   <span class="compass-sub">Rollkontrakt, händelsestyrning &amp; agenter som styr agenter</span>
@@ -1661,7 +1957,7 @@
             </li>
             <li>
               <a class="compass-link" href="#vardag">
-                <span class="compass-num">04</span>
+                <span class="compass-num">05</span>
                 <span>
                   <span class="compass-name">Projektledarens vardag &amp; gränser</span>
                   <span class="compass-sub">5 praktiska konsultfall, uppsättning &amp; fallgropar</span>
@@ -1671,7 +1967,7 @@
             </li>
             <li>
               <a class="compass-link" href="#konferens">
-                <span class="compass-num">05</span>
+                <span class="compass-num">06</span>
                 <span>
                   <span class="compass-name">4-timmarskonferensen &amp; övningar</span>
                   <span class="compass-sub">Tidsplan och 6 hands-on-moment på plats</span>
@@ -2025,11 +2321,210 @@ Roll: Kritisk Senior PMO-revisor på Top of Minds.
       </div>
     </section>
 
-    <!-- KAPITEL 03: PERSONAS, TEAM-AGENTER & ORKESTRERING -->
+    <!-- KAPITEL 03: SJÄLVGÅENDE BI- & DATA VAULT-AGENT (VISUELL HELHETSRITNING) -->
+    <section id="bi-agent" class="section-band band-secondary">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow eyebrow-purple">03 · Praktiskt Arkitekturcase (Data Vault &amp; BI)</span>
+          <h2>Helhetsritning: Så byggs en ”självgående BI-utvecklare”</h2>
+          <p>Hur gör vi så att en projektledare eller verksamhetskunnig kan driva ett nytt dataflöde från källintegration hela vägen till Power BI-kub enligt <strong>Data Vault 2.0</strong> – med en trygg 5-minuters granskning av en utvecklare före produktion? Klicka i kedjan eller på block <strong>A–G</strong> för att se var allt har sin hemvist!</p>
+        </div>
+
+        <!-- Horisontell Data Vault-pipeline -->
+        <div class="dv-pipeline-bar" role="group" aria-label="Filtrera ritningen per steg i BI- och Data Vault-kedjan">
+          <span class="dv-pipe-label">Datakedjan:</span>
+          <button type="button" class="dv-stage-btn" data-dv-stage="all" aria-pressed="true">Helhetsvy (A–G)</button>
+          <button type="button" class="dv-stage-btn" data-dv-stage="lake" aria-pressed="false">1. Integration &amp; Lake</button>
+          <span class="dv-stage-arrow" aria-hidden="true">→</span>
+          <button type="button" class="dv-stage-btn" data-dv-stage="rdv" aria-pressed="false">2. Raw Vault (RDV)</button>
+          <span class="dv-stage-arrow" aria-hidden="true">→</span>
+          <button type="button" class="dv-stage-btn" data-dv-stage="bv" aria-pressed="false">3. Business Vault (BV)</button>
+          <span class="dv-stage-arrow" aria-hidden="true">→</span>
+          <button type="button" class="dv-stage-btn" data-dv-stage="mart" aria-pressed="false">4. Marts &amp; Kub</button>
+          <span class="dv-stage-arrow" aria-hidden="true">→</span>
+          <button type="button" class="dv-stage-btn" data-dv-stage="pr" aria-pressed="false">5. Test &amp; Utvecklar-PR</button>
+        </div>
+
+        <div class="bi-blueprint-grid">
+          <!-- Vänster: Visuell Hemvist-ritning (Zoner + Pilar + Central BI-motor) -->
+          <div class="bi-diagram-board" aria-label="Visuell karta över var alla instruktioner, data och skydd bor">
+            <div class="bi-zone">
+              <div class="bi-zone-label">
+                <span>Zon 1 · Styrning &amp; Domänminne (Läses in före kodning)</span>
+                <span>Lagar + Vad datan betyder</span>
+              </div>
+              <div class="bi-row-2">
+                <button type="button" class="bi-home-btn is-selected" data-bi-home="rules">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">A</span>
+                      <span class="bi-mode-tag">Alltid i minnet</span>
+                    </div>
+                    <span class="bi-home-title">AGENTS.md &amp; Mapp-regler</span>
+                    <span class="bi-home-desc">Namnstandard (HUB/LNK/SAT), 0 % affärslogik i Raw Vault, Business Key-krav &amp; prod-spärr.</span>
+                  </div>
+                  <span class="bi-home-path">/AGENTS.md · /models/{rdv,bv,marts}/AGENTS.md</span>
+                </button>
+
+                <button type="button" class="bi-home-btn" data-bi-home="graph">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">B</span>
+                      <span class="bi-mode-tag">Domän &amp; Lineage</span>
+                    </div>
+                    <span class="bi-home-title">docs/ + Kunskapsgraf</span>
+                    <span class="bi-home-desc">ELM-affärsbegrepp, PII-klassning &amp; KPI-katalog + automatisk kolumn-lineage Källa → Kub.</span>
+                  </div>
+                  <span class="bi-home-path">/docs/{elm,pii,kpi}/ → /graphify-out/</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="bi-connector-arrows" aria-hidden="true">
+              <span>↓ Styr med lagar</span>
+              <span>↓ Matar domän &amp; beroenden</span>
+            </div>
+
+            <div class="bi-zone">
+              <div class="bi-zone-label">
+                <span>Zon 2 · Hantverk, Exekveringsmotor &amp; Sandlåda</span>
+                <span>Hur koden byggs &amp; provkörs</span>
+              </div>
+              <div class="bi-mid-engine">
+                <button type="button" class="bi-home-btn" data-bi-home="skills">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">C</span>
+                      <span class="bi-mode-tag">Laddas per skikt</span>
+                    </div>
+                    <span class="bi-home-title">5 BI-Skills (SKILL.md)</span>
+                    <span class="bi-home-desc">Recept &amp; SQL/dbt/DAX-mallar för Lake, RDV, BV, Stjärnschema/Kub och Testsvit.</span>
+                  </div>
+                  <span class="bi-home-path">/.agents/skills/01-lake..05-test/</span>
+                </button>
+
+                <div class="bi-core-node">
+                  <span class="eyebrow eyebrow-light" style="margin:0;">Självgående motor</span>
+                  <strong>BI- &amp; Data Vault-Agent</strong>
+                  <p>Tar affärsbehov på svenska → Frågar om Business Key → Profilerar rådata → Bygger SQL/dbt &amp; kubmått → Kör tester i loop tills 0 fel.</p>
+                </div>
+
+                <button type="button" class="bi-home-btn" data-bi-home="mcp">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">D</span>
+                      <span class="bi-mode-tag">Ögon &amp; Testbänk</span>
+                    </div>
+                    <span class="bi-home-title">MCP + Dev-Sandbox</span>
+                    <span class="bi-home-desc">Read-only profilering av Laken, eget ofarligt <code>dev</code>-schema i DW samt Jira/Git-MCP.</span>
+                  </div>
+                  <span class="bi-home-path">mcp_config.json + schema: dev_sandbox</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="bi-connector-arrows" aria-hidden="true">
+              <span>↓ Tvingande självbesiktning</span>
+              <span>↓ Oberoende 4-ögon-granskning</span>
+              <span>↓ Mänskligt Go före Prod</span>
+            </div>
+
+            <div class="bi-zone">
+              <div class="bi-zone-label">
+                <span>Zon 3 · Det som gör att en icke-utvecklare kan köra tryggt!</span>
+                <span>100 % Kvalitetsspärrar före produktion</span>
+              </div>
+              <div class="bi-row-3">
+                <button type="button" class="bi-home-btn" data-bi-home="hooks">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">E</span>
+                      <span class="bi-mode-tag">Automatisk vakt</span>
+                    </div>
+                    <span class="bi-home-title">Hooks &amp; Avstämning</span>
+                    <span class="bi-home-desc">Stoppar lagerbrott/DROP och kräver radantals- &amp; kronsummekontroll (0,00 kr diff).</span>
+                  </div>
+                  <span class="bi-home-path">/.agents/hooks.json + CI-tester</span>
+                </button>
+
+                <button type="button" class="bi-home-btn" data-bi-home="reviewer">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">F</span>
+                      <span class="bi-mode-tag">Subagent (Read-only)</span>
+                    </div>
+                    <span class="bi-home-title">DV-Reviewer Subagent</span>
+                    <span class="bi-home-desc">Separat arkitekt-agent med rent minne som letar grain-dubblering &amp; glömd PII-split.</span>
+                  </div>
+                  <span class="bi-home-path">/.agents/agents/dv-reviewer.md</span>
+                </button>
+
+                <button type="button" class="bi-home-btn" data-bi-home="plugin-pr">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">G</span>
+                      <span class="bi-mode-tag">Paket &amp; Slutgrind</span>
+                    </div>
+                    <span class="bi-home-title">Plugin + Utvecklar-PR</span>
+                    <span class="bi-home-desc">Paketerar allt för teamet och skapar en visuell 5-minuters PR för senior BI-utvecklare.</span>
+                  </div>
+                  <span class="bi-home-path">plugin.json → GitHub Pull Request</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Höger: Detaljerat titthål för valt block eller datasteg -->
+          <article class="inspector-panel" id="bi-inspector" aria-live="polite">
+            <div class="inspector-head">
+              <h3 id="bi-detail-title">A. AGENTS.md &amp; Mapp-lokala Rules</h3>
+              <span class="inspector-badge" id="bi-detail-owner">Ägare: BI-Arkitekt</span>
+            </div>
+            <p class="inspector-how" id="bi-detail-lead">
+              <strong>Hemvist:</strong> <code>/AGENTS.md</code> i roten + lokala <code>AGENTS.md</code> inne i <code>models/raw_vault/</code>, <code>business_vault/</code> och <code>marts/</code>. Laddas alltid in automatiskt för den mapp agenten arbetar i!
+            </p>
+            <pre class="code-peek" tabindex="0" role="region" aria-label="Exempel ur BI-agentens filer"><code id="bi-detail-code"># /models/raw_vault/AGENTS.md
+1. NOLL affärslogik, filtrering eller beräkning i Raw Data Vault (100 % källspegling).
+2. Namnstandard: HUB_&lt;BEGREPP&gt;, LNK_&lt;A&gt;_&lt;B&gt;, SAT_&lt;BEGREPP&gt;_&lt;KÄLLA&gt;.
+3. Gissa ALDRIG en Business Key – den måste finnas i /docs/elm/ eller bekräftas av användaren.
+4. Personuppgifter (GDPR) SKA alltid separeras i en egen *_PII-Satellite.</code></pre>
+            <div class="verdict-strip" id="bi-detail-takeaway">
+              <strong>Varför här och inte i en Skill?</strong> Dessa regler får <em>aldrig</em> vara valfria. Även om någon bara ber om en ”snabb tabelljustering” ligger lagboken alltid aktiv i minnet.
+            </div>
+          </article>
+        </div>
+
+        <!-- 5-stegs arbetsflöde från icke-utvecklare till prod -->
+        <div class="handoff-strip" aria-label="Arbetsflöde i fem steg från icke-utvecklare till produktion">
+          <div class="handoff-step">
+            <strong>1. Behov på affärssvenska</strong>
+            <span>Du (icke-utvecklare) beskriver vilken källdata och vilket KPI i kuben som behövs.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>2. Business Key-kontroll</strong>
+            <span>Agenten slår upp ELM i <code>docs/</code> + profilerar Laken via MCP och ställer 2 kontrollfrågor.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>3. Självgående bygge i Sandbox</strong>
+            <span>Agenten laddar rätt <code>Skill</code> per lager och bygger Stage → RDV → BV → Mart → Kub i <code>dev</code>.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>4. Hooks + Reviewer-subagent</strong>
+            <span>Automatiska tester verifierar 0 dubbletter &amp; 0,00 kr diff mot källa; subagenten granskar.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>5. 5-minuters Utvecklar-PR</strong>
+            <span>Senior BI-utvecklare granskar Hub-Link-Sat-diagram + testbevis och trycker <em>Merge</em>!</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KAPITEL 04: PERSONAS, TEAM-AGENTER & ORKESTRERING -->
     <section id="roller" class="section-band band-light">
       <div class="container">
         <div class="section-header">
-          <span class="eyebrow eyebrow-purple">03 · Roller, Team-agenter &amp; Orkestrering</span>
+          <span class="eyebrow eyebrow-purple">04 · Roller, Team-agenter &amp; Orkestrering</span>
           <h2>Från personlig assistent till digital lagkamrat i teamet</h2>
           <p>Hur sätter man egentligen en roll (persona) så att den ger verklig effekt – och hur fungerar visionen om agenter som reagerar på händelser i teamet eller styr andra agenter?</p>
         </div>
@@ -2159,11 +2654,11 @@ Leveransformat: Tabell med [Avvikelse | Källa § | Ekonomisk risk i SEK | Åtg�
       </div>
     </section>
 
-    <!-- KAPITEL 04: PRAKTISKA PM-FALL & BEGRÄNSNINGAR -->
+    <!-- KAPITEL 05: PRAKTISKA PM-FALL & BEGRÄNSNINGAR -->
     <section id="vardag" class="section-band band-secondary">
       <div class="container">
         <div class="section-header">
-          <span class="eyebrow eyebrow-purple">04 · Konsultens vardag &amp; ärliga begränsningar</span>
+          <span class="eyebrow eyebrow-purple">05 · Konsultens vardag &amp; ärliga begränsningar</span>
           <h2>5 konkreta sätt en projektledare sparar timmar varje vecka</h2>
           <p>Välj ett vardagsfall till vänster för att se exakt hur du sätter upp det och vad du måste se upp med.</p>
         </div>
@@ -2244,11 +2739,11 @@ Leveransformat: Tabell med [Avvikelse | Källa § | Ekonomisk risk i SEK | Åtg�
       </div>
     </section>
 
-    <!-- KAPITEL 05: 4-TIMMARSKONFERENSEN & ÖVNINGSMENY -->
+    <!-- KAPITEL 06: 4-TIMMARSKONFERENSEN & ÖVNINGSMENY -->
     <section id="konferens" class="section-band band-dark dark-band">
       <div class="container">
         <div class="section-header">
-          <span class="eyebrow eyebrow-light">05 · Upplägg för 4 roliga &amp; konkreta timmar</span>
+          <span class="eyebrow eyebrow-light">06 · Upplägg för 4 roliga &amp; konkreta timmar</span>
           <h2>Så lägger vi upp en 4-timmarskonferens med maximal aha-effekt</h2>
           <p>Hemligheten bakom 4 lyckade timmar är att <strong>inte</strong> fastna i API-krångel: deltagarna kör hands-on i ett färdigdukat realistiskt PM-case under första halvan, och vi avslutar med en gemensam live-final där ett inspelat möte förvandlas till ny appversion och team-agenter.</p>
         </div>
@@ -2780,6 +3275,155 @@ Leveransformat: Tabell med [Avvikelse | Källa § | Ekonomisk risk i SEK | Åtg�
           document.getElementById('case-limit').innerHTML = c.limit
             .map((l) => `<li><span>!</span><span>${l}</span></li>`)
             .join('');
+        });
+      }
+
+      // ===== 5B. SECTION 03: SJÄLVGÅENDE BI- & DATA VAULT-AGENT BLUEPRINT =====
+      const BI_HOMES = {
+        rules: {
+          title: 'A. AGENTS.md & Mapp-lokala Rules',
+          owner: 'Ägare: BI-Arkitekt',
+          lead: '<strong>Hemvist:</strong> <code>/AGENTS.md</code> i roten + lokala <code>AGENTS.md</code> inne i <code>models/raw_vault/</code>, <code>business_vault/</code> och <code>marts/</code>. Laddas alltid in automatiskt för den mapp agenten arbetar i!',
+          code: `# /models/raw_vault/AGENTS.md\n1. NOLL affärslogik, filtrering eller beräkning i Raw Data Vault (100 % källspegling).\n2. Namnstandard: HUB_<BEGREPP>, LNK_<A>_<B>, SAT_<BEGREPP>_<KÄLLA>.\n3. Gissa ALDRIG en Business Key – den måste finnas i /docs/elm/ eller bekräftas av användaren.\n4. Personuppgifter (GDPR) SKA alltid separeras i en egen *_PII-Satellite.`,
+          takeaway: '<strong>Varför här och inte i en Skill?</strong> Dessa regler får <em>aldrig</em> vara valfria. Även om någon bara ber om en ”snabb tabelljustering” ligger lagboken alltid aktiv i minnet.'
+        },
+        graph: {
+          title: 'B. docs/ + Kunskapsgraf (Domän & Lineage)',
+          owner: 'Ägare: PM / Verksamhet + Automatisk graf',
+          lead: '<strong>Hemvist:</strong> Människor skriver affärsbegrepp (ELM), PII-klassning och KPI-definitioner i <code>/docs/</code>. Ovanpå <code>docs/</code> + SQL/dbt + kubens <code>.bim</code> bygger <code>graphify</code> automatiskt hela beroendekartan!',
+          code: `# /docs/elm/skadearende.md (Sanningskälla på svenska)\nAffärsbegrepp: Skadeärende (Claim)\nBusiness Key:  claim_number (globalt unik i källsystemet SkadeSys)\nRelationer:    Kopplas via LNK_CLAIM_POLICY till Försäkringsavtal & Kund\nGDPR / PII:    skadebeskrivning_fritext & personnr → SKA ligga i SAT_CLAIM_PII!\n\n# Kunskapsgrafen kopplar automatiskt hela lineage-kedjan:\n[SkadeSys.claims] → [STG_CLAIMS] → [HUB_CLAIM / SAT_CLAIM] → [BV_PIT_CLAIM] → [FCT_CLAIMS] → [Kub: Skadeprocent %]`,
+          takeaway: '<strong>Noll manuell kolumnlista:</strong> Du uppdaterar bara affärsbegreppen i text – kunskapsgrafen ritar själv ut hur källtabeller, Hubs, Marts och Power BI-mått hänger ihop.'
+        },
+        skills: {
+          title: 'C. 5 Modulära BI-Skills (SKILL.md + examples/)',
+          owner: 'Ägare: Seniora BI-utvecklare',
+          lead: '<strong>Hemvist:</strong> <code>/.agents/skills/01-lake..05-test/</code>. Här paketerar era skarpaste Data Vault-utvecklare sina bästa mallar och arbetssteg en gång – så agenten kodar exakt enligt er standard!',
+          code: `.agents/skills/\n├── 01-ingest-to-lake/SKILL.md      # Rålandning, LOAD_DTS, RECORD_SOURCE & SHA-256 Hash\n├── 02-model-raw-vault/SKILL.md     # AutomateDV / dbt-mallar för Hub, Link & Satellite\n│   └── examples/hub_and_sat.sql    # Godkänd referenskod som agenten följer exakt\n├── 03-build-business-vault/SKILL.md# PIT, Bridge & mjuka affärsberäkningar\n├── 04-mart-and-cube/SKILL.md       # DIM/FCT stjärnschema + DAX-mått i kuben\n└── 05-bi-test-suite/SKILL.md       # Unicitet, referensintegritet, grain- & summatester`,
+          takeaway: '<strong>Sparar 90 % kontextminne:</strong> När agenten modellerar Raw Vault öppnar den bara <code>02-model-raw-vault</code>; när den bygger kuben öppnar den <code>04-mart-and-cube</code>.'
+        },
+        mcp: {
+          title: 'D. MCP + Isolerad Dev-Sandbox',
+          owner: 'Ägare: Plattform / Data Engineering',
+          lead: '<strong>Hemvist:</strong> <code>mcp_config.json</code> + ett isolerat <code>dev_&lt;användare&gt;</code>-schema (t.ex. Snowflake Zero-Copy Clone, BigQuery eller Databricks). Ger agenten säkra ögon mot riktig data och en ofarlig testbänk!',
+          code: `// 1. Agenten profilerar råtabellen i Laken (Read-Only MCP) INNAN den modellerar:\nSELECT COUNT(*) AS rows, COUNT(DISTINCT claim_no) AS distinct_bk,\n       SUM(CASE WHEN claim_no IS NULL THEN 1 ELSE 0 END) AS null_bk\nFROM raw_lake.skadesys_claims;\n// → Svar: 142 810 rader, 142 810 unika, 0 NULL (Bekräftar ren Hub-nyckel!)\n\n// 2. Agenten bygger och testkör alla vyer/tabeller i dev_gustav.* (aldrig i prod!)\n// 3. GitHub/Azure DevOps MCP skapar grenen & öppnar Pull Requesten när allt är grönt.`,
+          takeaway: '<strong>Nyckeln till ”självgående”:</strong> Utan en sandbox gissar AI:n bara SQL i blindo. Med MCP + <code>dev</code>-schema provkör den sin egen kod och rättar eventuella fel själv!'
+        },
+        hooks: {
+          title: 'E. Hooks & Automatiska Avstämningsgrindar',
+          owner: 'Ägare: Automatisk exekvering (hooks.json / CI)',
+          lead: '<strong>Hemvist:</strong> <code>/.agents/hooks.json</code> + skript i <code>/scripts/</code>. Triggas automatiskt varje gång agenten sparar en modell eller försöker skapa en PR – går inte att glömma eller runda!',
+          code: `// Automatisk kontrollsvit som MÅSTE passera innan PR får skapas:\n[PASS] DV-Linter: Inga JOIN/WHERE-filter hittades i models/raw_vault/ ✓\n[PASS] GDPR-vakt: Kolumnen 'personnr' ligger isolerad i SAT_CLAIM_PII ✓\n[PASS] Radavstämning: Lake (142 810) == HUB+SAT (142 810) ✓\n[PASS] Grain & Belopp: SUM(utbetalt_belopp) Källa = FCT_CLAIMS (Diff: 0,00 SEK) ✓`,
+          takeaway: '<strong>Trygghet för icke-utvecklaren:</strong> Du behöver inte själv kunna jaga ett felaktigt <code>LEFT JOIN</code> i 300 rader SQL – om beloppet diffar med 1 krona stoppar grinden direkt!'
+        },
+        reviewer: {
+          title: 'F. Oberoende DV-Reviewer Subagent (4-ögon-principen)',
+          owner: 'Ägare: Separat läs-subagent',
+          lead: '<strong>Hemvist:</strong> <code>/.agents/agents/dv-reviewer.md</code>. Innan en mänsklig utvecklare störs väcks en separat, skrivskyddad granskningsagent med <em>helt tomt kontextfönster</em> som kritiskt synar bygg-agentens kod.',
+          code: `# /.agents/agents/dv-reviewer.md (Endast läsverktyg!)\nRoll: Kritisk Certified Data Vault 2.0 Modellerare (CDVDM).\nUppgift: Granska git diff mot /docs/elm/ och Data Vault-standarden.\nKontrollera särskilt:\n1. Har högfrekventa kolumner lagts i samma Satellite som långsamma basdata?\n2. Finns risk för fan-trap / chasm-trap i Business Vault eller FCT-tabellen?\n3. Är kubens DAX-mått identiskt med formeln i /docs/kpi-katalog/?`,
+          takeaway: '<strong>Varför en egen subagent?</strong> Den agent som nyss skrivit koden är lätt ”hemmablind”. En separat granskare med färskt minne fångar arkitekturmissar direkt.'
+        },
+        'plugin-pr': {
+          title: 'G. Plugin-paket + ”5-minuters Utvecklar-PR”',
+          owner: 'Ägare: BI-teamet gemensamt (Human-in-the-Loop)',
+          lead: '<strong>Hemvist:</strong> Hela paketet A–F samlas i <code>/.agents/plugins/tom-datavault-bi/plugin.json</code> så alla får samma setup – och varje körning landar i en <strong>lättgranskad Pull Request</strong> för en mänsklig BI-utvecklare.',
+          code: `## Pull Request #184: Nytt flöde Skadeärenden (Lake → RDV → BV → Mart → Kub)\n- Modellerat diagram: [HUB_CLAIM] ── [LNK_CLAIM_POLICY] ── [HUB_POLICY]\n- Automatiska tester i dev: 18/18 GRÖNA (142 810 rader, 0,00 kr diff mot källa)\n- DV-Reviewer Subagent: Godkänd (PII separerad i SAT_CLAIM_PII)\n\n👉 Till mänsklig BI-utvecklare att syna på 5 min före Merge till Prod:\n1. Bekräfta att partitionering på datum i FCT_CLAIMS följer kostnadsbudget.\n2. Klicka "Approve & Merge" för driftsättning via CI/CD!`,
+          takeaway: '<strong>Resultatet:</strong> Du som PM/beställare gör 90 % av resan på en timme – och seniora BI-utvecklaren lägger 5 fokuserade minuter på arkitekturgodkännande istället för 3 dagars boilerplate-kod!'
+        }
+      };
+
+      const DV_STAGES = {
+        all: {
+          homes: ['rules', 'graph', 'skills', 'mcp', 'hooks', 'reviewer', 'plugin-pr'],
+          focusHome: 'rules'
+        },
+        lake: {
+          homes: ['rules', 'mcp', 'skills', 'hooks'],
+          title: 'Steg 1 i kedjan: Källintegration & Data Lake / Stage',
+          owner: 'Aktiva delar: A, C, D, E',
+          lead: '<strong>Vad händer här?</strong> Agenten använder <strong>MCP (D)</strong> för att profilera rådatan i Laken (hitta <code>NULL</code>, datatyper och dubbletter), följer <strong>Skill 01 (C)</strong> för att sätta tekniska kolumner (<code>LOAD_DTS</code>, <code>RECORD_SOURCE</code>, SHA-256 hash) och kontrolleras av <strong>Hooks (E)</strong>.',
+          code: `-- Genereras av Skill: 01-ingest-to-lake/SKILL.md\nSELECT\n  TRIM(UPPER(claim_number))                   AS claim_bk,\n  SHA2_BINARY(TRIM(UPPER(claim_number)), 256) AS hk_claim,\n  CURRENT_TIMESTAMP()                         AS load_dts,\n  'SKADESYS_DAILY_PARQUET'                    AS record_source,\n  *\nFROM {{ source('lake_skadesys', 'claims_raw') }}`,
+          takeaway: '<strong>Hemvist i detta steg:</strong> Regler i <code>/AGENTS.md</code> (A), mall i <code>skills/01-ingest-to-lake/</code> (C), datakoll via <code>MCP</code> (D) och källräkning via <code>Hooks</code> (E).'
+        },
+        rdv: {
+          homes: ['rules', 'graph', 'skills', 'mcp', 'hooks'],
+          title: 'Steg 2 i kedjan: Raw Data Vault (Hub, Link, Satellite)',
+          owner: 'Aktiva delar: A, B, C, D, E',
+          lead: '<strong>Vad händer här?</strong> Agenten slår upp godkänd Business Key &amp; PII-klassning i <strong>docs/ + Kunskapsgrafen (B)</strong>, laddar <strong>Skill 02 (C)</strong> för att generera <code>HUB_</code>, <code>LNK_</code> och <code>SAT_</code>, och tvingas av <strong>Rules (A) &amp; Hooks (E)</strong> till 0 % affärslogik.',
+          code: `-- Genereras i models/raw_vault/ utifrån ELM i /docs/elm/skadearende.md:\n1. HUB_CLAIM          (hk_claim, claim_bk, load_dts, record_source)\n2. LNK_CLAIM_POLICY   (hk_claim_policy, hk_claim, hk_policy, ...)\n3. SAT_CLAIM_CORE     (status, belopp, skadedatum, hashdiff)\n4. SAT_CLAIM_PII      (personnr, fritext – strikt separerad enligt GDPR-regeln i A!)`,
+          takeaway: '<strong>Hemvist i detta steg:</strong> Affärsnyckeln kommer från <code>docs/elm/</code> (B), mönstret från <code>skills/02-model-raw-vault/</code> (C) och förbudet mot affärslogik från <code>models/raw_vault/AGENTS.md</code> (A).'
+        },
+        bv: {
+          homes: ['rules', 'graph', 'skills', 'mcp', 'hooks'],
+          title: 'Steg 3 i kedjan: Business Vault (PIT, Bridge & Regler)',
+          owner: 'Aktiva delar: A, B, C, D, E',
+          lead: '<strong>Vad händer här?</strong> Först här tillåter <strong>Rules (A)</strong> beräknade affärsregler! Agenten läser formlerna ur <strong>docs/kpi-katalog/ (B)</strong> och använder <strong>Skill 03 (C)</strong> för att bygga <code>PIT</code>-tabeller för snabba tidssnitt och beräknade Satellites.',
+          code: `-- Genereras i models/business_vault/ via 03-build-business-vault/SKILL.md:\n-- Mjuk affärsregel: Nettoersättning exkl. självrisk & moms\nSELECT\n  hk_claim,\n  load_dts,\n  GREATEST(0, brutto_belopp - sjalvrisk_belopp) AS netto_skadekostnad_sek\nFROM {{ ref('sat_claim_core') }}`,
+          takeaway: '<strong>Hemvist i detta steg:</strong> Affärsdefinitionen bor i <code>docs/kpi-katalog/</code> (B) och tekniken för PIT/Bridge bor i <code>skills/03-build-business-vault/</code> (C).'
+        },
+        mart: {
+          homes: ['rules', 'graph', 'skills', 'mcp', 'hooks'],
+          title: 'Steg 4 i kedjan: Information Marts & Semantisk Kub',
+          owner: 'Aktiva delar: A, B, C, D, E',
+          lead: '<strong>Vad händer här?</strong> Agenten bygger stjärnschemat (<code>DIM_*</code>, <code>FCT_*</code>) och måttet i kuben (<code>.bim</code> / DAX) via <strong>Skill 04 (C)</strong>, medan <strong>Kunskapsgrafen (B)</strong> binder ihop hela lineage-spåret ut till rapporten.',
+          code: `// 1. SQL Mart: models/marts/fct_claims.sql (läser ENBART från RDV + BV)\n// 2. Semantisk Kub: models/cubes/forsakring.bim (DAX-mått enligt docs/kpi-katalog/):\nmeasure 'Skadeprocent %' =\n  DIVIDE(\n    SUM('FCT_CLAIMS'[netto_skadekostnad_sek]),\n    SUM('FCT_PREMIER'[intjanad_premie_sek])\n  )\n  formatString: "0.0 %"`,
+          takeaway: '<strong>Hemvist i detta steg:</strong> Stjärnschema- &amp; DAX-mallar i <code>skills/04-mart-and-cube/</code> (C), medan kunskapsgrafen (B) uppdateras så alla ser vilka rapporter som använder måttet.'
+        },
+        pr: {
+          homes: ['hooks', 'reviewer', 'plugin-pr', 'mcp'],
+          title: 'Steg 5 i kedjan: Automatiska tester, Subagent-review & Utvecklar-PR',
+          owner: 'Aktiva delar: D, E, F, G',
+          lead: '<strong>Vad händer här?</strong> Nu kliver säkerhetsbältet in: <strong>Hooks &amp; Testsviten (E)</strong> stämmer av radantal och summor i <code>dev</code>, <strong>DV-Reviewer (F)</strong> gör oberoende arkitekturkoll, och <strong>Git-MCP (D/G)</strong> skapar PR:en för mänskligt godkännande!',
+          code: `✓ Alla 18 dbt- & avstämningstester gröna i dev_sandbox (Diff mot källa: 0,00 SEK)\n✓ DV-Reviewer Subagent: 0 arkitekturavvikelser mot Data Vault 2.0\n✓ Pull Request #184 skapad med ER-diagram & testprotokoll\n→ Väntar på 5-minuters granskning av BI-utvecklare före Merge till main/prod!`,
+          takeaway: '<strong>Varför modellen håller i verkligheten:</strong> Ingen kod når någonsin produktion oprövad – utvecklaren granskar ett färdigtestat paket istället för att koda allt från noll.'
+        }
+      };
+
+      const biHomeBtns = Array.from(document.querySelectorAll('[data-bi-home]'));
+      const dvStageBtns = Array.from(document.querySelectorAll('[data-dv-stage]'));
+
+      function renderBiInspector(info) {
+        document.getElementById('bi-detail-title').textContent = info.title;
+        document.getElementById('bi-detail-owner').textContent = info.owner;
+        document.getElementById('bi-detail-lead').innerHTML = info.lead;
+        document.getElementById('bi-detail-code').textContent = info.code;
+        document.getElementById('bi-detail-takeaway').innerHTML = info.takeaway;
+      }
+
+      function selectBiHome(homeKey) {
+        const info = BI_HOMES[homeKey];
+        if (!info) return;
+        for (const btn of biHomeBtns) {
+          btn.classList.toggle('is-selected', btn.getAttribute('data-bi-home') === homeKey);
+        }
+        renderBiInspector(info);
+      }
+
+      for (const btn of biHomeBtns) {
+        btn.addEventListener('click', () => {
+          selectBiHome(btn.getAttribute('data-bi-home'));
+        });
+      }
+
+      for (const sBtn of dvStageBtns) {
+        sBtn.addEventListener('click', () => {
+          const stageKey = sBtn.getAttribute('data-dv-stage');
+          const stage = DV_STAGES[stageKey];
+          if (!stage) return;
+          for (const b of dvStageBtns) {
+            b.setAttribute('aria-pressed', String(b === sBtn));
+          }
+          for (const hBtn of biHomeBtns) {
+            const hKey = hBtn.getAttribute('data-bi-home');
+            const activeInStage = stage.homes.includes(hKey);
+            hBtn.classList.toggle('is-stage-dim', stageKey !== 'all' && !activeInStage);
+            hBtn.classList.toggle('is-stage-lit', stageKey !== 'all' && activeInStage);
+            hBtn.classList.toggle('is-selected', stageKey === 'all' && hKey === stage.focusHome);
+          }
+          if (stageKey === 'all') {
+            renderBiInspector(BI_HOMES[stage.focusHome]);
+          } else {
+            renderBiInspector(stage);
+          }
         });
       }
 
