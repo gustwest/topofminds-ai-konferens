@@ -1,44 +1,30 @@
-# Förberedelse inför vår AI-konferens (Tar ca 10 minuter!)
+# Förberedelse inför vår AI-konferens (Tar 5 minuter!)
 
-**Ämnesrad (förslag):** Förberedelse inför AI-konferensen – installera din AI-agent på 10 min!
+**Ämnesrad (förslag):** Förberedelse inför AI-konferensen – installera Google Antigravity på 5 min
 
 ---
 
 Hej alla!
 
-Snart är det dags för vår praktiska AI-konferens! Istället för att bara lyssna på presentationer kommer vi att dyka rakt in i hur moderna AI-agenter fungerar i praktiken – och var och en kommer att få provköra realistiska konsult- och projektledarcase på sin egen dator (helt utan krav på programmeringskunskap).
+Inför vår AI-konferens kommer vi att varva gemensam genomgång med praktiska övningar där var och en får testa att styra en egen AI-agent på sin dator (inga förkunskaper i programmering behövs!).
 
-För att vi inte ska tappa värdefull tid på nedladdningar och inloggningar när vi ses ber jag dig göra de här **5 korta stegen senast dagen före konferensen** (tar totalt cirka 10 minuter):
+För att vi ska slippa lägga tid på nedladdningar och konton när vi ses ber jag dig göra dessa **3 korta steg före konferensen** (tar ca 5 minuter):
 
-### 1. Ta med din egen Top of Minds-dator (ej låst kunddator)
-Se till att du gör förberedelsen på – och tar med dig – din **olåsta Top of Minds-dator** (glöm inte laddaren!). Hårt låsta kunddatorer från exempelvis bank eller försäkring blockerar ofta både installation och inloggning. Ha även gärna webbläsaren **Google Chrome** installerad.
+### 1. Använd din egen Top of Minds-dator (ej låst kunddator)
+Gör installationen på – och ta med dig – din **olåsta Top of Minds-dator** samt laddare. Låsta kunddatorer blockerar ofta både installation och inloggning. Se även gärna till att webbläsaren **Google Chrome** finns på datorn.
 
-### 2. Ha ett privat Gmail-konto redo
-Vi kommer att arbeta i **Google Antigravity**. Eftersom företagsadresser kräver central molnfederering loggar vi under konferensen in med en vanlig privat **@gmail.com-adress** (gratisnivån *Individual Free* kostar 0 kr och räcker gott för våra övningar).
-* Har du redan en privat Gmail? Kontrollera bara att du har lösenordet tillgängligt.
-* Saknar du en? Skapa ett gratis konto på 2 minuter här: https://accounts.google.com/signup
+### 2. Ladda ner skrivbordsappen Google Antigravity
+1. Gå till https://antigravity.google/download
+2. Ladda ner och installera skrivbordsprogrammet **Google Antigravity** för **macOS** eller **Windows** *(välj vanliga skrivbordsappen Antigravity, inte kodredigeraren Antigravity IDE)*.
 
-### 3. Installera Google Antigravity och logga in
-1. Gå till https://antigravity.google och ladda ner programmet för **macOS** eller **Windows**.
-2. Installera och starta Antigravity.
-3. Klicka på **Sign in** och logga in med din privata **@gmail.com-adress** *(obs: välj vanlig personlig Google-inloggning, inte Enterprise/Organization)*.
+### 3. Logga in och kontrollera att chatten svarar
+1. Starta **Antigravity** och klicka på **Continue with Google**.
+2. Logga in med en vanlig **privat @gmail.com-adress** *(gratisnivån kostar 0 kr och räcker för hela konferensen; saknar du en Gmail tar det 2 minuter att skapa en på https://accounts.google.com/signup)*.
+3. Skriv bara *”Hej!”* i chattrutan och se att du får svar – då är du **100 % redo**!
 
-### 4. Ladda hem vårt övningspaket och gör ett 30-sekunders test
-1. Ladda hem konferensens övningsmapp som ZIP-fil via direktlänken här:  
-   https://github.com/gustwest/topofminds-ai-konferens/archive/refs/heads/main.zip
-2. **Packa upp ZIP-filen** (t.ex. i mappen Dokument eller på Skrivbordet).
-3. Öppna **Antigravity**, välj **Projects → Open Folder** och öppna undermappen **2-deltagarpaket-pm** som ligger inuti mappen du nyss packade upp *(viktigt att du väljer just undermappen 2-deltagarpaket-pm så att våra färdiga verktyg laddas in automatiskt)*. Klicka **Yes / Allow** om programmet frågar om du litar på mappen.
-4. Välj gärna en resurssnål modell vid chattrutan (t.ex. **Gemini Flash** så sparar du din gratiskvot till konferensen) och skriv:  
-   *”Hej! Ser du filen AGENTS.md här i mappen? Svara med en enda kort mening.”*  
-   Får du svar är all teknik 100 % klar!
+Själva övningsmaterialet tar vi ner gemensamt på 10 sekunder när vi drar igång på plats (vi använder enbart fiktiv, anonymiserad övningsdata – aldrig riktig kunddata).
 
-### 5. Bonus (2 min eftertanke): Ta med en egen ”måndags-tidstjuv”!
-Under första halvan tränar vi i ett färdigbyggt, anonymiserat projektcase – men målet är att du ska gå hem med något du har nytta av direkt i din vardag.
-* Fundera ut **en återkommande uppgift i dina uppdrag** som brukar ta 1–3 timmar (t.ex. sammanställa styrgruppspuls, granska krav/acceptanskriterier, stämma av tidplan mot avtal eller modellera/testa ett dataflöde).
-* **Viktigt om sekretess:** Eftersom vi kör på privata gratiskonton under labben får **ingen riktig kunddata, kundnamn eller känslig information** läggas in. Vill du ta med en egen rapport- eller kalkylmall, rensa den helt från kundnamn och siffror först!
-* **Svara gärna med en enda rad på detta mejl** vad din största återkommande tidstjuv i uppdraget är just nu – så väver vi in era skarpaste exempel live under dagen!
-
-Hojta bara till om något krånglar vid installationen så hjälper jag dig på 2 minuter innan vi ses.
+Hör av dig om något hakar upp sig vid inloggningen!
 
 Vänliga hälsningar,  
 Gustav
