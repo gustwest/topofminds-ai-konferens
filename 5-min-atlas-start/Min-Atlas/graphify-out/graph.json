@@ -11,16 +11,6 @@
       "degree": 13
     },
     {
-      "id": "file:03-uppdrag/aktivt-uppdrag.md",
-      "label": "Aktiva Uppdrag & Beslutslogg (Övergripande & NDA-säkert)",
-      "cluster": "Kunduppdrag & Leverans",
-      "color": "#0369a1",
-      "kind": "Dokument",
-      "source": "03-uppdrag/aktivt-uppdrag.md",
-      "summary": "Källa: 03-uppdrag/aktivt-uppdrag.md",
-      "degree": 8
-    },
-    {
       "id": "hub:min-atlas",
       "label": "Min Atlas (Kärna)",
       "cluster": "Kärna & Stabschef",
@@ -28,6 +18,16 @@
       "kind": "Kärna",
       "source": "AGENTS.md",
       "summary": "Central knutpunkt som binder ihop privatliv, eget bolag, Top of Minds, uppdrag och återanvändbara Skills.",
+      "degree": 9
+    },
+    {
+      "id": "file:03-uppdrag/aktivt-uppdrag.md",
+      "label": "Aktiva Uppdrag & Beslutslogg (Övergripande & NDA-säkert)",
+      "cluster": "Kunduppdrag & Leverans",
+      "color": "#0369a1",
+      "kind": "Dokument",
+      "source": "03-uppdrag/aktivt-uppdrag.md",
+      "summary": "Källa: 03-uppdrag/aktivt-uppdrag.md",
       "degree": 8
     },
     {
@@ -59,6 +59,16 @@
       "source": "AGENTS.md",
       "summary": "1. Slå alltid upp i Min-Atlas först: Innan du svarar på frågor o",
       "degree": 5
+    },
+    {
+      "id": "file:05-proffstips-och-frageteknik.md",
+      "label": "Proffstips: Frågeteknik, Mejl, Konton & Konfiguration i Antigrav",
+      "cluster": "Kärna & Stabschef",
+      "color": "#dc2626",
+      "kind": "Dokument",
+      "source": "05-proffstips-och-frageteknik.md",
+      "summary": "1. Kontextlåset (Innan agenten får börja jobba):",
+      "degree": 4
     },
     {
       "id": "file:.agents/skills/atlas-coach/SKILL.md",
@@ -108,6 +118,26 @@
       "kind": "Delområde",
       "source": "03-uppdrag/aktivt-uppdrag.md",
       "summary": "Sektion i 03-uppdrag/aktivt-uppdrag.md",
+      "degree": 1
+    },
+    {
+      "id": "sec:05-proffstips-och-frageteknik.md:del 1: 5 ”mäster-frågor” som tvingar fram rätt kontext, motstånd",
+      "label": "Del 1: 5 ”Mäster-frågor” som tvingar fram rätt kontext, motstånd",
+      "cluster": "Kärna & Stabschef",
+      "color": "#dc2626",
+      "kind": "Delområde",
+      "source": "05-proffstips-och-frageteknik.md",
+      "summary": "Sektion i 05-proffstips-och-frageteknik.md",
+      "degree": 1
+    },
+    {
+      "id": "sec:05-proffstips-och-frageteknik.md:del 2: vad mer kan antigravity sköta åt dig i vardagen & ditt eg",
+      "label": "Del 2: Vad mer kan Antigravity sköta åt dig i vardagen & ditt eg",
+      "cluster": "Kärna & Stabschef",
+      "color": "#dc2626",
+      "kind": "Delområde",
+      "source": "05-proffstips-och-frageteknik.md",
+      "summary": "Sektion i 05-proffstips-och-frageteknik.md",
       "degree": 1
     },
     {
@@ -178,6 +208,16 @@
       "kind": "Delområde",
       "source": "AGENTS.md",
       "summary": "Sektion i AGENTS.md",
+      "degree": 1
+    },
+    {
+      "id": "ent:gyllene säkerhetsregeln",
+      "label": "Gyllene säkerhetsregeln",
+      "cluster": "Kärna & Stabschef",
+      "color": "#dc2626",
+      "kind": "Entitet / Punkt",
+      "source": "05-proffstips-och-frageteknik.md",
+      "summary": "Klistra aldrig in lösenord i chatten! Logga alltid in själv i we",
       "degree": 1
     },
     {
@@ -555,6 +595,30 @@
     {
       "source": "file:04-personer-och-natverk/kontakter.md",
       "target": "ent:ekonomi / revisor",
+      "label": "beskriver",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "hub:min-atlas",
+      "target": "file:05-proffstips-och-frageteknik.md",
+      "label": "styr / omfattar",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:05-proffstips-och-frageteknik.md",
+      "target": "sec:05-proffstips-och-frageteknik.md:del 1: 5 ”mäster-frågor” som tvingar fram rätt kontext, motstånd",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:05-proffstips-och-frageteknik.md",
+      "target": "sec:05-proffstips-och-frageteknik.md:del 2: vad mer kan antigravity sköta åt dig i vardagen & ditt eg",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:05-proffstips-och-frageteknik.md",
+      "target": "ent:gyllene säkerhetsregeln",
       "label": "beskriver",
       "confidence": "EXTRACTED"
     },

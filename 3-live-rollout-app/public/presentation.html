@@ -1984,6 +1984,7 @@
         <a href="#roller" class="nav-link">03 Personas &amp; Team</a>
         <a href="#vardag" class="nav-link">04 PM-vardag</a>
         <a href="#bi-agent" class="nav-link">05 Helhetscase (BI)</a>
+        <a href="#proffstips" class="nav-link">06 Proffstips</a>
       </nav>
 
       <div style="display:flex; align-items:center; gap:0.55rem; flex-shrink:0;">
@@ -2102,6 +2103,16 @@
                 <span>
                   <span class="compass-name">Helhetscase: ”Självgående BI-utvecklare”</span>
                   <span class="compass-sub">Från affärsbehov på svenska till 5-minuters utvecklar-godkännande</span>
+                </span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </li>
+            <li>
+              <a class="compass-link" href="#proffstips">
+                <span class="compass-num">06</span>
+                <span>
+                  <span class="compass-name">Frågeteknik, Mejl, Konton &amp; Webbhotell</span>
+                  <span class="compass-sub">5 mästerfrågor för skarpa beslut + praktisk IT- &amp; kontohjälp</span>
                 </span>
                 <span aria-hidden="true">→</span>
               </a>
@@ -3030,6 +3041,113 @@ Leveransformat: Tabell med [Avvikelse | Källa § | Ekonomisk risk i SEK | Åtg�
         </div>
       </div>
     </section>
+
+    <!-- KAPITEL 06: PROFFSTIPS – FRÅGETEKNIK, KONTEXT, MEJL, KONTON & WEBBHOTELL -->
+    <section id="proffstips" class="section-band band-secondary">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow eyebrow-purple">06 · Proffstips: Frågeteknik, Kontext &amp; Praktisk Vardagsautomation</span>
+          <h2>Så får du agenten att tänka som en senior arkitekt – och sköta tråk-admin åt dig</h2>
+          <p>Två saker skiljer de som får mediokra svar från de som får enorm hävstång: <strong>hur man ställer frågor som tvingar fram självkritik och skalbara vägval</strong> – samt hur man låter Antigravity hjälpa till med mejl, konton, webbhotell och teknikinställningar.</p>
+        </div>
+
+        <!-- Enkel 3-stegs sammanfattning på ren svenska -->
+        <div class="handoff-strip cols-3" aria-label="Tre proffsprinciper på vanlig svenska">
+          <div class="handoff-step">
+            <strong>1. Lås kontexten innan utförande</strong>
+            <span>Be agenten sammanfatta hur den förstått uppdraget och ställa 3 kontrollfrågor <em>innan</em> den börjar skriva eller bygga.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>2. Kräv motstånd &amp; 3 skalbara vägval</strong>
+            <span>Förbjud ”ja-sägande” – be om 3 alternativ (snabbast nu vs. mest hållbart på sikt) så väljer ni rätt arkitektur direkt.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>3. Låt den ta hand om teknik- &amp; kontopill</strong>
+            <span>Koppla på mejl/kalender och låt inbyggda webbläsaren hjälpa dig med DNS-pekare, webbhotell och molninställningar.</span>
+          </div>
+        </div>
+
+        <!-- DEL A: Interaktiv Frågeteknik-väljare med Kopiera-knapp -->
+        <div class="usecase-selector" style="margin-block-end:2.25rem;">
+          <div class="usecase-menu" role="group" aria-label="Välj frågeteknik för skarpare AI-beslut">
+            <button type="button" class="usecase-btn is-selected" data-prompt-tip="context">
+              <span>1. Kontextlåset (Förstå först!)</span>
+              <span aria-hidden="true">→</span>
+            </button>
+            <button type="button" class="usecase-btn" data-prompt-tip="sparring">
+              <span>2. Anti-Ja-sägaren (Utmana min idé)</span>
+              <span aria-hidden="true">→</span>
+            </button>
+            <button type="button" class="usecase-btn" data-prompt-tip="arch">
+              <span>3. Skalbart vägval (3 alternativ)</span>
+              <span aria-hidden="true">→</span>
+            </button>
+            <button type="button" class="usecase-btn" data-prompt-tip="tone">
+              <span>4. Exakt tonalitet (Noll AI-floskler)</span>
+              <span aria-hidden="true">→</span>
+            </button>
+            <button type="button" class="usecase-btn" data-prompt-tip="grill">
+              <span>5. Omvänd intervju (/grill-me)</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+
+          <article class="inspector-panel" id="prompt-inspector" aria-live="polite">
+            <div class="inspector-head">
+              <h3 id="pt-title">1. Kontextlåset – Säkerställ att agenten förstått allt före start</h3>
+              <span class="inspector-badge" id="pt-badge">Noll missförstånd</span>
+            </div>
+            <p class="inspector-how" id="pt-why">
+              <strong>Varför det fungerar:</strong> Om du bara skriver <em>”Gör X”</em> gissar agenten direkt på alla otydligheter. När du tvingar den att spegla tillbaka kontexten och ställa kontrollfrågor först upptäcker ni missförstånd på 10 sekunder istället för efter en timmes felarbete.
+            </p>
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem;">
+              <span style="font-size:0.76rem; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; color:var(--tom-purple);">Kopieringsklar formulering att klistra in:</span>
+              <button type="button" class="filter-chip" id="copy-prompt-btn" style="font-size:0.75rem; padding:0.3rem 0.7rem;">Kopiera fråga</button>
+            </div>
+            <pre class="code-peek" tabindex="0" role="region" aria-label="Exempel på frågeteknik"><code id="pt-code">Läs igenom mappen/underlaget och min Atlas noga först.
+Gör ingenting än! Sammanfatta istället på 5 korta punkter:
+1. Hur du uppfattar målet och målgruppen.
+2. Vilka begränsningar och beroenden du ser i underlaget.
+3. Dina 3 viktigaste kontrollfrågor till mig innan vi väljer lösning.</code></pre>
+            <div class="verdict-strip" id="pt-tip">
+              <strong>Snabbkommando i Antigravity:</strong> Skriv <code>/plan</code> för steg-för-steg-planering före utförande, <code>/grill-me</code> för att bli intervjuad om en idé, eller <code>/boost</code> för riktigt tunga vägval!
+            </div>
+          </article>
+        </div>
+
+        <!-- DEL B: Mejl, Konton, Webbhotell & Serverkonfiguration -->
+        <h3 style="font-size:1.3rem; font-weight:800; margin-block-end:0.4rem;">Vad mer kan Antigravity sköta åt dig? (Mejl, konton, webbhotell &amp; servrar)</h3>
+        <p style="font-size:0.92rem; color:var(--tom-muted-foreground); margin-block-end:1.15rem; max-inline-size:72ch;">
+          Särskilt värdefullt för dig som har eget konsult-AB, sidoprojekt eller ansvarar för verktyg i ett mindre team:
+        </p>
+
+        <div class="subgrid-3" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+          <article class="tom-card">
+            <h3>1. Mejl- &amp; Kalenderintegration</h3>
+            <p>Via <strong>Google Workspace / Gmail &amp; Kalender (MCP eller Plugins)</strong> kan agenten söka upp gamla mejlöverenskommelser, koppla dem till rätt projekt i din Atlas, förbereda välformulerade mejlsvar i rätt tråd och skicka kalenderkallelser med rätt tidszon.</p>
+            <span class="card-foot-tag">Kopplas enkelt på via Plugins / MCP</span>
+          </article>
+
+          <article class="tom-card">
+            <h3>2. Webbhotell, Domäner &amp; DNS</h3>
+            <p>Slipp söndagsångest inne på <strong>Loopia, Oderland eller Cloudflare</strong>! Du öppnar kontrollpanelen i Antigravitys inbyggda webbläsare – agenten ser sidan, förklarar vad varje post gör och hjälper dig sätta <code>SPF</code>, <code>DKIM</code>, <code>CNAME</code> och vidarebefordran av företagsmejl rätt.</p>
+            <span class="card-foot-tag">Inbyggd webbläsaragent + din Atlas</span>
+          </article>
+
+          <article class="tom-card">
+            <h3>3. Moln, Konton &amp; Serverinställningar</h3>
+            <p>Har du en sajt, ett nyhetsbrev, <strong>GitHub, Google Cloud, Vercel eller Shopify</strong>? Agenten kan felsöka SSL-certifikat, rensa trasiga konfigurationer, sätta hårda säkerhetsspärrar (så fel konto/miljö aldrig rörs) och dokumentera hela din setup i din Atlas.</p>
+            <span class="card-foot-tag">Slut på ”hur satte jag upp det här förra året?”</span>
+          </article>
+
+          <article class="tom-card" style="border-block-start:3px solid var(--tom-success);">
+            <h3>4. Så gör du det 100 % säkert</h3>
+            <p><strong>Skriv aldrig lösenord i chatten!</strong> Logga alltid in själv i Antigravitys webbläsarfönster eller via officiella inloggnings-plugins (OAuth). Sätt regeln i <code>AGENTS.md</code>: <em>”Fråga alltid om mitt OK innan du sparar en kontoinställning, raderar något eller skickar iväg ett mejl.”</em></p>
+            <span class="card-foot-tag">Du håller i nycklarna – agenten gör grovjobbet</span>
+          </article>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer dark-band">
@@ -3633,6 +3751,71 @@ Leveransformat: Tabell med [Avvikelse | Källa § | Ekonomisk risk i SEK | Åtg�
           }
         });
       }
+
+      // ===== 5C. SECTION 06: MASTER PROMPT TECHNIQUES + COPY =====
+      const PROMPT_TIPS = {
+        context: {
+          title: '1. Kontextlåset – Säkerställ att agenten förstått allt före start',
+          badge: 'Noll missförstånd',
+          why: '<strong>Varför det fungerar:</strong> Om du bara skriver <em>”Gör X”</em> gissar agenten direkt på alla otydligheter. När du tvingar den att spegla tillbaka kontexten och ställa kontrollfrågor först upptäcker ni missförstånd på 10 sekunder istället för efter en timmes felarbete.',
+          code: `Läs igenom mappen/underlaget och min Atlas noga först.\nGör ingenting än! Sammanfatta istället på 5 korta punkter:\n1. Hur du uppfattar målet och målgruppen.\n2. Vilka begränsningar och beroenden du ser i underlaget.\n3. Dina 3 viktigaste kontrollfrågor till mig innan vi väljer lösning.`,
+          tip: '<strong>Snabbkommando i Antigravity:</strong> Skriv <code>/plan</code> för steg-för-steg-planering före utförande, <code>/grill-me</code> för att bli intervjuad om en idé, eller <code>/boost</code> för riktigt tunga vägval!'
+        },
+        sparring: {
+          title: '2. Anti-Ja-sägaren – Tvinga agenten att utmana din egen idé',
+          badge: 'Kritisk sparring',
+          why: '<strong>Varför det fungerar:</strong> Språkmodeller är tränade att vara tillmötesgående – om du föreslår en krånglig omväg kommer den glatt hjälpa dig bygga omvägen! Med den här frågan vänder du på rollen så den agerar senior medgrundare/arkitekt.',
+          code: `Jag funderar på att lösa [beskriv problemet] genom att [din idé].\nHåll INTE med mig av artighet! Granska mitt förslag kritiskt:\n1. Var skapar mitt förslag onödig friktion, risk eller merarbete på sikt?\n2. Skilj på mitt grundbehov och min föreslagna lösning – finns ett smartare sätt med noll friktion?\n3. Vad är din skarpa rekommendation och varför?`,
+          tip: '<strong>Proffsknep:</strong> Lägg in denna princip fast i din <code>AGENTS.md</code> så slipper du ens komma ihåg att be om motstånd varje gång!'
+        },
+        arch: {
+          title: '3. Skalbart vägval – Begär 3 alternativ med tydliga avvägningar',
+          badge: 'Rätt arkitektur & strategi',
+          why: '<strong>Varför det fungerar:</strong> När AI:n bara tar fram <em>ett</em> förslag fastnar den ofta i det mest uppenbara kortsiktiga svaret. När den måste ställa tre alternativ mot varandra tvingas den utvärdera skalbarhet, säkerhet och underhåll på riktigt.',
+          code: `Ge mig inte bara ett svar på hur vi sätter upp [systemet / processen / strukturen].\nTa fram 3 tydliga vägval utifrån vår kontext:\n- Alternativ A: Snabbast att få på plats idag.\n- Alternativ B: Mest hållbart, säkert och skalbart på 2–3 års sikt.\n- Alternativ C: Utmanaren – kan vi förenkla bort hela problemet?\nJämför insats, risk och långsiktigt underhåll, och motivera vilket val du rekommenderar.`,
+          tip: '<strong>Guld för både IT &amp; PM:</strong> Ger dig dessutom ett färdigt beslutsunderlag med tydliga alternativ att ta rakt in till styrgruppen!'
+        },
+        tone: {
+          title: '4. Exakt tonalitet & målgrupp – Slipp ”AI-svenska” och floskler',
+          badge: 'Träffsäker kommunikation',
+          why: '<strong>Varför det fungerar:</strong> Utan referenstexter låter AI lätt som en översatt amerikansk säljtext. Genom att peka på dina egna texter och begära en självkritisk strykrunda blir tonen 100 % mänsklig och skarp.',
+          code: `Läs mina tidigare anteckningar/texter i mappen så du fångar min naturliga ton.\nSkriv sedan ett utkast riktat till [t.ex. en tidspressad VD / styrgrupp / kundteam].\nInnan du visar svaret för mig: läs igenom ditt eget utkast kritiskt och stryk alla AI-klyschor, tomma superlativ och onödiga utfyllnadsord. Håll det rakt, konkret och mänskligt.`,
+          tip: '<strong>Tips:</strong> Spara 2–3 av dina bästa egna mejl eller styrgruppstexter i din Atlas som stilreferens!'
+        },
+        grill: {
+          title: '5. Omvänd intervju – När du har en idé i huvudet men vill täcka alla vinklar',
+          badge: '/grill-me-metoden',
+          why: '<strong>Varför det fungerar:</strong> Ibland är det svårt att skriva ner hela kontexten själv. Låt agenten leda samtalet och gräva fram alla dolda beroenden en fråga i taget innan den ritar upp planen.',
+          code: `Jag vill ta fram en vattentät plan/struktur för [beskriv kort vad du vill uppnå].\nBörja INTE skriva lösningen än! Intervjua mig istället med EN skarp fråga i taget för att reda ut mål, målgrupp, begränsningar, risker och kantfall.\nSäg ifrån om något jag svarar inte hänger ihop – och presentera helhetsförslaget först när du har 100 % av bilden klar.`,
+          tip: '<strong>Fungerar även i röstläge:</strong> Perfekt när du vill tänka högt i 5 minuter och få ut en strukturerad plan på slutet!'
+        }
+      };
+
+      const promptBtns = Array.from(document.querySelectorAll('[data-prompt-tip]'));
+      const copyPromptBtn = document.getElementById('copy-prompt-btn');
+
+      for (const btn of promptBtns) {
+        btn.addEventListener('click', () => {
+          const key = btn.getAttribute('data-prompt-tip');
+          const d = PROMPT_TIPS[key];
+          if (!d) return;
+          for (const b of promptBtns) b.classList.toggle('is-selected', b === btn);
+          document.getElementById('pt-title').textContent = d.title;
+          document.getElementById('pt-badge').textContent = d.badge;
+          document.getElementById('pt-why').innerHTML = d.why;
+          document.getElementById('pt-code').textContent = d.code;
+          document.getElementById('pt-tip').innerHTML = d.tip;
+          if (copyPromptBtn) copyPromptBtn.textContent = 'Kopiera fråga';
+        });
+      }
+
+      copyPromptBtn?.addEventListener('click', () => {
+        const text = document.getElementById('pt-code')?.textContent || '';
+        navigator.clipboard?.writeText(text).then(() => {
+          copyPromptBtn.textContent = '✓ Kopierad!';
+          setTimeout(() => { copyPromptBtn.textContent = 'Kopiera fråga'; }, 2000);
+        });
+      });
 
       // ===== 6. ACTIVE SECTION HIGHLIGHT IN STICKY HEADER =====
       const navLinks = Array.from(document.querySelectorAll('.primary-nav .nav-link'));
