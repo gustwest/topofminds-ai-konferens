@@ -1009,6 +1009,120 @@
     }
 
     /* Dark detail panel on right side of Anatomy */
+    .rag-vs-kg {
+      margin-block-start: 2.25rem;
+      background: rgb(248 250 252 / 0.05);
+      border: 1px solid rgb(248 250 252 / 0.16);
+      padding: 1.65rem;
+    }
+
+    .rag-question-banner {
+      background: rgb(124 58 237 / 0.22);
+      border: 1px solid rgb(196 181 253 / 0.45);
+      padding: 0.85rem 1.15rem;
+      margin-block: 1rem 1.35rem;
+      font-size: 0.92rem;
+    }
+
+    .rag-kg-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 920px) {
+      .rag-kg-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .rag-kg-card {
+      background: var(--tom-card);
+      color: var(--tom-foreground);
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .rag-kg-card.is-rag {
+      border-block-start: 4px solid var(--tom-warning);
+    }
+
+    .rag-kg-card.is-kg {
+      border-block-start: 4px solid var(--tom-purple);
+    }
+
+    .chunk-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .chunk-box {
+      background: var(--tom-background);
+      border: 1px solid var(--tom-border);
+      padding: 0.65rem 0.85rem;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+    }
+
+    .chunk-box.is-missed {
+      border: 1.5px dashed var(--tom-danger);
+      background: #fff5f5;
+      color: #7f1d1d;
+    }
+
+    .kg-chain-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      background: #faf8ff;
+      border: 1px solid rgb(124 58 237 / 0.28);
+      padding: 0.9rem;
+    }
+
+    .kg-node-pill {
+      background: var(--tom-primary);
+      color: #ffffff;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .kg-edge-step {
+      font-size: 0.73rem;
+      font-weight: 800;
+      color: var(--tom-purple);
+      padding-inline-start: 0.85rem;
+    }
+
+    .rag-verdict-box {
+      padding: 0.8rem 0.95rem;
+      font-size: 0.82rem;
+      line-height: 1.48;
+    }
+
+    .rag-verdict-box.warn {
+      background: var(--tom-warning-soft);
+      color: #78350f;
+      border-inline-start: 3px solid var(--tom-warning);
+    }
+
+    .rag-verdict-box.good {
+      background: var(--tom-success-soft);
+      color: #14532d;
+      border-inline-start: 3px solid var(--tom-success);
+    }
+
     .dark-detail-panel {
       background: rgb(248 250 252 / 0.08);
       border: 1px solid rgb(248 250 252 / 0.18);
@@ -1987,8 +2101,9 @@
         <a href="#proffstips" class="nav-link">06 Proffstips</a>
       </nav>
 
-      <div style="display:flex; align-items:center; gap:0.55rem; flex-shrink:0;">
-        <a href="./floden.html" class="btn-outline-light" style="padding:0.48rem 0.85rem; font-size:0.78rem;">Visuella Flöden →</a>
+      <div style="display:flex; align-items:center; gap:0.5rem; flex-shrink:0;">
+        <a href="./agent-simulator.html" class="btn-outline-light" style="padding:0.48rem 0.8rem; font-size:0.78rem;">⚡ Pulssimulator →</a>
+        <a href="./floden.html" class="btn-outline-light" style="padding:0.48rem 0.8rem; font-size:0.78rem;">Flöden →</a>
         <button type="button" class="btn-purple" id="open-lab-btn">Öppna Live-labb ↗</button>
       </div>
     </div>
@@ -2010,7 +2125,7 @@
 
           <div class="hero-actions">
             <a href="#grunden" class="btn-purple">Börja med 2-minutersgrunden ↓</a>
-            <a href="./floden.html" class="btn-outline-light">Öppna Visuella Flöden &amp; Loopar →</a>
+            <a href="./agent-simulator.html" class="btn-outline-light">⚡ Kör Live Agent-Pulssimulator →</a>
           </div>
 
           <div class="hero-stats">
@@ -2420,6 +2535,9 @@
           <span class="eyebrow eyebrow-light">02 · Så fungerar en AI-agent (utan teknikjargong)</span>
           <h2>Tänk på agenten som en ny konsultkollega på ditt uppdrag</h2>
           <p>En vanlig chatt gissar bara ett snabbt svar i stunden. En <strong>agent</strong> jobbar precis som en noggrann kollega: den läser först projektets spelregler, plockar fram rätt arbetsmall, slår upp fakta och dubbelkollar sina siffror innan den lämnar ifrån sig underlaget.</p>
+          <div style="margin-block-start:1rem; display:flex; flex-wrap:wrap; gap:0.65rem;">
+            <a href="./agent-simulator.html" target="_blank" rel="noopener" class="btn-purple" style="text-decoration:none;">⚡ Öppna Live Agent-Simulator (Skicka en prompt &amp; följ pulsen!) ↗</a>
+          </div>
         </div>
 
         <!-- Enkel 4-stegs liknelse på svenska före teknikkartan -->
@@ -2536,6 +2654,82 @@ Roll: Kritisk Senior PMO-revisor på Top of Minds.
             </div>
             <div id="node-extra-link"></div>
           </article>
+        </div>
+
+        <!-- VISUELL JÄMFÖRELSE: RAG VS KUNSKAPSGRAF PÅ EXAKT SAMMA FRÅGA -->
+        <div class="rag-vs-kg" id="rag-vs-graf">
+          <span class="eyebrow eyebrow-light">Visuell jämförelse · Varför vanlig RAG-sökning inte ersätter en Kunskapsgraf</span>
+          <h3 style="font-size:1.35rem; font-weight:800;">RAG hittar lösa textlappar – Kunskapsgrafen ser hela dominokedjan</h3>
+          <div class="rag-question-banner">
+            <strong>Testa samma projektfråga mot 50 dokument:</strong> <em>”Erik är sjukskriven i 2 veckor – påverkar det vår budget eller något avtalsvite?”</em>
+          </div>
+
+          <div class="rag-kg-grid">
+            <!-- VÄNSTER: KLASSISK RAG -->
+            <article class="rag-kg-card is-rag">
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem; margin-block-end:0.5rem;">
+                  <span class="truth-badge warn">1. Klassisk RAG (Likhetssökning)</span>
+                  <span style="font-size:0.74rem; font-weight:700; color:var(--tom-muted-foreground);">T.ex. vanlig Copilot / Intranätsök</span>
+                </div>
+                <h4 style="font-size:1.05rem; font-weight:800; margin-block-end:0.35rem;">Letar bara efter textbitar med samma ord som i frågan</h4>
+                <p style="font-size:0.83rem; color:var(--tom-muted-foreground); margin-block-end:0.85rem;">
+                  RAG klipper upp alla dokument i isolerade textlappar (”chunks”) och hämtar de lappar som nämner orden <em>”Erik”</em> eller <em>”vite”</em>:
+                </p>
+
+                <div class="chunk-list" aria-label="Hur RAG söker bland isolerade textlappar">
+                  <div class="chunk-box">
+                    <span>📄 <strong>Resurslista:</strong> ”<strong>Erik</strong> ansvarar för API-anpassning v2.4…”</span>
+                    <span style="font-weight:800; color:var(--tom-success); white-space:nowrap;">✓ Träff på ”Erik”</span>
+                  </div>
+                  <div class="chunk-box is-missed">
+                    <span>📄 <strong>Tidplan (rad 84):</strong> ”Pilot Uppsala kräver API v2.4 klar 10 nov.”</span>
+                    <span style="font-weight:800; white-space:nowrap;">✕ MISSAS! (Inget ord matchar)</span>
+                  </div>
+                  <div class="chunk-box">
+                    <span>📄 <strong>Avtal SOW § 4.2:</strong> ”Försenas Pilot Uppsala utgår <strong>vite</strong> 75 000 kr/v.”</span>
+                    <span style="font-weight:800; color:var(--tom-success); white-space:nowrap;">✓ Träff på ”vite”</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rag-verdict-box warn">
+                <strong>Svaret från RAG (Falsk trygghet!):</strong><br>
+                <em>”Erik arbetar med API v2.4. I avtalet finns ett vite för Pilot Uppsala, men jag hittar inget samband med Erik.”</em><br>
+                <span style="display:block; margin-block-start:0.35rem; font-weight:700;">👉 Använd RAG när: Du letar fakta i ett enskilt dokument (”Vad säger vår resepolicy om Norge?”).</span>
+              </div>
+            </article>
+
+            <!-- HÖGER: KUNSKAPSGRAF -->
+            <article class="rag-kg-card is-kg">
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem; margin-block-end:0.5rem;">
+                  <span class="truth-badge good">2. Kunskapsgraf (Relationer i flera led)</span>
+                  <span style="font-size:0.74rem; font-weight:700; color:var(--tom-muted-foreground);">Din Atlas / graphify</span>
+                </div>
+                <h4 style="font-size:1.05rem; font-weight:800; margin-block-end:0.35rem;">Följer de faktiska kopplingarna mellan personer, leveranser &amp; avtal</h4>
+                <p style="font-size:0.83rem; color:var(--tom-muted-foreground); margin-block-end:0.85rem;">
+                  Kunskapsgrafen har redan bundit ihop <strong>vem</strong> som påverkar <strong>vad</strong> tvärs över alla dokument – oavsett ordval:
+                </p>
+
+                <div class="kg-chain-visual" aria-label="Hur kunskapsgrafen följer sambandet i fyra led">
+                  <div class="kg-node-pill"><span>👤 Erik (Utvecklare)</span><span style="font-size:0.7rem; opacity:0.8;">Resurslista</span></div>
+                  <div class="kg-edge-step">↓ ansvarar för leverans av</div>
+                  <div class="kg-node-pill"><span>⚙️ API-anpassning v2.4</span><span style="font-size:0.7rem; opacity:0.8;">Resurslista + Tidplan</span></div>
+                  <div class="kg-edge-step">↓ är hårt förkrav till</div>
+                  <div class="kg-node-pill"><span>📍 Pilot Uppsala (10 nov)</span><span style="font-size:0.7rem; opacity:0.8;">Tidplan + SOW</span></div>
+                  <div class="kg-edge-step">↓ utlöser vid försening</div>
+                  <div class="kg-node-pill" style="background:var(--tom-purple);"><span>💰 Vite: 75 000 kr / vecka</span><span style="font-size:0.7rem;">SOW § 4.2</span></div>
+                </div>
+              </div>
+
+              <div class="rag-verdict-box good">
+                <strong>Svaret från Kunskapsgrafen ( Full överblick!):</strong><br>
+                <em>”RÖD FLAGG: 2 veckor på Erik försenar API v2.4 → spräcker Pilot Uppsala → utlöser <strong>150 000 kr i vite</strong> (SOW § 4.2).”</em><br>
+                <span style="display:block; margin-block-start:0.35rem; font-weight:700;">👉 Använd Kunskapsgraf när: Du behöver se samband, flaskhalsar, beroenden och långsiktigt projekt-/livsminne.</span>
+              </div>
+            </article>
+          </div>
         </div>
 
         <!-- 4-LAGERSMODELLEN PÅ BEGRIPLIG KONSULTSVENSKA -->
@@ -3169,6 +3363,13 @@ Gör ingenting än! Sammanfatta istället på 5 korta punkter:
       Här når du direkt våra tre interaktiva konferensmiljöer (kan öppnas på storskärm eller delas med kollegor):
     </p>
     <div class="dialog-links">
+      <a class="dialog-card-link" href="./agent-simulator.html" target="_blank" rel="noopener">
+        <div>
+          <strong>⚡ Live Agent-Pulssimulator (NY – Grafisk helskärmsvy!)</strong>
+          <span>Skicka en prompt och se i realtid hur pulsen färdas genom AGENTS.md, Skills, Kunskapsgraf, MCP, Skript och Verifieringsloopen!</span>
+        </div>
+        <span aria-hidden="true">↗</span>
+      </a>
       <a class="dialog-card-link" href="./min-atlas-exempel.html" target="_blank" rel="noopener">
         <div>
           <strong>★ Exempel-Atlas: Personlig &amp; Professionell Kunskapsgraf</strong>

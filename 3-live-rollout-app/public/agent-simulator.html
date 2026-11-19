@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Agent-Simulator – Följ Pulsen genom Regler, Skills, Graf, MCP &amp; Loop | Top of Minds</title>
+  <style>
+    @font-face {
+      font-family: 'Manrope';
+      src: local('Manrope'), url('./fonts/Manrope-VariableFont_wght.ttf') format('truetype');
+      font-weight: 200 800;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #061729;
+      color: #f8fafc;
+      height: 100dvh;
+      display: grid;
+      grid-template-columns: 1fr 410px;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @media (max-width: 1024px) {
+      body {
+        grid-template-columns: 1fr;
+        grid-template-rows: 58dvh 42dvh;
+      }
+    }
+
+    :where(a:any-link, button, input):focus-visible {
+      outline: 3px solid #a78bfa;
+      outline-offset: 2px;
+    }
+
+    /* ===== LEFT DARK GRAPH STAGE ===== */
+    .stage {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 48%, #103358 0%, #07192d 68%, #04101d 100%);
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+    }
+
+    canvas:active {
+      cursor: grabbing;
+    }
+
+    /* Top bar overlaid on graph */
+    .stage-top {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .glass-panel {
+      pointer-events: auto;
+      background: rgba(9, 33, 58, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(10px);
+      padding: 10px 14px;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-row h1 {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      color: #ffffff;
+    }
+
+    .brand-row p {
+      font-size: 11.5px;
+      color: #cbd5e1;
+      margin-top: 1px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffffff;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      pointer-events: auto;
+      transition: background-color 0.15s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(124, 58, 237, 0.45);
+      border-color: #c4b5fd;
+    }
+
+    /* Bottom Prompt Launcher & Step Controls */
+    .stage-bottom {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .scenario-bar,
+    .control-bar {
+      pointer-events: auto;
+      background: rgba(6, 23, 41, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(10px);
+      padding: 10px 12px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .scen-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .scen-label {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #c4b5fd;
+      margin-right: 4px;
+    }
+
+    .scen-btn {
+      appearance: none;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.06);
+      color: #e2e8f0;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 11px;
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .scen-btn:hover {
+      border-color: #a78bfa;
+    }
+
+    .scen-btn.active {
+      background: #7c3aed;
+      border-color: #c4b5fd;
+      color: #ffffff;
+    }
+
+    .prompt-form {
+      display: flex;
+      flex: 1 1 320px;
+      gap: 6px;
+    }
+
+    .prompt-input {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      color: #ffffff;
+      font: inherit;
+      font-size: 12.5px;
+      padding: 7px 11px;
+    }
+
+    .prompt-input::placeholder {
+      color: #94a3b8;
+    }
+
+    .ctrl-btns {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .btn-send {
+      appearance: none;
+      background: #7c3aed;
+      border: 1px solid #a78bfa;
+      color: #ffffff;
+      font: inherit;
+      font-size: 12.5px;
+      font-weight: 800;
+      padding: 7px 14px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-send:hover {
+      background: #6d28d9;
+    }
+
+    .btn-ctrl {
+      appearance: none;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #f8fafc;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 11px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-ctrl:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    /* ===== RIGHT WHITE THOUGHT-LOG & INSPECTOR SIDEBAR ===== */
+    .sidebar {
+      background: #ffffff;
+      color: #0f172a;
+      border-left: 4px solid #7c3aed;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .sidebar-head {
+      background: #09213a;
+      color: #ffffff;
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .step-counter {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #c4b5fd;
+    }
+
+    .sidebar-head h2 {
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-top: 3px;
+    }
+
+    /* Current Active Step Focus Card */
+    .active-thought-card {
+      background: #faf8ff;
+      border-bottom: 1px solid #d5dde5;
+      padding: 15px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .active-thought-card.is-loop {
+      background: #fff5f5;
+      border-bottom-color: #fecaca;
+    }
+
+    .active-thought-card.is-done {
+      background: #f0fdf4;
+      border-bottom-color: #bbf7d0;
+    }
+
+    .thought-pill-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .node-badge {
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      background: #ede9fe;
+      color: #5b21b6;
+    }
+
+    .node-badge.loop {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .node-badge.done {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .home-code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11px;
+      color: #475569;
+      font-weight: 700;
+    }
+
+    .thought-bubble {
+      font-size: 13px;
+      line-height: 1.52;
+      color: #1e293b;
+    }
+
+    /* Timeline Feed of all steps */
+    .timeline-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .timeline-label {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #64748b;
+      margin-bottom: 2px;
+    }
+
+    .tl-item {
+      appearance: none;
+      text-align: left;
+      font: inherit;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 3px solid #cbd5e1;
+      padding: 9px 11px;
+      cursor: pointer;
+      opacity: 0.48;
+      transition: opacity 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .tl-item.reached {
+      opacity: 0.88;
+      border-left-color: #09213a;
+    }
+
+    .tl-item.current {
+      opacity: 1;
+      background: #ffffff;
+      border-color: #7c3aed;
+      border-left: 4px solid #7c3aed;
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.12);
+    }
+
+    .tl-item.loop-step.reached,
+    .tl-item.loop-step.current {
+      border-left-color: #dc2626;
+    }
+
+    .tl-item.done-step.current {
+      border-left-color: #15803d;
+    }
+
+    .tl-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+
+    .tl-title {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #09213a;
+      margin-top: 2px;
+      display: block;
+    }
+
+    .tl-sub {
+      font-size: 11.5px;
+      color: #475569;
+      margin-top: 2px;
+      display: block;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <!-- LEFT INTERACTIVE ECOSYSTEM GRAPH -->
+  <div class="stage">
+    <canvas id="sim-canvas"></canvas>
+
+    <div class="stage-top">
+      <div class="glass-panel brand-row">
+        <div>
+          <h1>⚡ Live Agent-Simulator: Följ tanke- &amp; verktygspulsen steg för steg</h1>
+          <p>Skicka en fråga nedan för att se hur pulsen färdas genom AGENTS.md, Skills, Kunskapsgraf, MCP, Skript och Verifieringsloopen</p>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:8px; pointer-events:auto;">
+        <a href="./floden.html" class="back-btn">Visuella Flöden</a>
+        <a href="./presentation.html" class="back-btn">← Huvudpresentationen</a>
+      </div>
+    </div>
+
+    <div class="stage-bottom">
+      <div class="scenario-bar" role="group" aria-label="Välj färdigt konsultscenario">
+        <div class="scen-chips">
+          <span class="scen-label">Välj scenario:</span>
+          <button type="button" class="scen-btn active" data-scen="0">
+            1. Försening &amp; Vitesrisk (Graf + Skript + Loop)
+          </button>
+          <button type="button" class="scen-btn" data-scen="1">
+            2. Grilla mitt styrgruppsutkast (Skills + Subagent)
+          </button>
+          <button type="button" class="scen-btn" data-scen="2">
+            3. Mejl från revisor → Atlas &amp; Kalender (MCP)
+          </button>
+        </div>
+      </div>
+
+      <div class="control-bar">
+        <form class="prompt-form" id="prompt-form">
+          <input
+            type="text"
+            id="prompt-input"
+            class="prompt-input"
+            aria-label="Prompt att skicka genom agent-ekosystemet"
+            value="Erik är sjuk i 2 veckor – vad får det för konsekvens för utrullningen och budgeten?"
+          />
+          <button type="submit" class="btn-send">▶ Skicka Prompt</button>
+        </form>
+
+        <div class="ctrl-btns">
+          <button type="button" class="btn-ctrl" id="btn-play-pause">⏸ Pausa</button>
+          <button type="button" class="btn-ctrl" id="btn-prev">⏮ Bakåt</button>
+          <button type="button" class="btn-ctrl" id="btn-next">⏭ Nästa steg</button>
+          <button type="button" class="btn-ctrl" id="btn-speed">Fart: Lugn</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT LIVE THOUGHT LOG & INSPECTOR -->
+  <aside class="sidebar" aria-live="polite">
+    <div class="sidebar-head">
+      <span class="step-counter" id="side-counter">STEG 1 AV 9</span>
+      <h2 id="side-headline">Startar uppdraget…</h2>
+    </div>
+
+    <div class="active-thought-card" id="thought-card">
+      <div class="thought-pill-row">
+        <span class="node-badge" id="side-badge">AKTIV NOD</span>
+        <span class="home-code" id="side-home">Chattpanelen</span>
+      </div>
+      <p class="thought-bubble" id="side-thought"></p>
+    </div>
+
+    <div class="timeline-scroll">
+      <div class="timeline-label">Klickbar tanke- &amp; pulslogg (steg för steg):</div>
+      <div id="timeline-list" style="display:flex; flex-direction:column; gap:7px;"></div>
+    </div>
+  </aside>
+
+  <script>
+    (() => {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // ===== 1. ALL ECOSYSTEM NODES ON THE CANVAS (Normalized coordinates around center 0,0) =====
+      const BASE_NODES = [
+        {
+          id: 'user',
+          label: '👤 Du (Prompt)',
+          sub: 'Startar frågan',
+          home: 'Chatt / Röst i Antigravity',
+          color: '#15803d',
+          r: 22,
+          nx: -0.40,
+          ny: 0.0,
+          desc: 'Konsulten eller projektledaren skickar en fråga eller ett mål i arbetsytan.'
+        },
+        {
+          id: 'agents-md',
+          label: '📜 AGENTS.md',
+          sub: 'Lagboken (Alltid på)',
+          home: '/AGENTS.md (i roten)',
+          color: '#dc2626',
+          r: 21,
+          nx: -0.22,
+          ny: -0.28,
+          desc: 'Projektets stående spelregler: källkrav, förbud mot gissningar och förbud mot huvudräkning.'
+        },
+        {
+          id: 'engine',
+          label: '🧠 Agent-Motorn',
+          sub: 'Tänker & Orkestrerar',
+          home: 'AI-Modellen i Antigravity',
+          color: '#7c3aed',
+          r: 30,
+          nx: -0.04,
+          ny: 0.0,
+          desc: 'Hjärnan i mitten: planerar steg, väljer rätt Skill, hämtar fakta och rättar sig själv vid fel.'
+        },
+        {
+          id: 'skills',
+          label: '📘 Skills (SKILL.md)',
+          sub: 'Metodboken vid behov',
+          home: '/.agents/skills/*/SKILL.md',
+          color: '#8b5cf6',
+          r: 21,
+          nx: -0.20,
+          ny: 0.30,
+          desc: 'Färdiga arbetsmallar (t.ex. go-live-readiness, styrgrupps-grillare, atlas-coach) som laddas på begäran.'
+        },
+        {
+          id: 'kg',
+          label: '🕸️ Kunskapsgraf',
+          sub: 'Atlas & Beroendekedjor',
+          home: '/docs/ → /graphify-out/',
+          color: '#0d9488',
+          r: 23,
+          nx: 0.16,
+          ny: -0.31,
+          desc: 'Kartan som ser hur personer, system, avtal, bolag och datum hänger ihop i flera led.'
+        },
+        {
+          id: 'kg-chain',
+          label: '🔗 Kedja: Erik → API → Vite',
+          sub: '4 länkade noder i grafen',
+          home: 'graph.html (Dominoeffekt)',
+          color: '#14b8a6',
+          r: 16,
+          nx: 0.37,
+          ny: -0.35,
+          desc: 'Underkluster i kunskapsgrafen: Erik → API v2.4 → Pilot Uppsala → 75 000 kr/v i SOW § 4.2.'
+        },
+        {
+          id: 'rag',
+          label: '🔍 Företags-RAG',
+          sub: 'Textsök i policys',
+          home: 'Intranät / Sökindex',
+          color: '#64748b',
+          r: 17,
+          nx: -0.02,
+          ny: -0.36,
+          desc: 'Klassisk ordsökning – bra för enskilda policydokument men räcker inte för flerstegsberoenden.'
+        },
+        {
+          id: 'mcp',
+          label: '🔌 MCP-Koppling',
+          sub: 'Jira · Gmail · Kalender',
+          home: 'mcp_config.json',
+          color: '#0284c7',
+          r: 21,
+          nx: 0.22,
+          ny: -0.06,
+          desc: 'Säker standardkontakt (”USB-C för AI”) mot externa system som Jira, Gmail, Kalender och databaser.'
+        },
+        {
+          id: 'script',
+          label: '🐍 Python-Skript',
+          sub: '100 % exakt matematik',
+          home: 'Lokal sandlådekörning',
+          color: '#d97706',
+          r: 20,
+          nx: 0.17,
+          ny: 0.28,
+          desc: 'Kör deterministisk uträkning på Excel/CSV och kronsummor så språkmodellen aldrig huvudräknar.'
+        },
+        {
+          id: 'subagent',
+          label: '🕵️ Läs-Subagent',
+          sub: 'Oberoende Kritiker',
+          home: '/.agents/agents/*.md',
+          color: '#db2777',
+          r: 20,
+          nx: -0.01,
+          ny: 0.34,
+          desc: 'Separat specialistagent med helt blankt minne (t.ex. CFO/CISO/Revisor) som synar utkastet utan hemmablindhet.'
+        },
+        {
+          id: 'hooks',
+          label: '🛡️ Hooks & Kvalitetsvakt',
+          sub: 'Stoppar gissning & fel',
+          home: '/.agents/hooks.json',
+          color: '#ea580c',
+          r: 23,
+          nx: 0.33,
+          ny: 0.14,
+          desc: 'Sista säkerhetsbältet: om källa saknas, summa diffar eller godkännande krävs skickas pulsen TILLBAKA i loop!'
+        },
+        {
+          id: 'output',
+          label: '✅ Verifierad Leverans',
+          sub: 'Beslutsunderlag till dig',
+          home: 'Klar rapport / Klickbar vy',
+          color: '#16a34a',
+          r: 23,
+          nx: 0.43,
+          ny: -0.06,
+          desc: '100 % källhänvisat och kontrollräknat underlag – redo för ditt mänskliga affärsbeslut.'
+        }
+      ];
+
+      // Structural background edges always faintly visible
+      const STRUCTURAL_EDGES = [
+        ['user', 'engine'],
+        ['agents-md', 'engine'],
+        ['engine', 'skills'],
+        ['engine', 'rag'],
+        ['engine', 'kg'],
+        ['kg', 'kg-chain'],
+        ['engine', 'mcp'],
+        ['engine', 'script'],
+        ['engine', 'subagent'],
+        ['engine', 'hooks'],
+        ['script', 'hooks'],
+        ['subagent', 'hooks'],
+        ['mcp', 'hooks'],
+        ['hooks', 'engine'],
+        ['hooks', 'output']
+      ];
+
+      // ===== 2. THREE RICH SIMULATION SCENARIOS (STEP-BY-STEP PULSES + RETRY LOOPS!) =====
+      const SCENARIOS = [
+        {
+          prompt: 'Erik är sjuk i 2 veckor – vad får det för konsekvens för utrullningen och budgeten?',
+          steps: [
+            {
+              from: 'user',
+              to: 'engine',
+              title: '1. Prompten skickas in i arbetsytan',
+              badge: '⚡ TRIGGER',
+              home: 'Chattpanelen → Agent-Motorn',
+              thought: 'Du ställer en tvärfråga om resursbortfall (Erik, 2 veckor). Agent-motorn tar emot frågan men gissar inte direkt – den startar sin styrda arbetsloop.'
+            },
+            {
+              from: 'agents-md',
+              to: 'engine',
+              title: '2. Lagboken (AGENTS.md) laddas först',
+              badge: '📜 REGLER AKTIVA',
+              home: '/AGENTS.md',
+              thought: 'Innan agenten planerar läser den lagboken: ”1) Gissa aldrig – kräv exakt källa & §. 2) Huvudräkna aldrig kronor i text – kör Python-skript.”'
+            },
+            {
+              from: 'engine',
+              to: 'skills',
+              title: '3. Öppnar rätt Skill: go-live-readiness',
+              badge: '📘 METODBOK',
+              home: '/.agents/skills/readiness/SKILL.md',
+              thought: 'Agenten ser att frågan gäller konsekvensanalys av tidplan/avtal och laddar bara in just den metodboken i minnet.'
+            },
+            {
+              from: 'engine',
+              to: 'kg',
+              title: '4. Slår i Kunskapsgrafen (istället för blind RAG)',
+              badge: '🕸️ BEROENDERÖNTGEN',
+              home: '/graphify-out/graph.json',
+              thought: 'Vanlig ordsökning (RAG) hade missat sambandet. Agenten frågar Kunskapsgrafen: ”Vilka leveranser och avtal hänger på noden Erik?”'
+            },
+            {
+              from: 'kg',
+              to: 'kg-chain',
+              title: '5. Dominokedjan tänds i 4 led i grafen!',
+              badge: '🔗 4 LED HITTADE',
+              home: 'Erik → API v2.4 → Pilot Uppsala → Vite',
+              thought: 'Grafen avslöjar hela kedjan: Erik äger API v2.4 → hårt förkrav till Pilot Uppsala → styr vitesklausul 75 000 kr/vecka i SOW § 4.2!'
+            },
+            {
+              from: 'engine',
+              to: 'mcp',
+              title: '6. Kontrollerar live-status i Jira via MCP',
+              badge: '🔌 LIVE-DATA (MCP)',
+              home: 'mcp_config.json → Jira',
+              thought: 'Agenten frågar Jira via MCP om någon redan tagit över API v2.4. Svar från Jira: Nej, ticket API-204 står som ej påbörjad på Erik.'
+            },
+            {
+              from: 'engine',
+              to: 'hooks',
+              title: '7. Första utkastet stoppas av Kvalitetsvakten!',
+              badge: '↺ LOOP! FEL HITTAT',
+              home: '/.agents/hooks.json',
+              kind: 'loop',
+              thought: 'STOPP I GRINDEN! Agenten försökte uppskatta totalkostnaden i huvudet och glömde fältteamets ombokningsavgift i Excel-arket. Hooken avvisar utkastet!'
+            },
+            {
+              from: 'hooks',
+              to: 'engine',
+              title: '8. ↺ Returpuls tillbaka in i loopen för självrättning',
+              badge: '↺ SJÄLVRÄTTNING',
+              home: 'Hooks → Agent-Motorn',
+              kind: 'loop',
+              thought: 'Pulsen studsar tillbaka till Agent-motorn med felmeddelandet: ”Kör Python-kalkyl mot utrullnings-CSV och SOW + SLA innan svar!”'
+            },
+            {
+              from: 'engine',
+              to: 'script',
+              title: '9. Python-skript räknar exakt på kronan',
+              badge: '🐍 EXAKT MATEMATIK',
+              home: 'Python-sandlåda',
+              thought: 'Skriptet summerar 2 veckors vite (2 × 75 000 kr) + fältteamets ombokningsavgift i v.46 (35 000 kr) = exakt 185 000 kr i ekonomisk exponering.'
+            },
+            {
+              from: 'script',
+              to: 'hooks',
+              title: '10. Kvalitetsvakten ger 100 % GRÖNT',
+              badge: '✓ VERIFIERAD',
+              home: '/.agents/hooks.json',
+              thought: 'Alla paragrafcitat finns med och kalkylsumman (185 000 kr) är matematiskt verifierad med 0 kr diff. Redo att släppas ut ur loopen!'
+            },
+            {
+              from: 'hooks',
+              to: 'output',
+              title: '11. Klar leverans på projektledarens bord',
+              badge: '✅ LEVERERAT',
+              home: 'Färdigt beslutsunderlag',
+              kind: 'done',
+              thought: 'Du får en skarp varning med hela bevis-kedjan (SOW § 4.2 + SLA + Jira API-204), exakt risk på 185 000 kr och två handlingsalternativ till styrgruppen!'
+            }
+          ]
+        },
+        {
+          prompt: 'Grilla mitt beslutsunderlag inför morgondagens styrgrupp så jag inte missar någon fälla!',
+          steps: [
+            {
+              from: 'user',
+              to: 'engine',
+              title: '1. Du ber agenten trycktesta ditt styrgruppsutkast',
+              badge: '⚡ TRIGGER',
+              home: 'Chattpanelen → Agent-Motorn',
+              thought: 'Kvällen före styrgrupp vill du hitta svagheterna i ditt besluts-PM innan kunden gör det.'
+            },
+            {
+              from: 'agents-md',
+              to: 'engine',
+              title: '2. AGENTS.md förbjuder snällt ”ja-sägande”',
+              badge: '📜 ANTI-YES-MAN',
+              home: '/AGENTS.md',
+              thought: 'Lagboken sätter tonen direkt: ”Var en kritisk senior sparringpartner – håll aldrig med av artighet.”'
+            },
+            {
+              from: 'engine',
+              to: 'skills',
+              title: '3. Laddar Skill: styrgrupps-grillare',
+              badge: '📘 DJÄVULENS STYRGRUPP',
+              home: '/.agents/skills/styrgrupps-grillare/SKILL.md',
+              thought: 'Skillen instruerar motorn att granska underlaget ur tre tuffa chefsperspektiv: CFO (ekonomi), CISO (GDPR/säkerhet) och pressad Linjechef.'
+            },
+            {
+              from: 'engine',
+              to: 'kg',
+              title: '4. Stämmer av mot tidigare beslut i din Atlas',
+              badge: '🕸️ ATLAS-MINNE',
+              home: '/03-uppdrag/ + Kunskapsgraf',
+              thought: 'Agenten kontrollerar i din kunskapsgraf vad styrgruppen faktiskt krävde på förra mötet så ingenting tappats bort.'
+            },
+            {
+              from: 'engine',
+              to: 'subagent',
+              title: '5. Väcker oberoende Läs-Subagent (tomt minne)',
+              badge: '🕵️ 4-ÖGON-KRITIKER',
+              home: '/.agents/agents/critic.md',
+              thought: 'En separat subagent synar planen skoningslöst och hittar två glapp: saknad reservbuffert i Q1 och otydlig GDPR-gallring.'
+            },
+            {
+              from: 'subagent',
+              to: 'hooks',
+              title: '6. Kontraktskontroll: Saknas åtgärdsförslag!',
+              badge: '↺ LOOP! KOMPLETTERA',
+              home: 'Skillens leveranskontrakt',
+              kind: 'loop',
+              thought: 'Kontrollen ser att en av riskerna saknar konkret svarsformulering inför mötet – skickar tillbaka för komplettering!'
+            },
+            {
+              from: 'hooks',
+              to: 'engine',
+              title: '7. ↺ Agenten vässar svaren i loopen',
+              badge: '↺ FÖRFINAR SVAR',
+              home: 'Hooks → Agent-Motorn',
+              kind: 'loop',
+              thought: 'Agenten lägger till exakta svarsförslag på CFO:ns och CISO:ns tuffaste frågor och stämmer av timkalkylen med skript.'
+            },
+            {
+              from: 'engine',
+              to: 'output',
+              title: '8. Klar Grillningsrapport med Topp 5 motfrågor',
+              badge: '✅ REDO FÖR MÖTET',
+              home: 'Beslutskompass på 1 sida',
+              kind: 'done',
+              thought: 'Du kliver in i styrgruppen med stenkoll på alla svaga punkter och färdiga svar på bordet!'
+            }
+          ]
+        },
+        {
+          prompt: 'Kolla mejlet från min revisor och förbered löneunderlag + kalenderbokning utifrån min Atlas.',
+          steps: [
+            {
+              from: 'user',
+              to: 'engine',
+              title: '1. Vardagsuppdrag för ditt eget konsult-AB',
+              badge: '⚡ TRIGGER',
+              home: 'Chattpanelen → Agent-Motorn',
+              thought: 'Du ber din personliga stabschef hantera månadsrutinen med revisorn.'
+            },
+            {
+              from: 'agents-md',
+              to: 'engine',
+              title: '2. Läser säkerhets- & mejlregler i AGENTS.md',
+              badge: '📜 SÄKERHETSRAMAR',
+              home: '/AGENTS.md',
+              thought: 'Regelboken slår fast: ”Slå alltid upp kontaktuppgifter i Atlasen först – och skicka ALDRIG iväg externa mejl utan användarens OK!”'
+            },
+            {
+              from: 'engine',
+              to: 'kg',
+              title: '3. Slår upp revisor, bolag & datum i din Atlas',
+              badge: '🕸️ PERSONLIG ATLAS',
+              home: '/02-bolag/ + /04-personer/',
+              thought: 'Kunskapsgrafen kopplar direkt ihop ditt AB → Revisor Erik Berg → regeln ”löneunderlag före den 8:e” och ROT-avstämningen för fritidshuset!'
+            },
+            {
+              from: 'engine',
+              to: 'mcp',
+              title: '4. Läser mejltråden & lediga tider via Google MCP',
+              badge: '🔌 GMAIL & KALENDER MCP',
+              home: 'google-mcp (OAuth)',
+              thought: 'Via MCP hämtar agenten revisorns senaste mejl och hittar två lediga 30-minutersluckor i din kalender på torsdag (Europe/Stockholm).'
+            },
+            {
+              from: 'mcp',
+              to: 'hooks',
+              title: '5. Stoppregel slår till före skarpt mejlutskick!',
+              badge: '↺ MÄNSKLIG SPÄRR',
+              home: 'Stoppregel i AGENTS.md / Hook',
+              kind: 'loop',
+              thought: 'VIKTIGT: Eftersom åtgärden skickar mejl och kalenderkallelse till extern part stoppar grinden automatisk sändning och begär förhandsgranskning!'
+            },
+            {
+              from: 'hooks',
+              to: 'output',
+              title: '6. Färdigt mejlutkast + kalenderförslag för ditt 1-klicks OK',
+              badge: '✅ VÄNTAR PÅ DITT GO',
+              home: 'Förhandsgranskning till dig',
+              kind: 'done',
+              thought: 'Du ser det färdigskrivna svaret (inklusive påminnelsen om ROT-underlaget som Atlasen kom ihåg!) och säger bara ”Skicka”!'
+            }
+          ]
+        }
+      ];
+
+      // ===== 3. CANVAS RENDERING & PULSE PHYSICS =====
+      const canvas = document.getElementById('sim-canvas');
+      const ctx = canvas.getContext('2d');
+      let W = 900, H = 640;
+
+      const nodes = BASE_NODES.map((n) => ({ ...n, x: 0, y: 0 }));
+      const nodeMap = new Map(nodes.map((n) => [n.id, n]));
+
+      function layoutNodes() {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        W = rect.width;
+        H = rect.height;
+        canvas.width = W * devicePixelRatio;
+        canvas.height = H * devicePixelRatio;
+        ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+
+        const usableW = Math.min(W * 0.88, 1080);
+        const usableH = Math.max(260, H - 185);
+        const cx = W * 0.5;
+        const cy = H * 0.46;
+
+        for (const n of nodes) {
+          if (!n.dragged) {
+            n.x = cx + n.nx * usableW;
+            n.y = cy + n.ny * usableH;
+          }
+        }
+      }
+      window.addEventListener('resize', layoutNodes);
+      layoutNodes();
+
+      // Simulation state
+      let activeScenIdx = 0;
+      let currentSteps = SCENARIOS[0].steps;
+      let stepIdx = 0;
+      let playing = true;
+      let slowMode = true;
+      let pulseProgress = 0; // 0..1 along current edge
+      let visitedNodes = new Set(['user']);
+      let visitedEdges = new Set();
+      let selectedNode = nodeMap.get('engine');
+      let lastFrame = performance.now();
+
+      const timelineList = document.getElementById('timeline-list');
+      const playPauseBtn = document.getElementById('btn-play-pause');
+      const speedBtn = document.getElementById('btn-speed');
+      const promptInput = document.getElementById('prompt-input');
+
+      function rebuildVisitedUpTo(idx) {
+        visitedNodes = new Set(['user']);
+        visitedEdges = new Set();
+        for (let i = 0; i <= idx && i < currentSteps.length; i++) {
+          const st = currentSteps[i];
+          visitedNodes.add(st.from);
+          if (i < idx || pulseProgress > 0.7) visitedNodes.add(st.to);
+          visitedEdges.add(`${st.from}->${st.to}`);
+        }
+      }
+
+      function renderRightPanel() {
+        const st = currentSteps[stepIdx];
+        if (!st) return;
+        document.getElementById('side-counter').textContent = `STEG ${stepIdx + 1} AV ${currentSteps.length}`;
+        document.getElementById('side-headline').textContent = st.title;
+
+        const card = document.getElementById('thought-card');
+        const badge = document.getElementById('side-badge');
+        card.className =
+          'active-thought-card' +
+          (st.kind === 'loop' ? ' is-loop' : st.kind === 'done' ? ' is-done' : '');
+        badge.className =
+          'node-badge' + (st.kind === 'loop' ? ' loop' : st.kind === 'done' ? ' done' : '');
+        badge.textContent = st.badge;
+        document.getElementById('side-home').textContent = st.home;
+        document.getElementById('side-thought').textContent = st.thought;
+
+        timelineList.innerHTML = '';
+        currentSteps.forEach((s, i) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className =
+            'tl-item' +
+            (i < stepIdx ? ' reached' : '') +
+            (i === stepIdx ? ' current' : '') +
+            (s.kind === 'loop' ? ' loop-step' : '') +
+            (s.kind === 'done' ? ' done-step' : '');
+          btn.innerHTML = `
+            <div class="tl-top"><span>${s.badge}</span><span>${s.home}</span></div>
+            <span class="tl-title">${s.title}</span>
+            <span class="tl-sub">${s.thought}</span>
+          `;
+          btn.addEventListener('click', () => {
+            playing = false;
+            updatePlayBtn();
+            stepIdx = i;
+            pulseProgress = 1;
+            rebuildVisitedUpTo(stepIdx);
+            renderRightPanel();
+          });
+          timelineList.appendChild(btn);
+          if (i === stepIdx) {
+            btn.scrollIntoView({ block: 'nearest' });
+          }
+        });
+      }
+
+      function updatePlayBtn() {
+        playPauseBtn.textContent = playing ? '⏸ Pausa' : '▶ Spela';
+      }
+
+      function startScenario(idx, customPromptText) {
+        activeScenIdx = idx;
+        const base = SCENARIOS[idx] || SCENARIOS[0];
+        if (customPromptText) {
+          currentSteps = base.steps.map((s, i) =>
+            i === 0
+              ? {
+                  ...s,
+                  thought: `Du skickade prompten: ”${customPromptText}”. Agent-motorn tar emot uppdraget och startar sin styrda arbetsloop.`
+                }
+              : s
+          );
+        } else {
+          currentSteps = base.steps;
+          promptInput.value = base.prompt;
+        }
+        stepIdx = 0;
+        pulseProgress = prefersReducedMotion ? 1 : 0;
+        playing = true;
+        updatePlayBtn();
+        rebuildVisitedUpTo(0);
+        renderRightPanel();
+
+        document.querySelectorAll('.scen-btn').forEach((b) => {
+          b.classList.toggle('active', Number(b.getAttribute('data-scen')) === idx);
+        });
+      }
+
+      document.querySelectorAll('.scen-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          startScenario(Number(btn.getAttribute('data-scen')));
+        });
+      });
+
+      document.getElementById('prompt-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const val = promptInput.value.trim();
+        // Match best scenario by keyword if user typed custom prompt
+        let targetIdx = activeScenIdx;
+        const low = val.toLowerCase();
+        if (low.includes('mejl') || low.includes('revisor') || low.includes('kalender') || low.includes('dns')) {
+          targetIdx = 2;
+        } else if (low.includes('grilla') || low.includes('styrgrupp') || low.includes('utkast')) {
+          targetIdx = 1;
+        } else if (low.includes('vite') || low.includes('sjuk') || low.includes('utrullning') || low.includes('budget')) {
+          targetIdx = 0;
+        }
+        startScenario(targetIdx, val || undefined);
+      });
+
+      playPauseBtn.addEventListener('click', () => {
+        if (!playing && stepIdx >= currentSteps.length - 1 && pulseProgress >= 1) {
+          stepIdx = 0;
+          pulseProgress = 0;
+        }
+        playing = !playing;
+        updatePlayBtn();
+      });
+
+      document.getElementById('btn-next').addEventListener('click', () => {
+        playing = false;
+        updatePlayBtn();
+        if (stepIdx < currentSteps.length - 1) stepIdx++;
+        pulseProgress = 1;
+        rebuildVisitedUpTo(stepIdx);
+        renderRightPanel();
+      });
+
+      document.getElementById('btn-prev').addEventListener('click', () => {
+        playing = false;
+        updatePlayBtn();
+        if (stepIdx > 0) stepIdx--;
+        pulseProgress = 1;
+        rebuildVisitedUpTo(stepIdx);
+        renderRightPanel();
+      });
+
+      speedBtn.addEventListener('click', () => {
+        slowMode = !slowMode;
+        speedBtn.textContent = slowMode ? 'Fart: Lugn' : 'Fart: Snabb';
+      });
+
+      // Dragging & Clicking nodes on canvas
+      let draggingNode = null;
+      function hitTest(ev) {
+        const rect = canvas.getBoundingClientRect();
+        const mx = ev.clientX - rect.left;
+        const my = ev.clientY - rect.top;
+        for (let i = nodes.length - 1; i >= 0; i--) {
+          const n = nodes[i];
+          const hitR = n.r + 10;
+          if ((n.x - mx) ** 2 + (n.y - my) ** 2 <= hitR * hitR) return n;
+        }
+        return null;
+      }
+
+      canvas.addEventListener('pointerdown', (ev) => {
+        const n = hitTest(ev);
+        if (n) {
+          draggingNode = n;
+          selectedNode = n;
+          // Show node description in top thought card if user clicks a node while paused
+          if (!playing) {
+            document.getElementById('side-badge').textContent = 'VALD KOMPONENT';
+            document.getElementById('side-home').textContent = n.home;
+            document.getElementById('side-headline').textContent = n.label;
+            document.getElementById('side-thought').textContent = n.desc;
+          }
+        }
+      });
+
+      window.addEventListener('pointermove', (ev) => {
+        if (!draggingNode) return;
+        const rect = canvas.getBoundingClientRect();
+        draggingNode.x = ev.clientX - rect.left;
+        draggingNode.y = ev.clientY - rect.top;
+        draggingNode.dragged = true;
+      });
+
+      window.addEventListener('pointerup', () => {
+        draggingNode = null;
+      });
+
+      // Animation loop
+      function drawCurvedEdge(a, b, isLoopBack) {
+        const mx = (a.x + b.x) / 2;
+        const my = (a.y + b.y) / 2 + (isLoopBack ? 58 : 0);
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.quadraticCurveTo(mx, my, b.x, b.y);
+        ctx.stroke();
+        return { mx, my };
+      }
+
+      function pointOnQuad(a, m, b, t) {
+        const u = 1 - t;
+        return {
+          x: u * u * a.x + 2 * u * t * m.x + t * t * b.x,
+          y: u * u * a.y + 2 * u * t * m.y + t * t * b.y
+        };
+      }
+
+      function tick(now) {
+        const dt = Math.min(0.08, (now - lastFrame) / 1000);
+        lastFrame = now;
+
+        const st = currentSteps[stepIdx];
+        if (playing && st) {
+          const stepDuration = slowMode ? 3.1 : 1.55;
+          pulseProgress += dt / stepDuration;
+          if (pulseProgress > 0.72) {
+            visitedNodes.add(st.to);
+          }
+          if (pulseProgress >= 1) {
+            if (stepIdx < currentSteps.length - 1) {
+              stepIdx++;
+              pulseProgress = prefersReducedMotion ? 1 : 0;
+              rebuildVisitedUpTo(stepIdx);
+              renderRightPanel();
+            } else {
+              pulseProgress = 1;
+              playing = false;
+              updatePlayBtn();
+              rebuildVisitedUpTo(stepIdx);
+              renderRightPanel();
+            }
+          }
+        }
+
+        ctx.clearRect(0, 0, W, H);
+
+        // Subtle grid dots
+        ctx.fillStyle = 'rgba(148, 163, 184, 0.11)';
+        for (let gx = 36; gx < W; gx += 38) {
+          for (let gy = 36; gy < H; gy += 38) {
+            ctx.fillRect(gx, gy, 1.5, 1.5);
+          }
+        }
+
+        // 1. Draw structural background edges
+        for (const [aid, bid] of STRUCTURAL_EDGES) {
+          const a = nodeMap.get(aid);
+          const b = nodeMap.get(bid);
+          if (!a || !b) continue;
+          const isLoopBack = aid === 'hooks' && bid === 'engine';
+          const wasUsed = visitedEdges.has(`${aid}->${bid}`) || visitedEdges.has(`${bid}->${aid}`);
+
+          ctx.save();
+          if (isLoopBack) ctx.setLineDash([5, 5]);
+          ctx.lineWidth = wasUsed ? 2.2 : 1.2;
+          ctx.strokeStyle = isLoopBack
+            ? wasUsed
+              ? 'rgba(248, 113, 113, 0.7)'
+              : 'rgba(248, 113, 113, 0.22)'
+            : wasUsed
+              ? 'rgba(196, 181, 253, 0.58)'
+              : 'rgba(148, 163, 184, 0.18)';
+          drawCurvedEdge(a, b, isLoopBack);
+          ctx.restore();
+        }
+
+        // 2. Draw active pulse & glowing beam for current step
+        if (st) {
+          const a = nodeMap.get(st.from);
+          const b = nodeMap.get(st.to);
+          if (a && b) {
+            const isLoop = st.kind === 'loop';
+            const isLoopCurve = st.from === 'hooks' && st.to === 'engine';
+            const beamColor = isLoop ? '#fb7185' : st.kind === 'done' ? '#4ade80' : '#c4b5fd';
+
+            ctx.save();
+            ctx.lineWidth = 3.5;
+            ctx.strokeStyle = beamColor;
+            ctx.shadowColor = beamColor;
+            ctx.shadowBlur = 12;
+            const ctrl = drawCurvedEdge(a, b, isLoopCurve);
+            ctx.restore();
+
+            if (!prefersReducedMotion) {
+              const t = Math.min(1, pulseProgress * 1.15);
+              const pt = pointOnQuad(a, { x: ctrl.mx, y: ctrl.my }, b, t);
+
+              // Trailing glow orb
+              const grad = ctx.createRadialGradient(pt.x, pt.y, 2, pt.x, pt.y, 22);
+              grad.addColorStop(0, '#ffffff');
+              grad.addColorStop(0.35, beamColor);
+              grad.addColorStop(1, 'rgba(124, 58, 237, 0)');
+              ctx.fillStyle = grad;
+              ctx.beginPath();
+              ctx.arc(pt.x, pt.y, 22, 0, Math.PI * 2);
+              ctx.fill();
+
+              ctx.fillStyle = '#ffffff';
+              ctx.beginPath();
+              ctx.arc(pt.x, pt.y, 5.5, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+        }
+
+        // 3. Draw nodes
+        for (const n of nodes) {
+          const isCurrentTarget = st && (st.to === n.id || st.from === n.id);
+          const isReached = visitedNodes.has(n.id);
+
+          ctx.save();
+          if (isCurrentTarget) {
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, n.r + 9, 0, Math.PI * 2);
+            ctx.fillStyle = st.kind === 'loop' ? 'rgba(244, 63, 94, 0.25)' : 'rgba(167, 139, 250, 0.28)';
+            ctx.fill();
+          }
+
+          ctx.globalAlpha = isReached || isCurrentTarget ? 1 : 0.42;
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+          ctx.fillStyle = n.color;
+          ctx.fill();
+
+          ctx.lineWidth = isCurrentTarget ? 3.5 : n === selectedNode ? 2.5 : 1.5;
+          ctx.strokeStyle = isCurrentTarget ? '#ffffff' : 'rgba(255, 255, 255, 0.65)';
+          ctx.stroke();
+
+          // Label pill below node
+          ctx.globalAlpha = isReached || isCurrentTarget ? 1 : 0.62;
+          ctx.font = '800 12px Manrope, -apple-system, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillStyle = '#ffffff';
+          ctx.fillText(n.label, n.x, n.y + n.r + 16);
+
+          ctx.font = '600 10.5px Manrope, -apple-system, sans-serif';
+          ctx.fillStyle = '#cbd5e1';
+          ctx.fillText(n.sub, n.x, n.y + n.r + 30);
+          ctx.restore();
+        }
+
+        requestAnimationFrame(tick);
+      }
+
+      startScenario(0);
+      requestAnimationFrame(tick);
+    })();
+  </script>
+</body>
+</html>
