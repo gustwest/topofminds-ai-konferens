@@ -1,0 +1,2603 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visuella Flöden, Triggers &amp; Loopar – AI-Agenter i Praktiken | Top of Minds</title>
+  <style>
+    @font-face {
+      font-family: 'Manrope';
+      src: local('Manrope'), url('./fonts/Manrope-VariableFont_wght.ttf') format('truetype');
+      font-weight: 200 800;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --tom-background: #f1f4f6;
+      --tom-surface-alt: #e7edf2;
+      --tom-foreground: #0f172a;
+      --tom-card: #ffffff;
+      --tom-primary: #09213a;
+      --tom-primary-deep: #061729;
+      --tom-primary-foreground: #f8fafc;
+      --tom-muted-foreground: #526071;
+      --tom-purple: #7c3aed;
+      --tom-purple-hover: #6d28d9;
+      --tom-purple-soft: rgb(124 58 237 / 0.10);
+      --tom-border: #d5dde5;
+      --tom-success: #15803d;
+      --tom-success-soft: #dcfce7;
+      --tom-warning: #b45309;
+      --tom-warning-soft: #fef3c7;
+      --tom-danger: #dc2626;
+      --tom-danger-soft: #fee2e2;
+      --tom-cloud: #0369a1;
+      --tom-cloud-soft: #e0f2fe;
+      --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: clip;
+      font-family: var(--font-sans);
+      background: var(--tom-background);
+      color: var(--tom-foreground);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    body {
+      min-block-size: 100dvb;
+      display: flex;
+      flex-direction: column;
+    }
+
+    section[id] {
+      scroll-margin-block-start: 4.75rem;
+    }
+
+    :where(a:any-link, button, summary, [tabindex="0"]):focus-visible {
+      outline: 3px solid var(--tom-purple);
+      outline-offset: 3px;
+    }
+
+    /* ===== STICKY HEADER ===== */
+    .site-header {
+      position: sticky;
+      inset-block-start: 0;
+      z-index: 40;
+      background: var(--tom-primary);
+      border-block-end: 1px solid rgb(248 250 252 / 0.14);
+    }
+
+    .container {
+      width: min(1320px, 100% - 3rem);
+      margin-inline: auto;
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        width: min(1320px, 100% - 1.5rem);
+      }
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-block-size: 4.25rem;
+      padding-block: 0.5rem;
+    }
+
+    .brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+      color: var(--tom-primary-foreground);
+      flex-shrink: 0;
+    }
+
+    .brand-logo {
+      block-size: 2rem;
+      inline-size: auto;
+      display: block;
+    }
+
+    .brand-divider {
+      inline-size: 1px;
+      block-size: 1.35rem;
+      background: rgb(248 250 252 / 0.24);
+    }
+
+    .brand-tag {
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #ddd6fe;
+    }
+
+    .primary-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .nav-link {
+      color: rgb(248 250 252 / 0.8);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.45rem 0.75rem;
+      white-space: nowrap;
+      border-block-end: 2px solid transparent;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.is-active {
+      color: #ffffff;
+      border-block-end-color: #a78bfa;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-shrink: 0;
+    }
+
+    .btn-ghost-light {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 0.9rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-decoration: none;
+      border: 1px solid rgb(248 250 252 / 0.28);
+      background: rgb(248 250 252 / 0.06);
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-ghost-light:hover {
+      background: rgb(248 250 252 / 0.14);
+      border-color: #ffffff;
+    }
+
+    /* ===== HERO & LEGEND ===== */
+    .hero {
+      background: var(--tom-primary);
+      color: var(--tom-primary-foreground);
+      padding-block: 3.5rem 3rem;
+      border-block-end: 4px solid var(--tom-purple);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-block-end: 0.6rem;
+    }
+
+    .eyebrow-light {
+      color: #c4b5fd;
+    }
+
+    .eyebrow-purple {
+      color: var(--tom-purple);
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 3.6vw, 2.9rem);
+      font-weight: 800;
+      line-height: 1.14;
+      max-inline-size: 26ch;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: #c4b5fd;
+    }
+
+    .hero-lead {
+      margin-block-start: 0.9rem;
+      font-size: 1.04rem;
+      color: rgb(248 250 252 / 0.86);
+      max-inline-size: 72ch;
+    }
+
+    /* Legend strip showing "Var lever delen?" + Loop symbol */
+    .legend-bar {
+      margin-block-start: 2rem;
+      background: rgb(248 250 252 / 0.07);
+      border: 1px solid rgb(248 250 252 / 0.18);
+      padding: 1.1rem 1.35rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.85rem 1.5rem;
+    }
+
+    .legend-title {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #ddd6fe;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #f8fafc;
+    }
+
+    .home-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 0.22rem 0.55rem;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .home-folder {
+      background: #e2e8f0;
+      color: #09213a;
+    }
+
+    .home-engine {
+      background: #ede9fe;
+      color: #5b21b6;
+    }
+
+    .home-cloud {
+      background: var(--tom-cloud-soft);
+      color: var(--tom-cloud);
+    }
+
+    .home-human {
+      background: var(--tom-success-soft);
+      color: var(--tom-success);
+    }
+
+    .home-loop {
+      background: var(--tom-warning-soft);
+      color: var(--tom-warning);
+    }
+
+    /* ===== AIRY SECTION LAYOUT ===== */
+    .flow-section {
+      padding-block: 4.5rem;
+      border-block-end: 1px solid var(--tom-border);
+    }
+
+    .flow-section.alt-bg {
+      background: var(--tom-surface-alt);
+    }
+
+    .section-head {
+      margin-block-end: 2.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .section-head h2 {
+      font-size: clamp(1.55rem, 2.5vw, 2.1rem);
+      font-weight: 800;
+      line-height: 1.2;
+      color: var(--tom-primary);
+    }
+
+    .section-head p {
+      margin-block-start: 0.45rem;
+      font-size: 0.98rem;
+      color: var(--tom-muted-foreground);
+      max-inline-size: 72ch;
+    }
+
+    .click-hint {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--tom-purple);
+      background: var(--tom-purple-soft);
+      border: 1px solid rgb(124 58 237 / 0.25);
+      padding: 0.45rem 0.85rem;
+      white-space: nowrap;
+    }
+
+    /* ===== SCENARIO TABS ===== */
+    .scenario-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-block-end: 1.75rem;
+    }
+
+    .scen-tab {
+      appearance: none;
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+      padding: 0.7rem 1.15rem;
+      font: inherit;
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: var(--tom-primary);
+      cursor: pointer;
+      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .scen-tab:hover {
+      border-color: var(--tom-purple);
+    }
+
+    .scen-tab[aria-selected="true"] {
+      background: var(--tom-primary);
+      border-color: var(--tom-primary);
+      color: #ffffff;
+      box-shadow: inset 0 -3px 0 #a78bfa;
+    }
+
+    /* ===== GRAPHICAL FLOW LANES & STAGE ===== */
+    .flow-board {
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+      padding: 2.25rem;
+      box-shadow: 0 12px 32px rgb(9 33 58 / 0.05);
+    }
+
+    @media (max-width: 768px) {
+      .flow-board {
+        padding: 1.25rem;
+      }
+    }
+
+    .flow-caption-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding-block-end: 1.35rem;
+      margin-block-end: 1.75rem;
+      border-block-end: 1px solid var(--tom-border);
+    }
+
+    .flow-caption-bar strong {
+      font-size: 1.02rem;
+      color: var(--tom-primary);
+    }
+
+    .flow-caption-bar span {
+      font-size: 0.83rem;
+      color: var(--tom-muted-foreground);
+    }
+
+    /* Horizontal airy flow pipeline */
+    .flow-track {
+      display: flex;
+      align-items: stretch;
+      gap: 0.75rem;
+    }
+
+    @media (max-width: 1080px) {
+      .flow-track {
+        flex-direction: column;
+      }
+    }
+
+    /* Interactive Flow Step Card */
+    .f-node {
+      appearance: none;
+      text-align: start;
+      font: inherit;
+      color: inherit;
+      flex: 1 1 0;
+      background: #ffffff;
+      border: 1.5px solid var(--tom-border);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.85rem;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+    }
+
+    .f-node:hover {
+      border-color: var(--tom-purple);
+      box-shadow: 0 10px 24px rgb(124 58 237 / 0.12);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .f-node:hover {
+        transform: translateY(-2px);
+      }
+    }
+
+    .f-node.tone-trigger {
+      border-inline-start: 5px solid var(--tom-primary);
+      background: #f8fafc;
+    }
+
+    .f-node.tone-engine {
+      border-inline-start: 5px solid var(--tom-purple);
+    }
+
+    .f-node.tone-gate {
+      border-inline-start: 5px solid var(--tom-warning);
+      background: #fffdf7;
+    }
+
+    .f-node.tone-deliver {
+      border-inline-start: 5px solid var(--tom-success);
+      background: #f6fef9;
+    }
+
+    .f-node-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .f-role-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--tom-muted-foreground);
+    }
+
+    .f-more-dot {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--tom-purple);
+    }
+
+    .f-title {
+      font-size: 1rem;
+      font-weight: 800;
+      line-height: 1.3;
+      color: var(--tom-primary);
+      display: block;
+      margin-block-top: 0.2rem;
+    }
+
+    .f-desc {
+      font-size: 0.82rem;
+      color: var(--tom-muted-foreground);
+      line-height: 1.48;
+      display: block;
+      margin-block-start: 0.35rem;
+    }
+
+    .f-foot {
+      padding-block-start: 0.7rem;
+      border-block-start: 1px dashed var(--tom-border);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.4rem;
+    }
+
+    /* Connector Arrow between steps */
+    .f-arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 3.2rem;
+      color: var(--tom-primary);
+      gap: 0.2rem;
+      user-select: none;
+    }
+
+    .f-arrow-line {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--tom-purple);
+      line-height: 1;
+    }
+
+    .f-arrow-label {
+      font-size: 0.67rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--tom-muted-foreground);
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    @media (max-width: 1080px) {
+      .f-arrow {
+        flex: 0 0 auto;
+        padding-block: 0.25rem;
+      }
+      .f-arrow-line {
+        transform: rotate(90deg);
+      }
+    }
+
+    /* ===== VISUAL FEEDBACK / VERIFICATION LOOP ZONE ===== */
+    .loop-zone {
+      flex: 2.2 1 0;
+      border: 2px dashed var(--tom-purple);
+      background: rgb(124 58 237 / 0.035);
+      padding: 1.4rem 1.25rem 1.15rem;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0.95rem;
+    }
+
+    .loop-badge {
+      position: absolute;
+      inset-block-start: -0.78rem;
+      inset-inline-start: 1rem;
+      background: var(--tom-purple);
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.7rem;
+    }
+
+    .loop-steps-row {
+      display: flex;
+      align-items: stretch;
+      gap: 0.65rem;
+    }
+
+    @media (max-width: 900px) {
+      .loop-steps-row {
+        flex-direction: column;
+      }
+    }
+
+    .loop-return-bar {
+      background: #ffffff;
+      border: 1px solid rgb(220 38 38 / 0.32);
+      border-inline-start: 4px solid var(--tom-danger);
+      padding: 0.55rem 0.9rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      font-size: 0.79rem;
+    }
+
+    .loop-return-bar strong {
+      color: #991b1b;
+      font-weight: 800;
+    }
+
+    .loop-pass-pill {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--tom-success);
+      background: var(--tom-success-soft);
+      padding: 0.18rem 0.55rem;
+    }
+
+    /* ===== STACKED COMPARISON LANES (SECTION 01) ===== */
+    .lanes-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .lane-card {
+      background: var(--tom-background);
+      border: 1px solid var(--tom-border);
+      padding: 1.35rem;
+    }
+
+    .lane-label {
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--tom-primary);
+      margin-block-end: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    /* ===== CONTEXT INPUTS FEEDING INTO ENGINE (SECTION 02) ===== */
+    .supply-shelf {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.9rem;
+      margin-block-end: 1.15rem;
+    }
+
+    @media (max-width: 960px) {
+      .supply-shelf {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 580px) {
+      .supply-shelf {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .down-connectors {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      text-align: center;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--tom-purple);
+      margin-block-end: 1.15rem;
+    }
+
+    @media (max-width: 960px) {
+      .down-connectors {
+        display: none;
+      }
+    }
+
+    /* ===== FOOTER ===== */
+    .site-footer {
+      margin-block-start: auto;
+      background: var(--tom-primary);
+      color: rgb(248 250 252 / 0.78);
+      padding-block: 2rem;
+      font-size: 0.82rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    /* ===== NATIVE SLIDE-OVER DETAIL DIALOG ===== */
+    dialog#detail-dialog {
+      margin: 0 0 0 auto;
+      inline-size: min(36rem, 100vw);
+      max-block-size: 100dvb;
+      block-size: 100dvb;
+      border: 0;
+      border-inline-start: 4px solid var(--tom-purple);
+      background: var(--tom-card);
+      color: var(--tom-foreground);
+      padding: 0;
+      box-shadow: -16px 0 48px rgb(9 33 58 / 0.26);
+    }
+
+    dialog#detail-dialog[open] {
+      display: flex;
+      flex-direction: column;
+    }
+
+    dialog#detail-dialog:modal {
+      overscroll-behavior: contain;
+    }
+
+    dialog#detail-dialog::backdrop {
+      background: rgb(9 33 58 / 0.55);
+      overflow: hidden;
+      overscroll-behavior: contain;
+    }
+
+    .drawer-header {
+      background: var(--tom-primary);
+      color: #ffffff;
+      padding: 1.5rem 1.75rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .drawer-header h3 {
+      font-size: 1.28rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-block-start: 0.25rem;
+    }
+
+    .drawer-close {
+      appearance: none;
+      background: rgb(248 250 252 / 0.12);
+      border: 1px solid rgb(248 250 252 / 0.28);
+      color: #ffffff;
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 0.45rem 0.85rem;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .drawer-close:hover {
+      background: var(--tom-purple);
+      border-color: var(--tom-purple);
+    }
+
+    .drawer-body {
+      padding: 1.75rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.85rem;
+    }
+
+    @media (max-width: 520px) {
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .meta-box {
+      background: var(--tom-background);
+      border: 1px solid var(--tom-border);
+      padding: 0.9rem 1rem;
+    }
+
+    .meta-box-label {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--tom-muted-foreground);
+      display: block;
+    }
+
+    .meta-box-val {
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: var(--tom-primary);
+      display: block;
+      margin-block-start: 0.2rem;
+    }
+
+    .drawer-section h4 {
+      font-size: 0.84rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--tom-purple);
+      margin-block-end: 0.45rem;
+    }
+
+    .drawer-section p {
+      font-size: 0.92rem;
+      color: var(--tom-foreground);
+      line-height: 1.6;
+    }
+
+    .drawer-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .drawer-list li {
+      display: grid;
+      grid-template-columns: 1.25rem minmax(0, 1fr);
+      gap: 0.45rem;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    .drawer-code {
+      background: var(--tom-primary);
+      color: #f8fafc;
+      padding: 1rem 1.15rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      line-height: 1.55;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand-link" href="#top">
+        <img class="brand-logo" src="data:image/png;base64,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" width="170" height="55" alt="Top of Minds – Part of Digia Group">
+        <span class="brand-divider" aria-hidden="true"></span>
+        <span class="brand-tag">Visuella Flöden &amp; Loopar</span>
+      </a>
+
+      <nav class="primary-nav" aria-label="Flödessektioner">
+        <a href="#flode-01" class="nav-link is-active">01 Verktygsflöden</a>
+        <a href="#flode-02" class="nav-link">02 Agentloopen</a>
+        <a href="#flode-03" class="nav-link">03 Team &amp; Svärm</a>
+        <a href="#flode-04" class="nav-link">04 PM-Scenarios</a>
+        <a href="#flode-05" class="nav-link">05 BI-Helhetsflöde</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="./presentation.html" class="btn-ghost-light">← Huvudpresentationen</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HERO + VISUELL TECKENFÖRKLARING -->
+    <section class="hero">
+      <div class="container">
+        <span class="eyebrow eyebrow-light">Top of Minds · Visuell Flödes- &amp; Arkitekturvy</span>
+        <h1>Vad triggar vad, var allt lever – och <em>var looparna snurrar.</em></h1>
+        <p class="hero-lead">
+          Här ser du varje sektion som ett rent, luftigt flödesschema: vad som startar arbetet, i vilken miljö varje del bor, vilka steg som loopar och självrättar sig vid kontroll – och när människan tar beslut. Klicka på valfri ruta för fördjupning!
+        </p>
+
+        <div class="legend-bar" aria-label="Teckenförklaring för var respektive del lever">
+          <span class="legend-title">Var lever delen?</span>
+          <span class="legend-item"><span class="home-pill home-human">👤 Människa</span> Projektledare / Team</span>
+          <span class="legend-item"><span class="home-pill home-folder">📁 Projektmapp</span> Filer i mappen / Git</span>
+          <span class="legend-item"><span class="home-pill home-engine">🧠 AI-Motor</span> Agent / Läs-subagent</span>
+          <span class="legend-item"><span class="home-pill home-cloud">🔌 System / Moln</span> Teams, Jira, Databas</span>
+          <span class="legend-item"><span class="home-pill home-loop">↺ Loop</span> Körs om automatiskt tills 0 fel</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         SEKTION 01: VERKTYGSFLÖDEN (ENGÅNGSSVAR VS AGENTLOOP I PROJEKTMAPP)
+         ===================================================================== -->
+    <section id="flode-01" class="flow-section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow eyebrow-purple">01 · Verktygslandskapet som flöde</span>
+            <h2>Varför ett chattfönster och en mapp-agent jobbar helt olika</h2>
+            <p>Jämför de tre flödena nedan: de två översta ger ett direkt engångssvar, medan det nedersta arbetar i en kvalitetskontrollerad loop inne i er projektmapp.</p>
+          </div>
+          <span class="click-hint">Klicka på valfri ruta för detaljer →</span>
+        </div>
+
+        <div class="flow-board">
+          <div class="lanes-stack">
+            <!-- SPÅR A: CHATGPT / CLAUDE WEBB -->
+            <div class="lane-card">
+              <div class="lane-label">
+                <span>Spår A · Bollplank &amp; Research (ChatGPT / Claude i webbläsaren)</span>
+                <span>Ingen automatisk verifieringsloop mot projektmapp</span>
+              </div>
+              <div class="flow-track">
+                <button type="button" class="f-node tone-trigger" data-detail="s1-chat-trigger">
+                  <div>
+                    <div class="f-node-top">
+                      <span class="f-role-tag">⚡ Trigger</span>
+                      <span class="f-more-dot">Detaljer →</span>
+                    </div>
+                    <span class="f-title">Du klistrar in en fråga eller 1 fil</span>
+                    <span class="f-desc">Idésparring, omvärldsresearch eller textutkast.</span>
+                  </div>
+                  <div class="f-foot">
+                    <span class="home-pill home-human">👤 Konsult i webbläsare</span>
+                  </div>
+                </button>
+
+                <div class="f-arrow" aria-hidden="true">
+                  <span class="f-arrow-line">→</span>
+                  <span class="f-arrow-label">Prompt</span>
+                </div>
+
+                <button type="button" class="f-node tone-engine" data-detail="s1-chat-box">
+                  <div>
+                    <div class="f-node-top">
+                      <span class="f-role-tag">Bearbetning</span>
+                      <span class="f-more-dot">Detaljer →</span>
+                    </div>
+                    <span class="f-title">ChatGPT / Claude (Webbsandlåda)</span>
+                    <span class="f-desc">Tänker och formulerar ett svar i ett svep (eller gör Deep Research på webben).</span>
+                  </div>
+                  <div class="f-foot">
+                    <span class="home-pill home-cloud">🔌 OpenAI / Anthropic-molnet</span>
+                  </div>
+                </button>
+
+                <div class="f-arrow" aria-hidden="true">
+                  <span class="f-arrow-line">→</span>
+                  <span class="f-arrow-label">1 svar</span>
+                </div>
+
+                <button type="button" class="f-node tone-deliver" data-detail="s1-chat-out">
+                  <div>
+                    <div class="f-node-top">
+                      <span class="f-role-tag">Leverans</span>
+                      <span class="f-more-dot">Detaljer →</span>
+                    </div>
+                    <span class="f-title">Textutkast eller analys i chatten</span>
+                    <span class="f-desc">Du kopierar själv svaret vidare och ansvarar för all siffer- och källkontroll.</span>
+                  </div>
+                  <div class="f-foot">
+                    <span class="home-pill home-human">👤 Manuell kontroll</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- SPÅR B: M365 COPILOT / FÖRETAGSSÖK -->
+            <div class="lane-card">
+              <div class="lane-label">
+                <span>Spår B · Möten, Mejl &amp; Intranätsök (M365 Copilot / Gemini Enterprise)</span>
+                <span>Söker på liknande ord – ej kedjeanalys</span>
+              </div>
+              <div class="flow-track">
+                <button type="button" class="f-node tone-trigger" data-detail="s1-m365-trigger">
+                  <div>
+                    <div class="f-node-top">
+                      <span class="f-role-tag">⚡ Trigger</span>
+                      <span class="f-more-dot">Detaljer →</span>
+                    </div>
+                    <span class="f-title">Teams-möte slutar eller sökfråga</span>
+                    <span class="f-desc">”Sammanfatta mötet” eller ”Vad säger vår resepolicy?”</span>
+                  </div>
+                  <div class="f-foot">
+                    <span class="home-pill home-cloud">🔌 Teams / Outlook / Intranät</span>
+                  </div>
+                </button>
+
+                <div class="f-arrow" aria-hidden="true">
+                  <span class="f-arrow-line">→</span>
+                  <span class="f-arrow-label">Sökindex</span>
+                </div>
+
+                <button type="button" class="f-node tone-engine" data-detail="s1-m365-rag">
+                  <div>
+                    <div class="f-node-top">
+                      <span class="f-role-tag">Företags-RAG</span>
+                      <span class="f-more-dot">Detaljer →</span>
+                    </div>
+                    <span class="f-title">Hämtar 5 matchande textstycken</span>
+                    <span class="f-desc">Följer dina AD-behörigheter i SharePoint/Drive, men ritar inte ut dolda beroenden.</span>
+                  </div>
+                  <div class="f-foot">
+                    <span class="home-pill home-cloud">🔌 Microsoft Graph / Företagsindex</span>
+                  </div>
+                </button>
+
+                <div class="f-arrow" aria-hidden="true">
+                  <span class="f-arrow-line">→</span>
+                  <span class="f-arrow-label">Sammanfattar</span>
+                </div>
+
+                <button type="button" class="f-node tone-deliver" data-detail="s1-m365-out">
+                  <div>
+                    <div class="f-node-top">
+                      <span class="f-role-tag">Leverans</span>
+                      <span class="f-more-dot">Detaljer →</span>
+                    </div>
+                    <span class="f-title">Mötesnotering eller direktutkast</span>
+                    <span class="f-desc">Snabb vardagsnytta inne i Word, PowerPoint och Teams.</span>
+                  </div>
+                  <div class="f-foot">
+                    <span class="home-pill home-human">👤 Direkt i Office</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- SPÅR C: ANTIGRAVITY AGENTISK ARBETSYTA -->
+            <div class="lane-card" style="background:#faf8ff; border-color:rgb(124 58 237 / 0.35);">
+              <div class="lane-label">
+                <span style="color:var(--tom-purple);">Spår C · Agentisk Arbetsyta (Google Antigravity / Claude Code)</span>
+                <span style="color:var(--tom-purple);">Jobbar med loop &amp; skriptkontroll i hela projektmappen!</span>
+              </div>
+              <div class="flow-track">
+                <button type="button" class="f-node tone-trigger" data-detail="s1-ag-trigger">
+                  <div>
+                    <div class="f-node-top">
+                      <span class="f-role-tag">⚡ Trigger</span>
+                      <span class="f-more-dot">Detaljer →</span>
+                    </div>
+                    <span class="f-title">Uppdrag över 10–50 projektfiler</span>
+                    <span class="f-desc">Avtal, Excel-tidplaner, mötesnoteringar &amp; mallar i en mapp.</span>
+                  </div>
+                  <div class="f-foot">
+                    <span class="home-pill home-folder">📁 Din projektmapp</span>
+                  </div>
+                </button>
+
+                <div class="f-arrow" aria-hidden="true">
+                  <span class="f-arrow-line">→</span>
+                  <span class="f-arrow-label">Läser regler</span>
+                </div>
+
+                <div class="loop-zone">
+                  <span class="loop-badge">🔄 Självkontrollerande Agentloop</span>
+                  <div class="loop-steps-row">
+                    <button type="button" class="f-node tone-engine" data-detail="s1-ag-work">
+                      <div>
+                        <div class="f-node-top">
+                          <span class="f-role-tag">1. Utför med Skills</span>
+                          <span class="f-more-dot">Detaljer →</span>
+                        </div>
+                        <span class="f-title">Korsläser filer, Graf &amp; System</span>
+                        <span class="f-desc">Följer <code>AGENTS.md</code> och återanvändbar <code>SKILL.md</code>.</span>
+                      </div>
+                      <div class="f-foot">
+                        <span class="home-pill home-engine">🧠 Agent-motor</span>
+                      </div>
+                    </button>
+
+                    <div class="f-arrow" aria-hidden="true">
+                      <span class="f-arrow-line">→</span>
+                      <span class="f-arrow-label">Testar</span>
+                    </div>
+
+                    <button type="button" class="f-node tone-gate" data-detail="s1-ag-verify">
+                      <div>
+                        <div class="f-node-top">
+                          <span class="f-role-tag">2. Verifierar</span>
+                          <span class="f-more-dot">Detaljer →</span>
+                        </div>
+                        <span class="f-title">Skript- &amp; Källkontroll</span>
+                        <span class="f-desc">Kontrollräknar Excel-rader med kod &amp; stämmer av paragrafer.</span>
+                      </div>
+                      <div class="f-foot">
+                        <span class="home-pill home-folder">📁 Skript &amp; Hooks</span>
+                      </div>
+                    </button>
+                  </div>
+                  <div class="loop-return-bar">
+                    <strong>↺ Vid diff eller saknad källa: går tillbaka och rättar automatiskt</strong>
+                    <span class="loop-pass-pill">✓ Vid 0 fel → Leverans</span>
+                  </div>
+                </div>
+
+                <div class="f-arrow" aria-hidden="true">
+                  <span class="f-arrow-line">→</span>
+                  <span class="f-arrow-label">Verifierad</span>
+                </div>
+
+                <button type="button" class="f-node tone-deliver" data-detail="s1-ag-out">
+                  <div>
+                    <div class="f-node-top">
+                      <span class="f-role-tag">✅ Leverans</span>
+                      <span class="f-more-dot">Detaljer →</span>
+                    </div>
+                    <span class="f-title">Beslutsunderlag eller klickbar vy</span>
+                    <span class="f-desc">Spårbara citat, exakta siffror och färdigt för konsultens granskning.</span>
+                  </div>
+                  <div class="f-foot">
+                    <span class="home-pill home-human">👤 Projektledaren beslutar</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         SEKTION 02: AGENTENS ANATOMI, HEMVISTER & DEN INRE LOOPEN
+         ===================================================================== -->
+    <section id="flode-02" class="flow-section alt-bg">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow eyebrow-purple">02 · Så fungerar en AI-agent (Hemvist &amp; Loop)</span>
+            <h2>Var bor reglerna, metoderna och minnet – och när kallas de in?</h2>
+            <p>Översta hyllan visar de fyra källorna som matar agenten (och exakt var de lever). Nedersta raden visar hur arbetet snurrar i verifieringsloopen innan du får svaret.</p>
+          </div>
+          <span class="click-hint">Klicka på valfritt block för exempel →</span>
+        </div>
+
+        <div class="flow-board">
+          <div class="flow-caption-bar">
+            <strong>Övre hyllan: De 4 källorna som styr och matar agenten</strong>
+            <span>Lägg märke till skillnaden mellan det som alltid är påslaget och det som laddas vid behov</span>
+          </div>
+
+          <!-- 4 Supplying Components on Top -->
+          <div class="supply-shelf">
+            <button type="button" class="f-node tone-trigger" data-detail="s2-agents-md">
+              <div>
+                <div class="f-node-top">
+                  <span class="f-role-tag">1 · Alltid aktiv</span>
+                  <span class="f-more-dot">Detaljer →</span>
+                </div>
+                <span class="f-title">Lagboken (AGENTS.md)</span>
+                <span class="f-desc">Korta ovillkorliga spelregler: källkrav, sekretess &amp; stoppregler.</span>
+              </div>
+              <div class="f-foot">
+                <span class="home-pill home-folder">📁 /AGENTS.md (Roten)</span>
+              </div>
+            </button>
+
+            <button type="button" class="f-node tone-engine" data-detail="s2-skills">
+              <div>
+                <div class="f-node-top">
+                  <span class="f-role-tag">2 · Vid behov</span>
+                  <span class="f-more-dot">Detaljer →</span>
+                </div>
+                <span class="f-title">Metodboken (Skills)</span>
+                <span class="f-desc">Steg-för-steg-mallar (t.ex. veckopuls eller readiness) som öppnas när uppgiften matchar.</span>
+              </div>
+              <div class="f-foot">
+                <span class="home-pill home-folder">📁 /.agents/skills/*/SKILL.md</span>
+              </div>
+            </button>
+
+            <button type="button" class="f-node tone-engine" data-detail="s2-graph">
+              <div>
+                <div class="f-node-top">
+                  <span class="f-role-tag">3 · Projektminne</span>
+                  <span class="f-more-dot">Detaljer →</span>
+                </div>
+                <span class="f-title">Docs + Kunskapsgraf</span>
+                <span class="f-desc">Vanliga dokument i <code>docs/</code> som automatiskt blir en karta över alla beroenden.</span>
+              </div>
+              <div class="f-foot">
+                <span class="home-pill home-folder">📁 /docs/ → /graphify-out/</span>
+              </div>
+            </button>
+
+            <button type="button" class="f-node tone-engine" data-detail="s2-mcp">
+              <div>
+                <div class="f-node-top">
+                  <span class="f-role-tag">4 · Systemkontakt</span>
+                  <span class="f-more-dot">Detaljer →</span>
+                </div>
+                <span class="f-title">MCP-kopplingar</span>
+                <span class="f-desc">”USB-C-sladden” som hämtar färsk status ur Jira, SharePoint, Slack eller databas.</span>
+              </div>
+              <div class="f-foot">
+                <span class="home-pill home-cloud">🔌 mcp_config.json → System</span>
+              </div>
+            </button>
+          </div>
+
+          <div class="down-connectors" aria-hidden="true">
+            <span>↓ Läses alltid först</span>
+            <span>↓ Laddas när uppgiften matchar</span>
+            <span>↓ Visar korsberoenden</span>
+            <span>↓ Hämtar live-data</span>
+          </div>
+
+          <!-- Lower Execution & Loop Track -->
+          <div class="flow-track">
+            <button type="button" class="f-node tone-trigger" data-detail="s2-user-ask">
+              <div>
+                <div class="f-node-top">
+                  <span class="f-role-tag">⚡ Trigger</span>
+                  <span class="f-more-dot">Detaljer →</span>
+                </div>
+                <span class="f-title">Uppdrag från konsulten</span>
+                <span class="f-desc">”Kontrollera om vår utrullningsplan håller mot avtal och kapacitet.”</span>
+              </div>
+              <div class="f-foot">
+                <span class="home-pill home-human">👤 Projektledare</span>
+              </div>
+            </button>
+
+            <div class="f-arrow" aria-hidden="true">
+              <span class="f-arrow-line">→</span>
+              <span class="f-arrow-label">Startar</span>
+            </div>
+
+            <div class="loop-zone">
+              <span class="loop-badge">🔄 Agentens Tänk – Utför – Verifiera-loop</span>
+              <div class="loop-steps-row">
+                <button type="button" class="f-node tone-engine" data-detail="s2-loop-plan">
+                  <div>
+                    <div class="f-node-top">
+                      <span class="f-role-tag">Steg A · Planera &amp; Utföra</span>
+                      <span class="f-more-dot">Detaljer →</span>
+                    </div>
+                    <span class="f-title">Agent-motorn arbetar</span>
+                    <span class="f-desc">Kombinerar lagboken, rätt Skill, kunskapsgrafen och skriver t.ex. ett Python-skript för Excel-data.</span>
+                  </div>
+                  <div class="f-foot">
+                    <span class="home-pill home-engine">🧠 Huvudagent</span>
+                  </div>
+                </button>
+
+                <div class="f-arrow" aria-hidden="true">
+                  <span class="f-arrow-line">→</span>
+                  <span class="f-arrow-label">Kör vakt</span>
+                </div>
+
+                <button type="button" class="f-node tone-gate" data-detail="s2-loop-hooks">
+                  <div>
+                    <div class="f-node-top">
+                      <span class="f-role-tag">Steg B · Testa &amp; Hooks</span>
+                      <span class="f-more-dot">Detaljer →</span>
+                    </div>
+                    <span class="f-title">Säkerhetsbältet (Hooks)</span>
+                    <span class="f-desc">Automatisk kontroll av kalkylsummor, datum, källhänvisning och säkerhetsspärrar.</span>
+                  </div>
+                  <div class="f-foot">
+                    <span class="home-pill home-folder">📁 /.agents/hooks.json</span>
+                  </div>
+                </button>
+              </div>
+              <div class="loop-return-bar">
+                <strong>↺ Om ett skript larmar eller en siffra saknar bevis: tillbaka till Steg A för rättning!</strong>
+                <span class="loop-pass-pill">✓ 100 % Verifierat → Ut ur loopen</span>
+              </div>
+            </div>
+
+            <div class="f-arrow" aria-hidden="true">
+              <span class="f-arrow-line">→</span>
+              <span class="f-arrow-label">Klar</span>
+            </div>
+
+            <button type="button" class="f-node tone-deliver" data-detail="s2-final-out">
+              <div>
+                <div class="f-node-top">
+                  <span class="f-role-tag">✅ Leverans</span>
+                  <span class="f-more-dot">Detaljer →</span>
+                </div>
+                <span class="f-title">Färdiggranskat beslutsunderlag</span>
+                <span class="f-desc">Tydlig rapport med paragrafcitat, kostnadsrisk i SEK och noll huvudräkningsfel.</span>
+              </div>
+              <div class="f-foot">
+                <span class="home-pill home-human">👤 Du äger beslutet</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         SEKTION 03: PERSONAS, TEAM-AGENTER & ORKESTRERING (3 SCENARIOS)
+         ===================================================================== -->
+    <section id="flode-03" class="flow-section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow eyebrow-purple">03 · Personas, Team-agenter &amp; Orkestrering</span>
+            <h2>Tre mognadssteg: Från manuell start till händelsestyrt team och svärm</h2>
+            <p>Växla mellan de tre scenarierna nedan för att se vad som <strong>triggar</strong> agenten i respektive steg, var den lever och hur granskningsloopen ser ut.</p>
+          </div>
+          <span class="click-hint">Välj scenario &amp; klicka på rutorna →</span>
+        </div>
+
+        <div class="scenario-tabs" role="tablist" aria-label="Välj mognadsscenario">
+          <button type="button" role="tab" class="scen-tab" data-s3-tab="0" aria-selected="true" tabindex="0">
+            Steg 1 · Individens Kontrakts-Persona (Manuell start)
+          </button>
+          <button type="button" role="tab" class="scen-tab" data-s3-tab="1" aria-selected="false" tabindex="-1">
+            Steg 2 · Händelsestyrd Team-agent (Automatisk trigger!)
+          </button>
+          <button type="button" role="tab" class="scen-tab" data-s3-tab="2" aria-selected="false" tabindex="-1">
+            Steg 3 · Orkestrering / Svärm (Agent styr specialister)
+          </button>
+        </div>
+
+        <div class="flow-board" id="s3-board" aria-live="polite">
+          <!-- Populated dynamically by clean declarative config below -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         SEKTION 04: PROJEKTLEDARENS 5 VARDAGSSCENARIOS SOM FLÖDEN
+         ===================================================================== -->
+    <section id="flode-04" class="flow-section alt-bg">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow eyebrow-purple">04 · Projektledarens 5 vardagsscenarios</span>
+            <h2>Exakt hur de 5 konsultfallen flödar från trigger till leverans</h2>
+            <p>Välj ett av projektledarens fem vardagsfall för att se vad som startar arbetet, vilka filer i mappen som används och vad som kontrolleras i loopen.</p>
+          </div>
+          <span class="click-hint">Klicka på ett vardagsfall nedan →</span>
+        </div>
+
+        <div class="scenario-tabs" role="tablist" aria-label="Välj PM-vardagsscenario">
+          <button type="button" role="tab" class="scen-tab" data-s4-tab="0" aria-selected="true" tabindex="0">
+            1. Dag 1-röntgen i nytt uppdrag
+          </button>
+          <button type="button" role="tab" class="scen-tab" data-s4-tab="1" aria-selected="false" tabindex="-1">
+            2. Mötesinspelning → Spec &amp; Jira
+          </button>
+          <button type="button" role="tab" class="scen-tab" data-s4-tab="2" aria-selected="false" tabindex="-1">
+            3. Levande utrullnings- &amp; vågplan
+          </button>
+          <button type="button" role="tab" class="scen-tab" data-s4-tab="3" aria-selected="false" tabindex="-1">
+            4. Klickbar kundprototyp (20 min)
+          </button>
+          <button type="button" role="tab" class="scen-tab" data-s4-tab="4" aria-selected="false" tabindex="-1">
+            5. Fredagens styrgruppspuls &amp; RAID
+          </button>
+        </div>
+
+        <div class="flow-board" id="s4-board" aria-live="polite">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         SEKTION 05: HELHETSCASE BI-AGENTEN (FRÅN SVENSKA TILL 5-MIN PR)
+         ===================================================================== -->
+    <section id="flode-05" class="flow-section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow eyebrow-purple">05 · Helhetscase: ”Självgående BI-utvecklare”</span>
+            <h2>När alla delar samverkar: Från affärsbehov på svenska till 5-minuters godkännande</h2>
+            <p>Lägg märke till de <strong>två kontrollpunkterna</strong>: först en snabb mänsklig avstämning av affärsbegreppet, därefter en helautomatisk bygg- och testloop i sandlådan innan en utvecklare godkänner.</p>
+          </div>
+          <span class="click-hint">Klicka på stegen i kedjan för detaljer →</span>
+        </div>
+
+        <div class="flow-board">
+          <div class="flow-caption-bar">
+            <strong>Helhetsflöde för icke-utvecklare + senior BI-utvecklare i samspel</strong>
+            <span>0 % arbete direkt mot produktion – allt byggs och bevisas i isolerad testmiljö först</span>
+          </div>
+
+          <div class="flow-track">
+            <button type="button" class="f-node tone-trigger" data-detail="s5-need">
+              <div>
+                <div class="f-node-top">
+                  <span class="f-role-tag">⚡ 1 · Trigger</span>
+                  <span class="f-more-dot">Detaljer →</span>
+                </div>
+                <span class="f-title">Behov på affärssvenska</span>
+                <span class="f-desc">PM/beställare beskriver vilken källdata och vilket nyckeltal (KPI) som behövs i rapporten.</span>
+              </div>
+              <div class="f-foot">
+                <span class="home-pill home-human">👤 Projektledare / Beställare</span>
+              </div>
+            </button>
+
+            <div class="f-arrow" aria-hidden="true">
+              <span class="f-arrow-line">→</span>
+              <span class="f-arrow-label">Slår upp</span>
+            </div>
+
+            <button type="button" class="f-node tone-engine" data-detail="s5-bk-check">
+              <div>
+                <div class="f-node-top">
+                  <span class="f-role-tag">2 · Förkontroll</span>
+                  <span class="f-more-dot">Detaljer →</span>
+                </div>
+                <span class="f-title">Begrepps- &amp; Rådatakoll</span>
+                <span class="f-desc">Läser affärsbegrepp i <code>docs/</code>, inspekterar Laken via MCP och ställer 2 kontrollfrågor till dig.</span>
+              </div>
+              <div class="f-foot">
+                <span class="home-pill home-folder">📁 /docs/ + 🔌 Läs-MCP</span>
+              </div>
+            </button>
+
+            <div class="f-arrow" aria-hidden="true">
+              <span class="f-arrow-line">→</span>
+              <span class="f-arrow-label">Bekräftat</span>
+            </div>
+
+            <div class="loop-zone">
+              <span class="loop-badge">🔄 Självgående Bygg-, Avstämnings- &amp; Granskningsloop i Sandlåda</span>
+              <div class="loop-steps-row">
+                <button type="button" class="f-node tone-engine" data-detail="s5-build">
+                  <div>
+                    <div class="f-node-top">
+                      <span class="f-role-tag">3 · Bygger kedjan</span>
+                      <span class="f-more-dot">Detaljer →</span>
+                    </div>
+                    <span class="f-title">5 BI-Skills i Testmiljö</span>
+                    <span class="f-desc">Genererar Lake → Raw Vault → Business Vault → Mart → Kub i <code>dev_sandbox</code> enligt <code>AGENTS.md</code>.</span>
+                  </div>
+                  <div class="f-foot">
+                    <span class="home-pill home-folder">📁 /.agents/skills/01..05</span>
+                  </div>
+                </button>
+
+                <div class="f-arrow" aria-hidden="true">
+                  <span class="f-arrow-line">→</span>
+                  <span class="f-arrow-label">Bevisar</span>
+                </div>
+
+                <button type="button" class="f-node tone-gate" data-detail="s5-audit">
+                  <div>
+                    <div class="f-node-top">
+                      <span class="f-role-tag">4 · Dubbel vakt</span>
+                      <span class="f-more-dot">Detaljer →</span>
+                    </div>
+                    <span class="f-title">Hooks + Läs-subagent</span>
+                    <span class="f-desc">Hooks kräver 0 dubbletter &amp; 0,00 kr diff; en oberoende granskningsagent synar arkitekturen.</span>
+                  </div>
+                  <div class="f-foot">
+                    <span class="home-pill home-engine">🧠 dv-reviewer + 📁 hooks</span>
+                  </div>
+                </button>
+              </div>
+              <div class="loop-return-bar">
+                <strong>↺ Om beloppet diffar med 1 kr eller en GDPR-kolumn hamnat fel: tillbaka till steg 3 och rätta!</strong>
+                <span class="loop-pass-pill">✓ 18/18 tester gröna → Skapa PR</span>
+              </div>
+            </div>
+
+            <div class="f-arrow" aria-hidden="true">
+              <span class="f-arrow-line">→</span>
+              <span class="f-arrow-label">Färdig PR</span>
+            </div>
+
+            <button type="button" class="f-node tone-deliver" data-detail="s5-pr">
+              <div>
+                <div class="f-node-top">
+                  <span class="f-role-tag">✅ 5 · Leverans</span>
+                  <span class="f-more-dot">Detaljer →</span>
+                </div>
+                <span class="f-title">5-minuters Utvecklar-Go</span>
+                <span class="f-desc">Senior BI-utvecklare granskar diagram + grönt testprotokoll i Pull Requesten och trycker <em>Godkänn</em>.</span>
+              </div>
+              <div class="f-foot">
+                <span class="home-pill home-human">👤 BI-utvecklare → Prod</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>Top of Minds – Part of Digia Group · Visuell Flödes- &amp; Loopkarta</span>
+      <span><a href="./presentation.html" style="color:#c4b5fd; font-weight:700;">← Tillbaka till Huvudpresentationen</a></span>
+    </div>
+  </footer>
+
+  <!-- NATIVE MODAL SLIDE-OVER DRAWER FOR NODE DETAILS -->
+  <dialog id="detail-dialog" closedby="any" aria-labelledby="drawer-title">
+    <div class="drawer-header">
+      <div>
+        <span class="eyebrow eyebrow-light" id="drawer-eyebrow" style="margin:0;">Stegdetalj</span>
+        <h3 id="drawer-title">Detaljvy</h3>
+      </div>
+      <form method="dialog">
+        <button type="submit" class="drawer-close" autofocus>Stäng (Esc)</button>
+      </form>
+    </div>
+    <div class="drawer-body">
+      <div class="meta-grid">
+        <div class="meta-box">
+          <span class="meta-box-label">Var lever delen? (Hemvist)</span>
+          <span class="meta-box-val" id="drawer-home">—</span>
+        </div>
+        <div class="meta-box">
+          <span class="meta-box-label">Vad triggar steget?</span>
+          <span class="meta-box-val" id="drawer-trigger">—</span>
+        </div>
+      </div>
+
+      <div class="drawer-section">
+        <h4>Vad händer på vanlig svenska?</h4>
+        <p id="drawer-summary"></p>
+      </div>
+
+      <div class="drawer-section">
+        <h4>Kontroll, Loop &amp; Viktiga detaljer</h4>
+        <ul class="drawer-list" id="drawer-bullets" role="list"></ul>
+      </div>
+
+      <div class="drawer-section" id="drawer-code-wrap">
+        <h4>Konkret exempel</h4>
+        <pre class="drawer-code" id="drawer-code"></pre>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    (() => {
+      // ===== 1. ALL CLICKABLE STEP DETAILS (PLAIN SWEDISH + EXACT HOME + LOOP INFO) =====
+      const DETAILS = {
+        's1-chat-trigger': {
+          eyebrow: '01 · Verktygsflöde A (Chattfönster)',
+          title: 'Manuell fråga i webbläsaren',
+          home: 'Din webbläsare (chatgpt.com / claude.ai)',
+          trigger: 'Du skriver en prompt eller laddar upp enstaka fil',
+          summary: 'Så här startar 95 % av alla AI-användare idag. Perfekt när du vill tänka högt, formulera ett utkast eller göra omvärldsresearch.',
+          bullets: [
+            'Lägst tröskel av alla verktyg – noll installation.',
+            'Viktigt: Använd alltid företagslicens (Team/Enterprise) om kundnamn eller intern kontext nämns.'
+          ]
+        },
+        's1-chat-box': {
+          eyebrow: '01 · Verktygsflöde A (Webbsandlåda)',
+          title: 'ChatGPT / Claude arbetar isolerat från din projektmapp',
+          home: 'OpenAI / Anthropics molnsandlåda (Projects / Custom GPT)',
+          trigger: 'Din inskickade meddelandeprompt',
+          summary: 'Modellen har tillgång till det du klistrat in i samtalet (eller i ett avgränsat webb-Project), men den ser inte din övriga mappstruktur, kan inte uppdatera lokala filer och har inga tvingande projekt-Hooks.',
+          bullets: [
+            'Deep Research i ChatGPT gör dock en egen sökloop ute på öppna internet.',
+            'För kundprojekt med 30+ interna filer blir manuellt uppladdande snabbt en flaskhals.'
+          ]
+        },
+        's1-chat-out': {
+          eyebrow: '01 · Verktygsflöde A (Leverans)',
+          title: 'Engångssvar som du själv kopierar och verifierar',
+          home: 'Chattfönstret → Urklipp',
+          trigger: 'Modellen har skrivit klart svaret',
+          summary: 'Du får snabbt bra text och struktur, men kvalitets- och sifferkontrollen ligger till 100 % på dig manuellt.',
+          bullets: [
+            'Utmärkt för mejlutkast, presentationsstruktur och bollplank.',
+            'Farligt om man ber chatten ”summera dessa 300 rader i huvudet” utan skriptkontroll.'
+          ]
+        },
+        's1-m365-trigger': {
+          eyebrow: '01 · Verktygsflöde B (Kontorsflödet)',
+          title: 'Mötesavslut i Teams eller fråga i intranätet',
+          home: 'Microsoft Teams, Outlook, Word eller företagsportal',
+          trigger: 'Ett inspelat möte avslutas eller du frågar Copilot',
+          summary: 'Copilot och företags-RAG möter konsulten direkt inne i de vanliga kontorsprogrammen utan att du behöver flytta några dokument.',
+          bullets: [
+            'Sparar direkt 15–30 minuter efter varje Teams-möte.',
+            'Ärver automatiskt exakt de behörigheter du redan har i kundens Microsoft 365 / Google Workspace.'
+          ]
+        },
+        's1-m365-rag': {
+          eyebrow: '01 · Verktygsflöde B (Sökmotorn)',
+          title: 'Företags-RAG hämtar de mest liknande textbitarna',
+          home: 'Microsoft Graph / Centralt företagsindex i molnet',
+          trigger: 'Din sökfråga i Copilot eller Gemini Enterprise',
+          summary: 'Systemet söker efter dokument som innehåller liknande ord eller begrepp som din fråga och klistrar in de 5 bästa textstyckena bakom kulisserna.',
+          bullets: [
+            'Oslagbart för ”Vad står i vår säkerhetspolicy om VPN?”.',
+            'Svaghet: Missar flerstegs-dominoeffekter (t.ex. hur en försening i bilaga A spräcker ett viteskrav i avtal B och en resurs i Excel C).'
+          ]
+        },
+        's1-m365-out': {
+          eyebrow: '01 · Verktygsflöde B (Leverans)',
+          title: 'Mötesnotering och utkast direkt i Office',
+          home: 'Teams-sammanfattning / Word / PowerPoint',
+          trigger: 'Sammanfattning klar från de hämtade styckena',
+          summary: 'Ger en snabb första version direkt där teamet samarbetar – men ska ses som en smart sekreterare snarare än en granskande projekt-revisor.',
+          bullets: [
+            'Kontrollera alltid att ”beslut” i Teams-sammanfattningen faktiskt beslutades och inte bara diskuterades löst!'
+          ]
+        },
+        's1-ag-trigger': {
+          eyebrow: '01 · Verktygsflöde C (Agentisk arbetsyta)',
+          title: 'Du öppnar en hel projektmapp i Google Antigravity',
+          home: 'Lokal arbetsmapp på din dator (gärna synkad med Git)',
+          trigger: 'Du beskriver målet, t.ex. ”Granska vågplanen mot alla avtal”',
+          summary: 'Istället för att ladda upp filer en och en pekar du Antigravity på hela mappen med avtal, Excel-ark, mötesanteckningar och mallar.',
+          bullets: [
+            'Agenten ser hela sammanhanget på en gång.',
+            'Alla regler och metoder sparas som vanliga filer i mappen så kollegorna kan återanvända dem.'
+          ]
+        },
+        's1-ag-work': {
+          eyebrow: '01 · Verktygsflöde C (Inne i loopen)',
+          title: 'Agenten arbetar stegvis med regler, Skills och Kunskapsgraf',
+          home: 'Antigravity-motorn + /AGENTS.md + /.agents/skills/',
+          trigger: 'Startas av ditt uppdrag ELLER av en retur från verifieringssteget',
+          summary: 'Agenten läser projektets lagbok (AGENTS.md), öppnar rätt arbetsmall (Skill) och vandrar längs beroendena i kunskapsgrafen.',
+          bullets: [
+            'Delar upp uppgiften i tydliga delsteg.',
+            'Skriver ett litet Python-/JS-skript när Excel-filer ska räknas på – gissar aldrig i fri text.'
+          ]
+        },
+        's1-ag-verify': {
+          eyebrow: '01 · Verktygsflöde C (Kvalitetsgrinden i loopen)',
+          title: 'Skript- och regelkontroll som tvingar fram omtag vid fel',
+          home: 'Lokala kontrollskript & /.agents/hooks.json',
+          trigger: 'Varje gång agenten tagit fram en beräkning eller ett utkast',
+          summary: 'Det här steget är hela hemligheten bakom pålitliga agenter: om skriptet ser att en summa inte går jämnt ut eller att en avtalsparagraf saknas, går flödet TILLBAKA in i loopen.',
+          bullets: [
+            '↺ Loop vid fel: Agenten läser felmeddelandet, rättar sin analys och kör kontrollen igen.',
+            '✓ Utgång ur loop: Först när kontrollen passerar presenteras resultatet för dig.'
+          ]
+        },
+        's1-ag-out': {
+          eyebrow: '01 · Verktygsflöde C (Leverans)',
+          title: 'Verifierat beslutsunderlag eller klickbar applikation',
+          home: 'Färdig rapport/HTML-vy i projektmappen → Konsulten',
+          trigger: 'Verifieringsloopen gav 100 % grönt resultat',
+          summary: 'Du får ett genomarbetat, källhänvisat beslutsunderlag (eller en interaktiv vy för styrgruppen) där grovjobbet och kontrollräkningen redan är gjord.',
+          bullets: [
+            'Konsulten lägger sin tid på affärsomdöme, prioritering och dialog med kund.'
+          ]
+        },
+
+        // SECTION 02 DETAILS
+        's2-agents-md': {
+          eyebrow: '02 · Källa 1 (Alltid påslagen)',
+          title: 'AGENTS.md – Projektets gemensamma lagbok',
+          home: '/AGENTS.md i projektmappens rot',
+          trigger: 'Laddas automatiskt i samma sekund som projektet öppnas',
+          summary: 'En kort textfil (50–100 rader) som samma agent alltid bär med sig i minnet. Här skriver du de regler som aldrig får brytas.',
+          bullets: [
+            'Exempel på innehåll: SOW-avtal går före gamla PowerPoints, gissa aldrig datum, räkna alltid med skript.',
+            'Håll den kort! Långa steg-för-steg-rutiner hör hemma i Skills så minnet inte blir fullt.'
+          ],
+          code: `# /AGENTS.md\n1. Gissa ALDRIG datum eller belopp – skriv SAKNAS I UNDERLAG.\n2. Citera alltid exakt dokument och paragraf (§).\n3. Vid Excel-/CSV-analys: kör alltid skript för 100 % exakt matematik.`
+        },
+        's2-skills': {
+          eyebrow: '02 · Källa 2 (Laddas på begäran)',
+          title: 'Skills (SKILL.md) – Era paketerade arbetsmallar',
+          home: '/.agents/skills/<namn>/SKILL.md',
+          trigger: 'Agenten ser att ditt uppdrag matchar Skillens beskrivning',
+          summary: 'Från start ser agenten bara en kort innehållsförteckning över era Skills. Först när du t.ex. ber om en ”styrgruppspuls” öppnar den hela receptet.',
+          bullets: [
+            'Sparar massor av kontextminne så agenten håller skärpan.',
+            'Gör det busenkelt att dela Top of Minds bästa konsultmetoder mellan kollegor.'
+          ],
+          code: `.agents/skills/\n├── styrgrupps-puls/SKILL.md\n├── go-live-readiness/SKILL.md\n└── workshop-till-krav/SKILL.md`
+        },
+        's2-graph': {
+          eyebrow: '02 · Källa 3 (Projektets sambandskarta)',
+          title: 'Docs + Kunskapsgraf (graphify)',
+          home: 'Underlag i /docs/ → Graf genereras i /graphify-out/',
+          trigger: 'Byggs när dokument läggs till och läses vid beroendefrågor',
+          summary: 'Du skriver aldrig i grafen för hand! Du lägger vanliga avtal, begrepp och mötesnoteringar i mappen – verktyget bygger sedan en karta över hur personer, system, datum och viten hänger ihop.',
+          bullets: [
+            'Hittar ”God Nodes” (flaskhalsar där många beroenden möts).',
+            'Följer konsekvenser i 4–5 led som vanlig ordsökning (RAG) missar.'
+          ]
+        },
+        's2-mcp': {
+          eyebrow: '02 · Källa 4 (Koppling till system)',
+          title: 'MCP (Model Context Protocol) – Agentens säkra systemarmar',
+          home: 'Konfigureras i mcp_config.json → Pratar med Jira, Drive, Slack, DB',
+          trigger: 'Agenten behöver hämta live-status eller skapa ett utkast i ett system',
+          summary: 'Ett öppet standardprotokoll (”USB-C för AI”) som gör att du slipper exportera CSV-filer fram och tillbaka.',
+          bullets: [
+            'Läs-MCP: Hämtar aktuell ärendestatus i Jira eller tabellstruktur i en databas.',
+            'Skriv-MCP: Kan förbereda ärenden eller utkast – styrs alltid så att du godkänner skarpa åtgärder.'
+          ]
+        },
+        's2-user-ask': {
+          eyebrow: '02 · Startpunkt',
+          title: 'Konsulten ger ett målinriktat uppdrag',
+          home: 'Chattpanelen i Antigravity',
+          trigger: 'Du beskriver vad du vill ha utrett eller framtaget',
+          summary: 'Tack vare att lagboken (AGENTS.md) och metoderna (Skills) redan ligger på plats behöver du inte skriva långa uppsatser i chatten – en mening räcker!',
+          bullets: [
+            'Exempel: ”Kör en go-live-readiness inför styrgruppen imorgon.”'
+          ]
+        },
+        's2-loop-plan': {
+          eyebrow: '02 · Inne i loopen (Steg A)',
+          title: 'Agent-motorn planerar, läser källor och utför',
+          home: 'AI-modellen i Antigravity (t.ex. Gemini eller Claude)',
+          trigger: 'Uppdragets start ELLER omtag efter att Steg B hittat ett fel',
+          summary: 'Här sker själva hantverket: agenten läser relevanta dokument, slår i kunskapsgrafen, anropar MCP och genererar utkast eller beräkningsskript.',
+          bullets: [
+            'Arbetar i flera synliga steg istället för att chansa på ett direktsvar.'
+          ]
+        },
+        's2-loop-hooks': {
+          eyebrow: '02 · Inne i loopen (Steg B – Kvalitetsspärren)',
+          title: 'Hooks & Skriptverifiering – Tvingar fram 100 % rättning',
+          home: '/.agents/hooks.json + kontrollskript i mappen',
+          trigger: 'Triggas automatiskt när agenten sparat en fil eller vill avsluta',
+          summary: 'En textregel följs till ~95 %, men ett kontrollskript (Hook) körs med 100 % matematisk exakthet varje gång. Om något saknas studsar arbetet tillbaka till Steg A.',
+          bullets: [
+            '↺ Exempel på retur i loopen: ”Radsumman i tabellen matchar inte CSV-filen – räkna om!”',
+            'Förhindrar både slarvfel och otillåtna kommandon.'
+          ]
+        },
+        's2-final-out': {
+          eyebrow: '02 · Utgång ur loopen',
+          title: 'Kvalitetssäkrad leverans till projektledaren',
+          home: 'Färdig fil/vy på din skärm',
+          trigger: 'Alla kontroller i Steg B har passerat utan anmärkning',
+          summary: 'Du får ett underlag där alla siffror är kontrollräknade och varje påstående pekar på exakt källa – redo för ditt affärsbeslut.',
+          bullets: [
+            'Sparar timmar av manuell korsläsning samtidigt som kvaliteten höjs.'
+          ]
+        },
+
+        // SECTION 05 (BI) DETAILS
+        's5-need': {
+          eyebrow: '05 · BI-flödet Steg 1 (Trigger)',
+          title: 'Behov beskrivet på vanlig affärssvenska',
+          home: 'Projektledare / Verksamhetsspecialist i Antigravity',
+          trigger: 'Verksamheten behöver ett nytt mätetal eller en ny datakälla i BI',
+          summary: 'Du behöver inte kunna Data Vault-SQL eller DAX. Du beskriver affärsbehovet på vanlig svenska: vilken händelse/källa det gäller och hur nyckeltalet ska användas.',
+          bullets: [
+            'Exempel: ”Vi behöver få in skadeärenden från SkadeSys och visa Skadeprocent % per månad i kuben.”'
+          ]
+        },
+        's5-bk-check': {
+          eyebrow: '05 · BI-flödet Steg 2 (Mänsklig kontrollpunkt 1)',
+          title: 'Begrepps- och nyckelkontroll mot dokumentation & rådata',
+          home: '/docs/begrepp/ + Read-Only MCP mot Data Lake',
+          trigger: 'Startas direkt av din behovsbeskrivning',
+          summary: 'Innan en enda rad kod skrivs läser agenten era affärsbegrepp i docs/, tittar på den faktiska råtabellen i Data Laken (antal rader, unika ID:n, personuppgifter) och ställer 2 kontrollfrågor.',
+          bullets: [
+            'Bekräftar unik affärsnyckel (t.ex. skadenummer).',
+            'Flaggar automatiskt om tabellen innehåller personnummer/fritext som måste GDPR-separeras.'
+          ]
+        },
+        's5-build': {
+          eyebrow: '05 · BI-flödet Steg 3 (Inne i byggloopen)',
+          title: 'Självgående modellering med 5 BI-Skills i testmiljö',
+          home: '/.agents/skills/01..05/ + isolerat dev_sandbox-schema',
+          trigger: 'Du har svarat Ja på de 2 kontrollfrågorna (eller retur från Steg 4)',
+          summary: 'Agenten öppnar teamets godkända mallar (Skills) ett lager i taget och bygger hela kedjan i en isolerad testmiljö – aldrig i produktion.',
+          bullets: [
+            'Bygger: Stage/Lake → Raw Data Vault (Hub/Link/Sat) → Business Vault → Stjärnschema (Mart) → Kub-mått.',
+            'Styrs hela tiden av lagboken /AGENTS.md i projektets rot.'
+          ]
+        },
+        's5-audit': {
+          eyebrow: '05 · BI-flödet Steg 4 (Dubbel kvalitetsgrind i loopen)',
+          title: 'Automatiska Hooks + Oberoende Gransknings-subagent',
+          home: '/.agents/hooks.json + /.agents/agents/dv-reviewer.md',
+          trigger: 'Körs automatiskt så fort testbygget är klart i sandlådan',
+          summary: 'Två oberoende vakter granskar resultatet: först matematiska Hooks (exakt radantal och 0,00 kr diff mot råkällan), sedan en separat skrivskyddad arkitekt-subagent med helt blankt minne.',
+          bullets: [
+            '↺ Vid minsta fel (t.ex. dubblettrisk eller felaktig join): flödet loopar tillbaka till Steg 3 och agenten lagar SQL-koden själv!',
+            'Den separata subagenten slipper vara ”hemmablind” på koden som nyss skrevs.'
+          ]
+        },
+        's5-pr': {
+          eyebrow: '05 · BI-flödet Steg 5 (Mänsklig kontrollpunkt 2 & Leverans)',
+          title: '5-minuters Pull Request för senior BI-utvecklare',
+          home: 'GitHub / Azure DevOps Pull Request → Produktion via CI/CD',
+          trigger: 'Alla 18 automatiska tester och subagent-granskningen är 100 % gröna',
+          summary: 'Utvecklaren slipper sitta 3 dagar med repetitiv tabellkod. Istället öppnar utvecklaren en färdig Pull Request med visuell modellritning och bevis på 0,00 kr diff, synar på 5 minuter och trycker Godkänn.',
+          bullets: [
+            'Kombinerar högsta hastighet för verksamheten med 100 % arkitekturkontroll för IT.'
+          ]
+        }
+      };
+
+      // ===== 2. SECTION 03 SCENARIOS (INDIVID -> HÄNDELSESTYRT TEAM -> SVÄRM) =====
+      const S3_SCENARIOS = [
+        {
+          captionTitle: 'Steg 1 · Individens Kontrakts-Persona (Manuell start på egen dator)',
+          captionSub: 'Du startar själv – men delar dina skarpaste Personas & Skills med hela teamet i Git',
+          html: `
+            <div class="flow-track">
+              <button type="button" class="f-node tone-trigger" data-detail="s3-1-trig">
+                <div>
+                  <div class="f-node-top"><span class="f-role-tag">⚡ Trigger</span><span class="f-more-dot">Detaljer →</span></div>
+                  <span class="f-title">Konsulten startar uppdraget</span>
+                  <span class="f-desc">Du ber agenten granska ett avtal, en plan eller ett beslutsunderlag på din dator.</span>
+                </div>
+                <div class="f-foot"><span class="home-pill home-human">👤 Du i Antigravity</span></div>
+              </button>
+              <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Glasögon</span></div>
+              <div class="loop-zone">
+                <span class="loop-badge">🔄 Kontraktsstyrd Granskningsloop</span>
+                <div class="loop-steps-row">
+                  <button type="button" class="f-node tone-engine" data-detail="s3-1-persona">
+                    <div>
+                      <div class="f-node-top"><span class="f-role-tag">Persona-kontrakt</span><span class="f-more-dot">Detaljer →</span></div>
+                      <span class="f-title">Kritisk Revisor / CFO-roll</span>
+                      <span class="f-desc">5-punkts uppdragskontrakt (Mandat, Sanningshierarki, Verktyg, Stoppregler, Format).</span>
+                    </div>
+                    <div class="f-foot"><span class="home-pill home-folder">📁 /AGENTS.md &amp; SKILL.md</span></div>
+                  </button>
+                  <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Kontroll</span></div>
+                  <button type="button" class="f-node tone-gate" data-detail="s3-1-check">
+                    <div>
+                      <div class="f-node-top"><span class="f-role-tag">Stoppregel-koll</span><span class="f-more-dot">Detaljer →</span></div>
+                      <span class="f-title">Bevis- &amp; Kalkylkontroll</span>
+                      <span class="f-desc"> Kontrollerar att varje avvikelse har §-citat och exakt kostnadsrisk i SEK.</span>
+                    </div>
+                    <div class="f-foot"><span class="home-pill home-folder">📁 Skript + Kontrakt</span></div>
+                  </button>
+                </div>
+                <div class="loop-return-bar">
+                  <strong>↺ Om vag gissning upptäcks: tvingas skriva SAKNAS I UNDERLAG eller räkna om</strong>
+                  <span class="loop-pass-pill">✓ Kontrakt uppfyllt</span>
+                </div>
+              </div>
+              <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Delas</span></div>
+              <button type="button" class="f-node tone-deliver" data-detail="s3-1-share">
+                <div>
+                  <div class="f-node-top"><span class="f-role-tag">✅ Leverans &amp; Delning</span><span class="f-more-dot">Detaljer →</span></div>
+                  <span class="f-title">Granskat svar + Delad Skill i Git</span>
+                  <span class="f-desc">När din persona fungerar klockrent checkas filen in – alla kollegor får samma superkraft direkt.</span>
+                </div>
+                <div class="f-foot"><span class="home-pill home-folder">📁 Teamets Git-repo</span></div>
+              </button>
+            </div>
+          `
+        },
+        {
+          captionTitle: 'Steg 2 · Händelsestyrd Team-agent (Vaknar automatiskt av en händelse!)',
+          captionSub: 'Ingen behöver komma ihåg att fråga AI:n – en händelse i Jira, GitHub eller mappen triggar flödet',
+          html: `
+            <div class="flow-track">
+              <button type="button" class="f-node tone-trigger" data-detail="s3-2-trig">
+                <div>
+                  <div class="f-node-top"><span class="f-role-tag">⚡ Automatisk Trigger</span><span class="f-more-dot">Detaljer →</span></div>
+                  <span class="f-title">Ny PR, Mötesfil eller Datumändring</span>
+                  <span class="f-desc">En webhook i GitHub/Jira eller ett morgonschema kl. 07:30 skickar en signal.</span>
+                </div>
+                <div class="f-foot"><span class="home-pill home-cloud">🔌 Webhook / Schema</span></div>
+              </button>
+              <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Väcker</span></div>
+              <div class="loop-zone">
+                <span class="loop-badge">🔄 Automatisk Konsekvens- &amp; Kvalitetsloop i Bakgrunden</span>
+                <div class="loop-steps-row">
+                  <button type="button" class="f-node tone-engine" data-detail="s3-2-agent">
+                    <div>
+                      <div class="f-node-top"><span class="f-role-tag">Vaktagent</span><span class="f-more-dot">Detaljer →</span></div>
+                      <span class="f-title">PMO- / QA-vaktagent</span>
+                      <span class="f-desc">Korsläser ändringen mot avtal, Jira-krav och beroendena i kunskapsgrafen.</span>
+                    </div>
+                    <div class="f-foot"><span class="home-pill home-cloud">🔌 GitHub Action / Cloud Run</span></div>
+                  </button>
+                  <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Filtrerar</span></div>
+                  <button type="button" class="f-node tone-gate" data-detail="s3-2-filter">
+                    <div>
+                      <div class="f-node-top"><span class="f-role-tag">Brusfilter</span><span class="f-more-dot">Detaljer →</span></div>
+                      <span class="f-title">Verifierar verklig påverkan</span>
+                      <span class="f-desc">Dubbelkollar datum och beroenden så teamet aldrig störs av falsklarm.</span>
+                    </div>
+                    <div class="f-foot"><span class="home-pill home-folder">📁 Kunskapsgraf + Skript</span></div>
+                  </button>
+                </div>
+                <div class="loop-return-bar">
+                  <strong>↺ Stämmer av alla påverkade led i grafen innan varningen formuleras</strong>
+                  <span class="loop-pass-pill">✓ Redo att flagga</span>
+                </div>
+              </div>
+              <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Flaggar</span></div>
+              <button type="button" class="f-node tone-deliver" data-detail="s3-2-out">
+                <div>
+                  <div class="f-node-top"><span class="f-role-tag">✅ Mänskligt Go</span><span class="f-more-dot">Detaljer →</span></div>
+                  <span class="f-title">Färdigt beslutsförslag i Slack / PR</span>
+                  <span class="f-desc">Team-agenten skickar aldrig iväg kundbesked själv – den bereder och teamet godkänner med ett klick!</span>
+                </div>
+                <div class="f-foot"><span class="home-pill home-human">👤 Teamet i Slack / Teams</span></div>
+              </button>
+            </div>
+          `
+        },
+        {
+          captionTitle: 'Steg 3 · Orkestrering / Svärm (En huvudagent styr specialister med oberoende kritiker)',
+          captionSub: 'Bygg-agenten och Gransknings-agenten hålls isär så ingen blir ”kär i sin egen lösning”',
+          html: `
+            <div class="flow-track">
+              <button type="button" class="f-node tone-trigger" data-detail="s3-3-lead">
+                <div>
+                  <div class="f-node-top"><span class="f-role-tag">⚡ 1 · Orkestrerare</span><span class="f-more-dot">Detaljer →</span></div>
+                  <span class="f-title">Lead Agent bryter ner målet</span>
+                  <span class="f-desc">Tar emot t.ex. styrgruppens nya beslut och delar ut skriftliga delkontrakt till specialister.</span>
+                </div>
+                <div class="f-foot"><span class="home-pill home-engine">🧠 Huvudagent</span></div>
+              </button>
+              <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Delegerar</span></div>
+              <div class="loop-zone">
+                <span class="loop-badge">🔄 4-Ögon-Loop mellan Bygg-agenter &amp; Oberoende Kritiker</span>
+                <div class="loop-steps-row">
+                  <button type="button" class="f-node tone-engine" data-detail="s3-3-builders">
+                    <div>
+                      <div class="f-node-top"><span class="f-role-tag">2 · Parallellt arbete</span><span class="f-more-dot">Detaljer →</span></div>
+                      <span class="f-title">Agent A (Krav) + Agent B (Plan/Bygg)</span>
+                      <span class="f-desc">Agent A skriver kraven i <code>SPEC_DELTA.md</code>; Agent B uppdaterar utrullningsplanen/vyn.</span>
+                    </div>
+                    <div class="f-foot"><span class="home-pill home-engine">🧠 2 Subagenter</span></div>
+                  </button>
+                  <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Synar</span></div>
+                  <button type="button" class="f-node tone-gate" data-detail="s3-3-critic">
+                    <div>
+                      <div class="f-node-top"><span class="f-role-tag">3 · Read-Only Revisor</span><span class="f-more-dot">Detaljer →</span></div>
+                      <span class="f-title">Agent C: Oberoende Kritiker</span>
+                      <span class="f-desc">Separat subagent med tomt minne och noll skrivrätt som jagar luckor mot SOW-avtalet.</span>
+                    </div>
+                    <div class="f-foot"><span class="home-pill home-folder">📁 /.agents/agents/critic.md</span></div>
+                  </button>
+                </div>
+                <div class="loop-return-bar">
+                  <strong>↺ Om Agent C hittar avtalsbrott: skickar backlista till Agent B tills allt är löst!</strong>
+                  <span class="loop-pass-pill">✓ Godkänd av Agent C</span>
+                </div>
+              </div>
+              <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Samlat paket</span></div>
+              <button type="button" class="f-node tone-deliver" data-detail="s3-3-signoff">
+                <div>
+                  <div class="f-node-top"><span class="f-role-tag">✅ 4 · Sign-off</span><span class="f-more-dot">Detaljer →</span></div>
+                  <span class="f-title">Konsultens slutbeslut</span>
+                  <span class="f-desc">Orkestreraren lämnar över ett färdiggranskat paket – du gör en snabb slutkoll före publicering.</span>
+                </div>
+                <div class="f-foot"><span class="home-pill home-human">👤 Projektledaren</span></div>
+              </button>
+            </div>
+          `
+        }
+      ];
+
+      Object.assign(DETAILS, {
+        's3-1-trig': {
+          eyebrow: '03 · Steg 1 (Individ)',
+          title: 'Manuell start i konsultens egen arbetsyta',
+          home: 'Antigravity på din dator',
+          trigger: 'Du ber agenten utföra en granskning eller ta fram ett underlag',
+          summary: 'Här börjar alla konsulter dag 1: du styr själv när agenten körs och ser allt framför dig.',
+          bullets: ['Kräver noll IT-infrastruktur eller servrar.', 'Lägst risk och snabbast lärande.']
+        },
+        's3-1-persona': {
+          eyebrow: '03 · Steg 1 (Persona som kontrakt)',
+          title: 'Persona = Yrkesroll, glasögon och 5-punkts uppdragskontrakt',
+          home: '/AGENTS.md eller /.agents/skills/<roll>/SKILL.md',
+          trigger: 'Läses in när uppdraget startar',
+          summary: 'Istället för rollspelsfluff (”glad projektledare”) sätter kontraktet 5 skarpa ramar: 1) Mandat att utmana, 2) Sanningshierarki mellan källor, 3) Tillåtna verktyg, 4) Hårda stoppregler och 5) Leveransformat.',
+          bullets: ['Gör att AI:n slutar stryka medhårs och börjar hitta riktiga projekt- och kostnadsrisker.']
+        },
+        's3-1-check': {
+          eyebrow: '03 · Steg 1 (Kontroll i loopen)',
+          title: 'Kontroll mot stoppregler och källkrav',
+          home: 'Kontraktets Definition of Done + skript',
+          trigger: 'Innan svaret lämnas ut till konsulten',
+          summary: 'Om utkastet saknar paragrafhänvisning eller innehåller en ogrundad gissning tvingar stoppregeln fram ett omtag eller markeringen SAKNAS I UNDERLAG.',
+          bullets: ['Eliminerar ”tysta antaganden” som annars ställer till det på styrgruppsmöten.']
+        },
+        's3-1-share': {
+          eyebrow: '03 · Steg 1 (Skalning i teamet)',
+          title: 'Incheckning i Git ger hela teamet samma verktyg',
+          home: 'Gemensam projektmapp / Git-repo',
+          trigger: 'Du sparar och delar din förfinade SKILL.md',
+          summary: 'Så fort en konsult på Top of Minds byggt en riktigt skarp granskningsroll kan kollegorna i teamet använda exakt samma recept.',
+          bullets: ['Höjer lägstanivån i hela leveransen på fem minuter.']
+        },
+        's3-2-trig': {
+          eyebrow: '03 · Steg 2 (Händelsetrigger)',
+          title: 'Automatisk trigger via Webhook eller Tidschema',
+          home: 'GitHub, Jira, SharePoint eller schemalagd morgonkörning',
+          trigger: 'En faktisk händelse i projektets system (utan att någon chattar)',
+          summary: 'Här kliver agenten över från personligt verktyg till team-funktion: den vaknar själv när en Pull Request öppnas, ett mötesprotokoll sparas eller en milstolpe flyttas i Jira.',
+          bullets: ['Ingenting faller mellan stolarna en stressig torsdagseftermiddag.']
+        },
+        's3-2-agent': {
+          eyebrow: '03 · Steg 2 (Team-agenten)',
+          title: 'Smal specialistagent i molnet',
+          home: 'GitHub Actions, Cloud Run eller schemalagd Antigravity-automation',
+          trigger: 'Webhook-signalen från källsystemet',
+          summary: 'En team-agent ska inte göra ”allt” – den har en supertydlig, smal uppgift, t.ex. att kontrollera nya PR:er mot Jira-krav eller bevaka datumkrockar mot avtal.',
+          bullets: ['Läser kunskapsgrafen för att se vilka andra team eller leveranser som påverkas.']
+        },
+        's3-2-filter': {
+          eyebrow: '03 · Steg 2 (Brusfilter i loopen)',
+          title: 'Verifiering så teamet slipper falsklarm',
+          home: 'Kontrollskript + Kunskapsgraf',
+          trigger: 'Innan en notis skickas till teamkanalen',
+          summary: 'Om en team-agent postar 20 oviktiga meddelanden om dagen slutar alla läsa den. Därför verifierar loopen att en verklig regel- eller datumkrock föreligger.',
+          bullets: ['Larmar bara när något faktiskt kräver teamets uppmärksamhet.']
+        },
+        's3-2-out': {
+          eyebrow: '03 · Steg 2 (Mänsklig beslutspunkt)',
+          title: 'Beredd rekommendation i Slack, Teams eller PR',
+          home: 'Teamets Slack-/Teams-kanal eller PR-kommentar',
+          trigger: 'Konsekvensanalysen är färdigverifierad',
+          summary: 'Gyllene regeln för team-agenter: agenten bereder fakta, konsekvens och förslag på åtgärd – men människan i teamet fattar beslutet med ett klick.',
+          bullets: ['100 % transparens för hela projektgruppen.']
+        },
+        's3-3-lead': {
+          eyebrow: '03 · Steg 3 (Orkestreraren)',
+          title: 'Lead Agent som projektleder andra agenter',
+          home: 'Huvudagent i Antigravity (Subagent- / Swarm-orkestrering)',
+          trigger: 'Ett större sammansatt uppdrag (t.ex. efter ett styrgruppsmöte)',
+          summary: 'När ett uppdrag innehåller både kravanalys, omplanering/kodning och avtalsrevision blir en ensam agent lätt överlastad. Orkestreraren delar upp jobbet i tydliga delpaket.',
+          bullets: ['Håller sitt eget minne rent och styr helheten.']
+        },
+        's3-3-builders': {
+          eyebrow: '03 · Steg 3 (Specialisterna)',
+          title: 'Parallella utförar-agenter med smalt fokus',
+          home: 'Isolerade subagenter med egna verktyg och Skills',
+          trigger: 'Tydligt deluppdrag från Orkestreraren',
+          summary: 'Agent A fokuserar enbart på att extrahera krav ur mötet (SPEC_DELTA.md), medan Agent B uppdaterar själva planen eller prototypen.',
+          bullets: ['Kommunicerar via skriftliga filer – aldrig via luddig ”viskningslek”.']
+        },
+        's3-3-critic': {
+          eyebrow: '03 · Steg 3 (Oberoende Kritiker i loopen)',
+          title: 'Varför granskaren MÅSTE vara en egen läs-subagent',
+          home: '/.agents/agents/critic.md (endast läsrättigheter)',
+          trigger: 'Agent A och B är klara med sitt förslag',
+          summary: 'Om samma agent som skrev lösningen ombeds granska sig själv missar den ofta sina egna tankevurpor. En separat subagent med helt tomt minne ser bristerna direkt.',
+          bullets: [
+            'Har noll skrivbehörighet – kan aldrig råka förstöra filer.',
+            '↺ Skickar tillbaka konkreta nedslag i loopen tills alla avtalskrav är uppfyllda.'
+          ]
+        },
+        's3-3-signoff': {
+          eyebrow: '03 · Steg 3 (Mänsklig Sign-off)',
+          title: 'Samlad leverans för konsultens godkännande',
+          home: 'Projektledarens skärm',
+          trigger: 'Både utförare och oberoende kritiker är gröna',
+          summary: 'Du får kravändring, uppdaterat beslutsunderlag och kritikerns granskningsprotokoll samlat på ett bräde.',
+          bullets: ['Använd svärm/multi-agent för stora leveranser – för små vardagsfrågor räcker Steg 1 utmärkt!']
+        }
+      });
+
+      // ===== 3. SECTION 04 PM WORKFLOW SCENARIOS =====
+      const S4_SCENARIOS = [
+        {
+          captionTitle: 'PM-Scenario 1 · Dag 1 i nytt uppdrag: Avtals- & beroenderöntgen (3 veckor → 1 timme)',
+          captionSub: 'Hur du får full kontroll över 40 okända dokument inför din första styrgrupp',
+          html: `
+            <div class="flow-track">
+              <button type="button" class="f-node tone-trigger" data-detail="s4-1-trig">
+                <div>
+                  <div class="f-node-top"><span class="f-role-tag">⚡ Trigger</span><span class="f-more-dot">Detaljer →</span></div>
+                  <span class="f-title">Du ärver 40 projektfiler Dag 1</span>
+                  <span class="f-desc">SOW, SLA-avtal, gamla styrgrupps-PPTs och spretiga Excel-tidplaner.</span>
+                </div>
+                <div class="f-foot"><span class="home-pill home-folder">📁 Ny projektmapp (Enterprise)</span></div>
+              </button>
+              <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Indexerar</span></div>
+              <button type="button" class="f-node tone-engine" data-detail="s4-1-graph">
+                <div>
+                  <div class="f-node-top"><span class="f-role-tag">Kartering</span><span class="f-more-dot">Detaljer →</span></div>
+                  <span class="f-title">Bygger Kunskapsgraf</span>
+                  <span class="f-desc">Hittar automatiskt <em>God Nodes</em> (flaskhalsar), motstridiga datum och dolda viteskrav.</span>
+                </div>
+                <div class="f-foot"><span class="home-pill home-folder">📁 /graphify-out/graph.html</span></div>
+              </button>
+              <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Granskar</span></div>
+              <div class="loop-zone">
+                <span class="loop-badge">🔄 Källkritisk Korsläsningsloop</span>
+                <div class="loop-steps-row">
+                  <button type="button" class="f-node tone-gate" data-detail="s4-1-loop">
+                    <div>
+                      <div class="f-node-top"><span class="f-role-tag">Readiness-Skill + Citatkoll</span><span class="f-more-dot">Detaljer →</span></div>
+                      <span class="f-title">Stämmer av Avtal mot Plan</span>
+                      <span class="f-desc">Varje påstådd risk måste bevisas med exakt dokument &amp; § – annars markeras <em>Kunskapslucka</em>.</span>
+                    </div>
+                    <div class="f-foot"><span class="home-pill home-folder">📁 AGENTS.md + readiness-skill</span></div>
+                  </button>
+                </div>
+                <div class="loop-return-bar">
+                  <strong>↺ Rensar bort gissningar och skiljer på fakta vs. öppna frågor</strong>
+                  <span class="loop-pass-pill">✓ Källsäkrad</span>
+                </div>
+              </div>
+              <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Klar på 1 h</span></div>
+              <button type="button" class="f-node tone-deliver" data-detail="s4-1-out">
+                <div>
+                  <div class="f-node-top"><span class="f-role-tag">✅ Leverans</span><span class="f-more-dot">Detaljer →</span></div>
+                  <span class="f-title">Riskkarta + Intervjulista</span>
+                  <span class="f-desc">Färdig lägesbild till styrgruppen + skarpa frågor kring muntliga luckor att ställa till teamet.</span>
+                </div>
+                <div class="f-foot"><span class="home-pill home-human">👤 Projektledaren</span></div>
+              </button>
+            </div>
+          `
+        },
+        {
+          captionTitle: 'PM-Scenario 2 · Från kundworkshop till kravspec & Jira-ärenden',
+          captionSub: 'Förvandlar 90 minuters mötestranskript till spårbara krav utan att tappa bort detaljer',
+          html: `
+            <div class="flow-track">
+              <button type="button" class="f-node tone-trigger" data-detail="s4-2-trig">
+                <div>
+                  <div class="f-node-top"><span class="f-role-tag">⚡ Trigger</span><span class="f-more-dot">Detaljer →</span></div>
+                  <span class="f-title">Inspelad workshop avslutas</span>
+                  <span class="f-desc">Mötestranskriptet sparas ner i projektmappens mötesmapp.</span>
+                </div>
+                <div class="f-foot"><span class="home-pill home-cloud">🔌 Teams → 📁 /moten/</span></div>
+              </button>
+              <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Kör Skill</span></div>
+              <div class="loop-zone">
+                <span class="loop-badge">🔄 Kravextraktions- &amp; Kvalitetsloop</span>
+                <div class="loop-steps-row">
+                  <button type="button" class="f-node tone-engine" data-detail="s4-2-skill">
+                    <div>
+                      <div class="f-node-top"><span class="f-role-tag">Metodbok</span><span class="f-more-dot">Detaljer →</span></div>
+                      <span class="f-title">Skill: workshop-till-spec</span>
+                      <span class="f-desc">Sorterar strikt i: 1) Faktiska beslut, 2) User stories med acceptanskriterier, 3) Öppna frågor.</span>
+                    </div>
+                    <div class="f-foot"><span class="home-pill home-folder">📁 /.agents/skills/workshop/</span></div>
+                  </button>
+                  <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Stämmer av</span></div>
+                  <button type="button" class="f-node tone-gate" data-detail="s4-2-gate">
+                    <div>
+                      <div class="f-node-top"><span class="f-role-tag">Konfliktkoll</span><span class="f-more-dot">Detaljer →</span></div>
+                      <span class="f-title">Jämför mot befintligt avtal</span>
+                      <span class="f-desc">Flaggar om något som sades på workshopen bryter mot scope i SOW-avtalet!</span>
+                    </div>
+                    <div class="f-foot"><span class="home-pill home-folder">📁 /docs/avtal/ + Graf</span></div>
+                  </button>
+                </div>
+                <div class="loop-return-bar">
+                  <strong>↺ Kräver tidsstämpel/talarcitat på varje krav så inget är påhittat</strong>
+                  <span class="loop-pass-pill">✓ Spårbart</span>
+                </div>
+              </div>
+              <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Efter ditt Go</span></div>
+              <button type="button" class="f-node tone-deliver" data-detail="s4-2-out">
+                <div>
+                  <div class="f-node-top"><span class="f-role-tag">✅ Leverans via MCP</span><span class="f-more-dot">Detaljer →</span></div>
+                  <span class="f-title">Granskad Spec + Jira-tickets</span>
+                  <span class="f-desc">Du skummar listan på 5 min – sedan skapar agenten ärendena i Jira/Confluence via MCP.</span>
+                </div>
+                <div class="f-foot"><span class="home-pill home-cloud">🔌 Jira / Confluence MCP</span></div>
+              </button>
+            </div>
+          `
+        },
+        {
+          captionTitle: 'PM-Scenario 3 · Levande utrullnings- & vågplan med 100 % exakt kalkylkontroll',
+          captionSub: 'Så slipper du sitta med 400 Excel-rader och leta dubbelbokade team eller frysdatum för hand',
+          html: `
+            <div class="flow-track">
+              <button type="button" class="f-node tone-trigger" data-detail="s4-3-trig">
+                <div>
+                  <div class="f-node-top"><span class="f-role-tag">⚡ Trigger</span><span class="f-more-dot">Detaljer →</span></div>
+                  <span class="f-title">Ändrat datum eller försenad pilot</span>
+                  <span class="f-desc">En leverans förskjuts 1 vecka och du måste se följdeffekten på hela vågplanen.</span>
+                </div>
+                <div class="f-foot"><span class="home-pill home-folder">📁 Excel / CSV i mappen</span></div>
+              </button>
+              <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Ingen gissning</span></div>
+              <div class="loop-zone">
+                <span class="loop-badge">🔄 Deterministisk Skript- &amp; Optimeringsloop</span>
+                <div class="loop-steps-row">
+                  <button type="button" class="f-node tone-engine" data-detail="s4-3-script">
+                    <div>
+                      <div class="f-node-top"><span class="f-role-tag">Exakt matematik</span><span class="f-more-dot">Detaljer →</span></div>
+                      <span class="f-title">Agenten kör Python-kontroll</span>
+                      <span class="f-desc">Kontrollerar varje rad mot maxkapacitet/vecka, helgdagar, Black Week-frys och SLA-gränser.</span>
+                    </div>
+                    <div class="f-foot"><span class="home-pill home-engine">🧠 Agent + Python-skript</span></div>
+                  </button>
+                  <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Prövar</span></div>
+                  <button type="button" class="f-node tone-gate" data-detail="s4-3-opt">
+                    <div>
+                      <div class="f-node-top"><span class="f-role-tag">Regelgrind</span><span class="f-more-dot">Detaljer →</span></div>
+                      <span class="f-title">0 kapacitets- eller frysbrott</span>
+                      <span class="f-desc">Om den flyttade vågen överbelastar ett team räknar loopen fram ny vågfördelning.</span>
+                    </div>
+                    <div class="f-foot"><span class="home-pill home-folder">📁 Avtals- &amp; SLA-regler</span></div>
+                  </button>
+                </div>
+                <div class="loop-return-bar">
+                  <strong>↺ Omplanerar i loopen tills alla kapacitets- och frysregler hålls</strong>
+                  <span class="loop-pass-pill">✓ 0 regelbrott</span>
+                </div>
+              </div>
+              <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Beslutsval</span></div>
+              <button type="button" class="f-node tone-deliver" data-detail="s4-3-out">
+                <div>
+                  <div class="f-node-top"><span class="f-role-tag">✅ Leverans</span><span class="f-more-dot">Detaljer →</span></div>
+                  <span class="f-title">Reviderad vågplan + Kostnad i SEK</span>
+                  <span class="f-desc">Två tydliga handlingsalternativ (t.ex. utöka team vs. flytta våg) med exakt prislapp till styrgruppen.</span>
+                </div>
+                <div class="f-foot"><span class="home-pill home-human">👤 Styrgruppsbeslut</span></div>
+              </button>
+            </div>
+          `
+        },
+        {
+          captionTitle: 'PM-Scenario 4 · ”Döda PowerPointen”: Klickbar kundprototyp på 20 minuter',
+          captionSub: 'När verksamhet och IT pratar förbi varandra bygger du något kunden faktiskt kan klicka på',
+          html: `
+            <div class="flow-track">
+              <button type="button" class="f-node tone-trigger" data-detail="s4-4-trig">
+                <div>
+                  <div class="f-node-top"><span class="f-role-tag">⚡ Trigger</span><span class="f-more-dot">Detaljer →</span></div>
+                  <span class="f-title">Abstrakt kravdiskussion fastnar</span>
+                  <span class="f-desc">Kunden har svårt att föreställa sig hur arbetsflödet eller rapportvyn ska fungera i praktiken.</span>
+                </div>
+                <div class="f-foot"><span class="home-pill home-human">👤 Förstudie / Workshop</span></div>
+              </button>
+              <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Skissar</span></div>
+              <div class="loop-zone">
+                <span class="loop-badge">🔄 Visuell Prototyp- &amp; Verifieringsloop</span>
+                <div class="loop-steps-row">
+                  <button type="button" class="f-node tone-engine" data-detail="s4-4-build">
+                    <div>
+                      <div class="f-node-top"><span class="f-role-tag">Bygger vy</span><span class="f-more-dot">Detaljer →</span></div>
+                      <span class="f-title">Antigravity / Lovable genererar UI</span>
+                      <span class="f-desc">Skapar en interaktiv webbvy med realistisk (anonymiserad!) exempeldata och kundens färger.</span>
+                    </div>
+                    <div class="f-foot"><span class="home-pill home-folder">📁 HTML / Webbapp</span></div>
+                  </button>
+                  <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Visuell koll</span></div>
+                  <button type="button" class="f-node tone-gate" data-detail="s4-4-check">
+                    <div>
+                      <div class="f-node-top"><span class="f-role-tag">Testar i webbläsare</span><span class="f-more-dot">Detaljer →</span></div>
+                      <span class="f-title">Klick- &amp; Layoutkontroll</span>
+                      <span class="f-desc">Kontrollerar att filter, tabbar och beräkningar fungerar direkt på skärmen.</span>
+                    </div>
+                    <div class="f-foot"><span class="home-pill home-engine">🧠 Inbyggd Webbläsare</span></div>
+                  </button>
+                </div>
+                <div class="loop-return-bar">
+                  <strong>↺ Du justerar med röst/chatt i realtid tills vyn speglar behovet perfekt</strong>
+                  <span class="loop-pass-pill">✓ Redo för demo</span>
+                </div>
+              </div>
+              <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">20 min senare</span></div>
+              <button type="button" class="f-node tone-deliver" data-detail="s4-4-out">
+                <div>
+                  <div class="f-node-top"><span class="f-role-tag">✅ Leverans</span><span class="f-more-dot">Detaljer →</span></div>
+                  <span class="f-title">Omedelbar samsyn mellan Affär &amp; IT</span>
+                  <span class="f-desc">Kunden pekar och reagerar direkt – och utvecklingsteamet får en glasklar målbild att bygga mot.</span>
+                </div>
+                <div class="f-foot"><span class="home-pill home-human">👤 Kund &amp; Utvecklingsteam</span></div>
+              </button>
+            </div>
+          `
+        },
+        {
+          captionTitle: 'PM-Scenario 5 · Fredagens Styrgruppspuls & uppdaterad RAID-logg på 10 minuter',
+          captionSub: 'Slipp måndagsstressen med att jaga ihop status från fem olika håll',
+          html: `
+            <div class="flow-track">
+              <button type="button" class="f-node tone-trigger" data-detail="s4-5-trig">
+                <div>
+                  <div class="f-node-top"><span class="f-role-tag">⚡ Trigger</span><span class="f-more-dot">Detaljer →</span></div>
+                  <span class="f-title">Fredag kl. 14:00 (eller inför styrgrupp)</span>
+                  <span class="f-desc">Veckans mötesnoteringar, Jira-status och risklogg ska kokas ner till 1 skarp sida.</span>
+                </div>
+                <div class="f-foot"><span class="home-pill home-human">👤 Projektledare / Schema</span></div>
+              </button>
+              <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Samlar in</span></div>
+              <div class="loop-zone">
+                <span class="loop-badge">🔄 Sammanställnings- &amp; Mall-loop</span>
+                <div class="loop-steps-row">
+                  <button type="button" class="f-node tone-engine" data-detail="s4-5-skill">
+                    <div>
+                      <div class="f-node-top"><span class="f-role-tag">Metodbok</span><span class="f-more-dot">Detaljer →</span></div>
+                      <span class="f-title">Skill: styrgrupps-puls</span>
+                      <span class="f-desc">Hämtar stängda/försenade punkter via MCP och formaterar trafikljus (Röd/Gul/Grön) + RAID-ändringar.</span>
+                    </div>
+                    <div class="f-foot"><span class="home-pill home-folder">📁 SKILL.md + 🔌 Jira MCP</span></div>
+                  </button>
+                  <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Skärper</span></div>
+                  <button type="button" class="f-node tone-gate" data-detail="s4-5-gate">
+                    <div>
+                      <div class="f-node-top"><span class="f-role-tag">Beslutskoll</span><span class="f-more-dot">Detaljer →</span></div>
+                      <span class="f-title">Krav på konkreta beslutspunkter</span>
+                      <span class="f-desc">Avvisar luddig ”allt rullar på”-text och kräver ansvarig + datum på varje röd/gul risk.</span>
+                    </div>
+                    <div class="f-foot"><span class="home-pill home-folder">📁 Kvalitetskrav i Skill</span></div>
+                  </button>
+                </div>
+                <div class="loop-return-bar">
+                  <strong>↺ Trimmar längd och kontrollerar mot förra veckans utlovade åtgärder</strong>
+                  <span class="loop-pass-pill">✓ 1 sida klar</span>
+                </div>
+              </div>
+              <div class="f-arrow" aria-hidden="true"><span class="f-arrow-line">→</span><span class="f-arrow-label">Din finputs</span></div>
+              <button type="button" class="f-node tone-deliver" data-detail="s4-5-out">
+                <div>
+                  <div class="f-node-top"><span class="f-role-tag">✅ Leverans</span><span class="f-more-dot">Detaljer →</span></div>
+                  <span class="f-title">Skarp Styrgruppspuls &amp; RAID</span>
+                  <span class="f-desc">Du lägger 5 minuter på politisk fingertoppskänsla och tonläge – och tar helg i tid!</span>
+                </div>
+                <div class="f-foot"><span class="home-pill home-human">👤 Styrgruppen</span></div>
+              </button>
+            </div>
+          `
+        }
+      ];
+
+      Object.assign(DETAILS, {
+        's4-1-trig': {
+          eyebrow: '04 · Fall 1 (Uppdragsstart)',
+          title: '40 spretiga filer i kundens godkända miljö',
+          home: 'Arbetsmapp på kunddator / godkänd Enterprise-miljö',
+          trigger: 'Du kliver in i ett pågående uppdrag med kort startsträcka',
+          summary: 'Alla avtal (SOW/SLA), gamla presentationer och Excel-planer samlas i en mapp så agenten kan korsläsa helheten.',
+          bullets: ['Kom ihåg gräns 1 (Sekretess): Aldrig kundfiler i privata gratiskonton!']
+        },
+        's4-1-graph': {
+          eyebrow: '04 · Fall 1 (Kunskapsgraf)',
+          title: 'Automatisk beroendekarta över hela uppdraget',
+          home: '/graphify-out/graph.html',
+          trigger: 'Körning av graphify på projektmappen',
+          summary: 'Grafen visar direkt vilka personer, system och avtalsparagrafer som flest leveranser hänger på.',
+          bullets: ['Avslöjar dolda flaskhalsar på minuter istället för veckor.']
+        },
+        's4-1-loop': {
+          eyebrow: '04 · Fall 1 (Källkritisk loop)',
+          title: 'Korsgranskning utan påhittade antaganden',
+          home: '/AGENTS.md + /.agents/skills/readiness/',
+          trigger: 'Granskningskörningen',
+          summary: 'Loopen tvingar agenten att backa upp varje flaggad risk med filnamn och paragraf – och samla allt som saknas i en tydlig lista med kunskapsluckor.',
+          bullets: ['Muntliga korridorsbeslut syns som luckor i grafen – perfekt som din intervjulista dag 2!']
+        },
+        's4-1-out': {
+          eyebrow: '04 · Fall 1 (Leverans)',
+          title: 'Faktabaserad lägesbild Dag 1',
+          home: 'Beslutsunderlag till sponsor/styrgrupp',
+          trigger: 'Korsgranskningen slutförd',
+          summary: 'Du kommer in på ditt första möte med stenkoll på vitesklausuler, kapacitetstak och kritiska beroenden.',
+          bullets: ['Bygger enormt förtroende hos kunden direkt från dag ett.']
+        },
+        's4-2-trig': {
+          eyebrow: '04 · Fall 2 (Efter möte)',
+          title: 'Mötesinspelning / Transkript som råmaterial',
+          home: 'Teams-transkript sparat i /moten/',
+          trigger: 'Avslutad krav- eller styrgruppsworkshop',
+          summary: 'Istället för att renskriva stödanteckningar på kvällen matar du in det faktiska transkriptet.',
+          bullets: ['Inget viktigt förbehåll från verksamheten tappas bort.']
+        },
+        's4-2-skill': {
+          eyebrow: '04 · Fall 2 (Krav-Skill)',
+          title: 'Strukturerad uppdelning i Beslut, Krav och Öppna frågor',
+          home: '/.agents/skills/workshop-till-spec/SKILL.md',
+          trigger: 'Körning av krav-skillen på mötesfilen',
+          summary: 'Mallen tvingar agenten att skilja på vad som faktiskt klubbades i rummet och vad som bara var önsketänkande.',
+          bullets: ['Formulerar färdiga acceptanskriterier enligt teamets standard.']
+        },
+        's4-2-gate': {
+          eyebrow: '04 · Fall 2 (Avtalskontroll i loopen)',
+          title: 'Automatisk Scope Creep-vakt mot SOW-avtalet',
+          home: '/docs/avtal/ + Kunskapsgraf',
+          trigger: 'Korsläsning av nya krav mot gällande avtal',
+          summary: 'Här glänser mapp-agenten över vanlig Teams-Copilot: den ser direkt om ett nytt önskemål på workshopen går utanför ert avtalade åtagande!',
+          bullets: ['Ger dig underlag för ändringsbegäran (Change Request) direkt samma dag.']
+        },
+        's4-2-out': {
+          eyebrow: '04 · Fall 2 (Leverans)',
+          title: 'Färdig kravspec + Jira-utkast via MCP',
+          home: 'Confluence / Jira via MCP',
+          trigger: 'Du har granskat och godkänt kravlistan',
+          summary: 'Efter din snabba översyn skapas strukturerade tickets utan manuellt klipp-och-klistra.',
+          bullets: ['Från workshop till tydlig backlog på under 30 minuter.']
+        },
+        's4-3-trig': {
+          eyebrow: '04 · Fall 3 (Planändring)',
+          title: 'Försening eller resursändring i tidplanen',
+          home: 'Excel-/CSV-planer i projektmappen',
+          trigger: 'En leverantör eller pilot förskjuts i tid',
+          summary: 'När en pusselbit flyttas i ett komplext utrullningsprojekt uppstår ofta följdkrockar flera veckor senare.',
+          bullets: ['Vanliga språkmodeller missar lätt sådana krockar om de bara läser text.']
+        },
+        's4-3-script': {
+          eyebrow: '04 · Fall 3 (Skriptberäkning)',
+          title: '100 % exakt matematik med Python-skript',
+          home: 'Agentens kodkörning mot CSV/Excel',
+          trigger: 'Regeln ”Ingen huvudräkning i text” i AGENTS.md',
+          summary: 'Agenten skriver och kör ett litet kontrollskript som räknar exakt antal utrullningar per vecka, team och region.',
+          bullets: ['Noll avrundnings- eller slarvfel oavsett om arket har 50 eller 5 000 rader.']
+        },
+        's4-3-opt': {
+          eyebrow: '04 · Fall 3 (Regelgrind i loopen)',
+          title: 'Kontroll mot kapacitetstak, frysperioder och viten',
+          home: 'Avtalsregler i /docs/ + kontrollskript',
+          trigger: 'Varje omräknat planförslag',
+          summary: 'Om flytten krockar med t.ex. Black Week-frys eller max 4 butiker/vecka, räknar loopen fram ett giltigt alternativ och dess kostnad i SEK.',
+          bullets: ['Förvandlar magkänsla till hård fakta inför styrgruppen.']
+        },
+        's4-3-out': {
+          eyebrow: '04 · Fall 3 (Leverans)',
+          title: 'Tydliga beslutsscenarion med prislapp i SEK',
+          home: 'Uppdaterad plan + beslutsunderlag',
+          trigger: 'Alla planregler verifierade',
+          summary: 'Styrgruppen får två konkreta val med konsekvens i tid och kronor på bordet.',
+          bullets: ['Du leder mötet proaktivt istället för att försvara en trasig Excel-fil.']
+        },
+        's4-4-trig': {
+          eyebrow: '04 · Fall 4 (Behov av visuell samsyn)',
+          title: 'När 30 sidor text tolkas olika av alla i rummet',
+          home: 'Workshop eller styrgruppsmöte',
+          trigger: 'Behov av att visa hur ett flöde eller beslutsstöd ska se ut',
+          summary: 'Människor har svårt att granska abstrakta textkrav – men så fort de ser en klickbar vy på skärmen vet de direkt vad som saknas.',
+          bullets: ['Fungerar lika bra för en utrullningsdashboard som för ett nytt kundflöde.']
+        },
+        's4-4-build': {
+          eyebrow: '04 · Fall 4 (Bygge av prototyp)',
+          title: 'Snabb interaktiv webbvy med anonymiserad exempeldata',
+          home: 'Antigravity (lokalt/GitHub Pages) eller Lovable',
+          trigger: 'Din beskrivning på vanlig svenska + kalkylark/kravlista',
+          summary: 'På 15–20 minuter skapas en riktig klickbar vy i kundens grafiska stil.',
+          bullets: ['Märk alltid prototypen tydligt med ”Konceptprototyp – syntetisk exempeldata” så ingen tror att backend redan är klart!']
+        },
+        's4-4-check': {
+          eyebrow: '04 · Fall 4 (Visuell loop)',
+          title: 'Direkt test och finjustering i webbläsaren',
+          home: 'Inbyggd förhandsgranskning',
+          trigger: 'Varje justering under eller inför mötet',
+          summary: 'Du klickar själv igenom flödet och ber agenten justera fält, filter eller nyckeltal i en snabb loop.',
+          bullets: ['Kan till och med justeras live under pågående arbetsmöte.']
+        },
+        's4-4-out': {
+          eyebrow: '04 · Fall 4 (Leverans)',
+          title: 'Klickbar målbild som sparar veckor av missförstånd',
+          home: 'Delbar länk eller lokal HTML-fil',
+          trigger: 'Prototypen godkänd av beställaren',
+          summary: 'Utvecklingsteamet får en glasklar referens att bygga mot och verksamheten känner sig trygg i vad som beställts.',
+          bullets: ['En av de mest uppskattade ”superkrafterna” en konsult kan ta med till kund idag.']
+        },
+        's4-5-trig': {
+          eyebrow: '04 · Fall 5 (Veckorutin)',
+          title: 'Återkommande ”måndagstidstjuv” / fredagsrapport',
+          home: 'Projektledarens veckorutin (eller schemalagd automation)',
+          trigger: 'Dags att skicka veckovis styrgruppspuls och uppdatera RAID',
+          summary: 'Ett klassiskt konsultmoment som ofta äter 1–2 timmar varje vecka i ren sammanställning.',
+          bullets: ['Perfekt förstacase att bygga som egen Skill på konferensen!']
+        },
+        's4-5-skill': {
+          eyebrow: '04 · Fall 5 (Rapport-Skill)',
+          title: 'Skillen samlar och strukturerar i exakt rätt mall',
+          home: '/.agents/skills/styrgrupps-puls/SKILL.md',
+          trigger: 'Körning mot veckans anteckningar och Jira-status',
+          summary: 'Sammanställer levererat sedan sist, avvikelser mot plan, förändrade risker (RAID) och veckans 3 beslutspunkter.',
+          bullets: ['Samma skarpa struktur varje vecka.']
+        },
+        's4-5-gate': {
+          eyebrow: '04 · Fall 5 (Kvalitetskontroll i loopen)',
+          title: 'Stoppar fluff och saknade ägare',
+          home: 'Regler i styrgrupps-puls/SKILL.md',
+          trigger: 'Självkontroll av rapportutkastet',
+          summary: 'Loopen kontrollerar att varje röd/gul punkt har en namngiven ägare, konsekvens och föreslagen åtgärd – samt stämmer av mot vad som lovades förra veckan.',
+          bullets: ['Håller rapporten kort (max 1 sida) så styrgruppen faktiskt läser allt.']
+        },
+        's4-5-out': {
+          eyebrow: '04 · Fall 5 (Leverans)',
+          title: 'Färdigt beslutsunderlag där du sätter sista nyansen',
+          home: 'Mejlutkast / PDF / Teams-post till styrgruppen',
+          trigger: 'Din 5-minuters genomläsning och godkännande',
+          summary: 'Agenten gör 90 % av insamlings- och formateringsjobbet – du tillför den mänskliga fingertoppskänslan och skickar.',
+          bullets: ['Kom ihåg gräns 5: Projektledaren äger alltid kommunikationen och ansvaret!']
+        }
+      });
+
+      // ===== 4. RENDER DYNAMIC BOARDS & BIND CLICK DRAWER =====
+      const s3Board = document.getElementById('s3-board');
+      const s4Board = document.getElementById('s4-board');
+      const dialog = document.getElementById('detail-dialog');
+
+      function renderBoard(boardEl, scenarioObj) {
+        if (!boardEl || !scenarioObj) return;
+        boardEl.innerHTML = `
+          <div class="flow-caption-bar">
+            <strong>${scenarioObj.captionTitle}</strong>
+            <span>${scenarioObj.captionSub}</span>
+          </div>
+          ${scenarioObj.html}
+        `;
+      }
+
+      renderBoard(s3Board, S3_SCENARIOS[0]);
+      renderBoard(s4Board, S4_SCENARIOS[0]);
+
+      function setupScenarioTabs(attrName, scenarios, boardEl) {
+        const tabs = Array.from(document.querySelectorAll(`[${attrName}]`));
+        function activate(tab, focus = false) {
+          const idx = Number(tab.getAttribute(attrName));
+          for (const t of tabs) {
+            const sel = t === tab;
+            t.setAttribute('aria-selected', String(sel));
+            t.tabIndex = sel ? 0 : -1;
+          }
+          renderBoard(boardEl, scenarios[idx]);
+          if (focus) tab.focus();
+        }
+        for (const t of tabs) {
+          t.addEventListener('click', () => activate(t, false));
+          t.addEventListener('keydown', (e) => {
+            if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+            const i = tabs.indexOf(t);
+            if (e.key === 'ArrowRight' && i < tabs.length - 1) {
+              e.preventDefault();
+              activate(tabs[i + 1], true);
+            } else if (e.key === 'ArrowLeft' && i > 0) {
+              e.preventDefault();
+              activate(tabs[i - 1], true);
+            }
+          });
+        }
+      }
+
+      setupScenarioTabs('data-s3-tab', S3_SCENARIOS, s3Board);
+      setupScenarioTabs('data-s4-tab', S4_SCENARIOS, s4Board);
+
+      // Event delegation for clicking ANY .f-node[data-detail]
+      document.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-detail]');
+        if (!btn) return;
+        const key = btn.getAttribute('data-detail');
+        const info = DETAILS[key];
+        if (!info || !dialog) return;
+
+        document.getElementById('drawer-eyebrow').textContent = info.eyebrow;
+        document.getElementById('drawer-title').textContent = info.title;
+        document.getElementById('drawer-home').textContent = info.home;
+        document.getElementById('drawer-trigger').textContent = info.trigger;
+        document.getElementById('drawer-summary').textContent = info.summary;
+        document.getElementById('drawer-bullets').innerHTML = (info.bullets || [])
+          .map((b) => `<li><span style="color:var(--tom-purple); font-weight:800;">→</span><span>${b}</span></li>`)
+          .join('');
+
+        const codeWrap = document.getElementById('drawer-code-wrap');
+        const codeEl = document.getElementById('drawer-code');
+        if (info.code) {
+          codeWrap.hidden = false;
+          codeEl.textContent = info.code;
+        } else {
+          codeWrap.hidden = true;
+          codeEl.textContent = '';
+        }
+
+        dialog.showModal();
+      });
+
+      dialog?.addEventListener('close', () => {
+        dialog.returnValue = '';
+      });
+
+      // Safari fallback for closedby="any" light dismiss
+      if (dialog && !('closedBy' in HTMLDialogElement.prototype)) {
+        const outside = (e, d) => {
+          const r = d.getBoundingClientRect();
+          return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+        };
+        let pressedOutside = false;
+        dialog.addEventListener('pointerdown', (e) => {
+          pressedOutside = outside(e, dialog);
+        });
+        dialog.addEventListener('pointerup', (e) => {
+          if (pressedOutside && outside(e, dialog)) dialog.close();
+        });
+      }
+
+      // Sticky nav active section highlight
+      const navLinks = Array.from(document.querySelectorAll('.primary-nav .nav-link'));
+      const secs = navLinks.map((l) => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+      if ('IntersectionObserver' in window && secs.length > 0) {
+        const obs = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                const id = `#${entry.target.id}`;
+                for (const l of navLinks) {
+                  l.classList.toggle('is-active', l.getAttribute('href') === id);
+                }
+              }
+            }
+          },
+          { rootMargin: '-25% 0px -60% 0px' }
+        );
+        for (const s of secs) obs.observe(s);
+      }
+    })();
+  </script>
+</body>
+</html>
