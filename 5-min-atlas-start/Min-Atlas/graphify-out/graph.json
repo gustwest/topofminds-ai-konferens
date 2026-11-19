@@ -1,0 +1,628 @@
+{
+  "nodes": [
+    {
+      "id": "file:02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "label": "Mitt Bolag & Top of Minds",
+      "cluster": "Bolag & Top of Minds",
+      "color": "#7c3aed",
+      "kind": "Dokument",
+      "source": "02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "summary": "Källa: 02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "degree": 13
+    },
+    {
+      "id": "file:03-uppdrag/aktivt-uppdrag.md",
+      "label": "Aktiva Uppdrag & Beslutslogg (Övergripande & NDA-säkert)",
+      "cluster": "Kunduppdrag & Leverans",
+      "color": "#0369a1",
+      "kind": "Dokument",
+      "source": "03-uppdrag/aktivt-uppdrag.md",
+      "summary": "Källa: 03-uppdrag/aktivt-uppdrag.md",
+      "degree": 8
+    },
+    {
+      "id": "hub:min-atlas",
+      "label": "Min Atlas (Kärna)",
+      "cluster": "Kärna & Stabschef",
+      "color": "#dc2626",
+      "kind": "Kärna",
+      "source": "AGENTS.md",
+      "summary": "Central knutpunkt som binder ihop privatliv, eget bolag, Top of Minds, uppdrag och återanvändbara Skills.",
+      "degree": 8
+    },
+    {
+      "id": "file:01-privat/oversikt.md",
+      "label": "Privatliv, Egna Projekt & Viktiga Hållpunkter",
+      "cluster": "Privatliv & Mål",
+      "color": "#15803d",
+      "kind": "Dokument",
+      "source": "01-privat/oversikt.md",
+      "summary": "Här samlar du sådant som gör vardagen enklare när din personliga",
+      "degree": 7
+    },
+    {
+      "id": "file:04-personer-och-natverk/kontakter.md",
+      "label": "Personer, Kollegor & Viktiga Kontakter",
+      "cluster": "Personer & Nätverk",
+      "color": "#b45309",
+      "kind": "Dokument",
+      "source": "04-personer-och-natverk/kontakter.md",
+      "summary": "Här kopplas nyckelpersoner ihop med rätt bolag och sammanhang i ",
+      "degree": 6
+    },
+    {
+      "id": "file:AGENTS.md",
+      "label": "AGENTS.md (Lagbok)",
+      "cluster": "Kärna & Stabschef",
+      "color": "#dc2626",
+      "kind": "Styrfil",
+      "source": "AGENTS.md",
+      "summary": "1. Slå alltid upp i Min-Atlas först: Innan du svarar på frågor o",
+      "degree": 5
+    },
+    {
+      "id": "file:.agents/skills/atlas-coach/SKILL.md",
+      "label": "Skill: atlas-coach",
+      "cluster": "Skills & Agentstyrning",
+      "color": "#09213a",
+      "kind": "Skill",
+      "source": ".agents/skills/atlas-coach/SKILL.md",
+      "summary": "Denna skill hjälper användaren att på 3–5 minuter bygga upp och ",
+      "degree": 4
+    },
+    {
+      "id": "sec:.agents/skills/styrgrupps-grillare/SKILL.md:5-punkts uppdragskontrakt",
+      "label": "5-punkts Uppdragskontrakt",
+      "cluster": "Skills & Agentstyrning",
+      "color": "#09213a",
+      "kind": "Delområde",
+      "source": ".agents/skills/styrgrupps-grillare/SKILL.md",
+      "summary": "Sektion i .agents/skills/styrgrupps-grillare/SKILL.md",
+      "degree": 2
+    },
+    {
+      "id": "ent:månadsrutin",
+      "label": "Månadsrutin",
+      "cluster": "Bolag & Top of Minds",
+      "color": "#7c3aed",
+      "kind": "Entitet / Punkt",
+      "source": "02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "summary": "Tidrapportering, fakturaunderlag och lönekörning.",
+      "degree": 2
+    },
+    {
+      "id": "file:.agents/skills/styrgrupps-grillare/SKILL.md",
+      "label": "Skill: styrgrupps-grillare",
+      "cluster": "Skills & Agentstyrning",
+      "color": "#09213a",
+      "kind": "Skill",
+      "source": ".agents/skills/styrgrupps-grillare/SKILL.md",
+      "summary": "Använd denna skill när användaren vill trycktesta en plan, en pr",
+      "degree": 2
+    },
+    {
+      "id": "sec:03-uppdrag/aktivt-uppdrag.md:aktuellt fokusuppdrag",
+      "label": "Aktuellt Fokusuppdrag",
+      "cluster": "Kunduppdrag & Leverans",
+      "color": "#0369a1",
+      "kind": "Delområde",
+      "source": "03-uppdrag/aktivt-uppdrag.md",
+      "summary": "Sektion i 03-uppdrag/aktivt-uppdrag.md",
+      "degree": 1
+    },
+    {
+      "id": "sec:02-bolag-och-topofminds/mitt-bolag-och-profil.md:eget konsultbolag / administration (om tillämpligt)",
+      "label": "Eget Konsultbolag / Administration (om tillämpligt)",
+      "cluster": "Bolag & Top of Minds",
+      "color": "#7c3aed",
+      "kind": "Delområde",
+      "source": "02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "summary": "Sektion i 02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "degree": 1
+    },
+    {
+      "id": "ent:ekonomi / revisor",
+      "label": "Ekonomi / Revisor",
+      "cluster": "Personer & Nätverk",
+      "color": "#b45309",
+      "kind": "Entitet / Punkt",
+      "source": "04-personer-och-natverk/kontakter.md",
+      "summary": "(Fylls i om du har eget AB)",
+      "degree": 1
+    },
+    {
+      "id": "ent:exempel – boende / brf / hus",
+      "label": "Exempel – Boende / BRF / Hus",
+      "cluster": "Privatliv & Mål",
+      "color": "#15803d",
+      "kind": "Entitet / Punkt",
+      "source": "01-privat/oversikt.md",
+      "summary": "(Fylls i när du kör Starta min Atlas)",
+      "degree": 1
+    },
+    {
+      "id": "ent:exempel – familj & fritid",
+      "label": "Exempel – Familj & Fritid",
+      "cluster": "Privatliv & Mål",
+      "color": "#15803d",
+      "kind": "Entitet / Punkt",
+      "source": "01-privat/oversikt.md",
+      "summary": "(Planering, resor eller egna mål under året)",
+      "degree": 1
+    },
+    {
+      "id": "sec:.agents/skills/atlas-coach/SKILL.md:flöde när användaren skriver \"starta min atlas\" (onboarding)",
+      "label": "Flöde när användaren skriver \"Starta min Atlas\" (Onboarding)",
+      "cluster": "Skills & Agentstyrning",
+      "color": "#09213a",
+      "kind": "Delområde",
+      "source": ".agents/skills/atlas-coach/SKILL.md",
+      "summary": "Sektion i .agents/skills/atlas-coach/SKILL.md",
+      "degree": 1
+    },
+    {
+      "id": "ent:försäkringar & elavtal",
+      "label": "Försäkringar & elavtal",
+      "cluster": "Privatliv & Mål",
+      "color": "#15803d",
+      "kind": "Entitet / Punkt",
+      "source": "01-privat/oversikt.md",
+      "summary": "(När avtal ska omförhandlas)",
+      "degree": 1
+    },
+    {
+      "id": "sec:AGENTS.md:gyllene sekretess- & nda-regeln (privat + bolag vs. kunddata)",
+      "label": "Gyllene Sekretess- & NDA-regeln (Privat + Bolag vs. Kunddata)",
+      "cluster": "Kärna & Stabschef",
+      "color": "#dc2626",
+      "kind": "Delområde",
+      "source": "AGENTS.md",
+      "summary": "Sektion i AGENTS.md",
+      "degree": 1
+    },
+    {
+      "id": "sec:AGENTS.md:håll kunskapsgrafen levande",
+      "label": "Håll Kunskapsgrafen levande",
+      "cluster": "Kärna & Stabschef",
+      "color": "#dc2626",
+      "kind": "Delområde",
+      "source": "AGENTS.md",
+      "summary": "Sektion i AGENTS.md",
+      "degree": 1
+    },
+    {
+      "id": "ent:kopplade kollegor & nätverk",
+      "label": "Kopplade kollegor & nätverk",
+      "cluster": "Bolag & Top of Minds",
+      "color": "#7c3aed",
+      "kind": "Entitet / Punkt",
+      "source": "02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "summary": "Se Kontakter & Nätverk(../04-personer-och-natverk/kontakter.md).",
+      "degree": 1
+    },
+    {
+      "id": "ent:koppling till bolagsprofil",
+      "label": "Koppling till bolagsprofil",
+      "cluster": "Kunduppdrag & Leverans",
+      "color": "#0369a1",
+      "kind": "Entitet / Punkt",
+      "source": "03-uppdrag/aktivt-uppdrag.md",
+      "summary": "Stärker kompetensspåret i Mitt Bolag & Top of Minds(../02-bolag-",
+      "degree": 1
+    },
+    {
+      "id": "ent:kärnstyrkor i konsultrollen",
+      "label": "Kärnstyrkor i konsultrollen",
+      "cluster": "Bolag & Top of Minds",
+      "color": "#7c3aed",
+      "kind": "Entitet / Punkt",
+      "source": "02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "summary": "Förändringsledning, komplex projektstyrning och tydliga beslutsu",
+      "degree": 1
+    },
+    {
+      "id": "ent:mitt mål de närmaste 30 dagarna",
+      "label": "Mitt mål de närmaste 30 dagarna",
+      "cluster": "Kunduppdrag & Leverans",
+      "color": "#0369a1",
+      "kind": "Entitet / Punkt",
+      "source": "03-uppdrag/aktivt-uppdrag.md",
+      "summary": "(Vad behöver sitta för att skapa lugn och effekt?)",
+      "degree": 1
+    },
+    {
+      "id": "ent:namn & roll",
+      "label": "Namn & Roll",
+      "cluster": "Bolag & Top of Minds",
+      "color": "#7c3aed",
+      "kind": "Entitet / Punkt",
+      "source": "02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "summary": "(Fylls i vid Starta min Atlas – t.ex. Senior Projektledare / Kon",
+      "degree": 1
+    },
+    {
+      "id": "sec:04-personer-och-natverk/kontakter.md:nätverk & samarbetspartners",
+      "label": "Nätverk & Samarbetspartners",
+      "cluster": "Personer & Nätverk",
+      "color": "#b45309",
+      "kind": "Delområde",
+      "source": "04-personer-och-natverk/kontakter.md",
+      "summary": "Sektion i 04-personer-och-natverk/kontakter.md",
+      "degree": 1
+    },
+    {
+      "id": "sec:01-privat/oversikt.md:pågående privata projekt",
+      "label": "Pågående privata projekt",
+      "cluster": "Privatliv & Mål",
+      "color": "#15803d",
+      "kind": "Delområde",
+      "source": "01-privat/oversikt.md",
+      "summary": "Sektion i 01-privat/oversikt.md",
+      "degree": 1
+    },
+    {
+      "id": "ent:redovisning & ekonomi",
+      "label": "Redovisning & Ekonomi",
+      "cluster": "Bolag & Top of Minds",
+      "color": "#7c3aed",
+      "kind": "Entitet / Punkt",
+      "source": "02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "summary": "(Revisor, viktiga datum för moms/bokslut)",
+      "degree": 1
+    },
+    {
+      "id": "sec:AGENTS.md:roll & mandat",
+      "label": "Roll & Mandat",
+      "cluster": "Kärna & Stabschef",
+      "color": "#dc2626",
+      "kind": "Delområde",
+      "source": "AGENTS.md",
+      "summary": "Sektion i AGENTS.md",
+      "degree": 1
+    },
+    {
+      "id": "sec:02-bolag-och-topofminds/mitt-bolag-och-profil.md:roll & profil på top of minds",
+      "label": "Roll & Profil på Top of Minds",
+      "cluster": "Bolag & Top of Minds",
+      "color": "#7c3aed",
+      "kind": "Delområde",
+      "source": "02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "summary": "Sektion i 02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "degree": 1
+    },
+    {
+      "id": "sec:AGENTS.md:sanningskälla & kunskapsgraf (nolltolerans mot gissningar)",
+      "label": "Sanningskälla & Kunskapsgraf (Nolltolerans mot gissningar)",
+      "cluster": "Kärna & Stabschef",
+      "color": "#dc2626",
+      "kind": "Delområde",
+      "source": "AGENTS.md",
+      "summary": "Sektion i AGENTS.md",
+      "degree": 1
+    },
+    {
+      "id": "file:.agents/skills/graphify/SKILL.md",
+      "label": "Skill: graphify",
+      "cluster": "Skills & Agentstyrning",
+      "color": "#09213a",
+      "kind": "Skill",
+      "source": ".agents/skills/graphify/SKILL.md",
+      "summary": "Turn any folder of files into a navigable knowledge graph with c",
+      "degree": 1
+    },
+    {
+      "id": "sec:02-bolag-och-topofminds/mitt-bolag-och-profil.md:sälj, avrop & kompetensbevis",
+      "label": "Sälj, Avrop & Kompetensbevis",
+      "cluster": "Bolag & Top of Minds",
+      "color": "#7c3aed",
+      "kind": "Delområde",
+      "source": "02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "summary": "Sektion i 02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "degree": 1
+    },
+    {
+      "id": "ent:top of minds-teamet",
+      "label": "Top of Minds-teamet",
+      "cluster": "Personer & Nätverk",
+      "color": "#b45309",
+      "kind": "Entitet / Punkt",
+      "source": "04-personer-och-natverk/kontakter.md",
+      "summary": "Kollegor och sparringpartners kopplade till Mitt Bolag & Top of ",
+      "degree": 1
+    },
+    {
+      "id": "ent:uppdragstyp",
+      "label": "Uppdragstyp",
+      "cluster": "Kunduppdrag & Leverans",
+      "color": "#0369a1",
+      "kind": "Entitet / Punkt",
+      "source": "03-uppdrag/aktivt-uppdrag.md",
+      "summary": "(Fylls i vid Starta min Atlas)",
+      "degree": 1
+    },
+    {
+      "id": "sec:03-uppdrag/aktivt-uppdrag.md:viktiga metodlärdomar att återanvända",
+      "label": "Viktiga metodlärdomar att återanvända",
+      "cluster": "Kunduppdrag & Leverans",
+      "color": "#0369a1",
+      "kind": "Delområde",
+      "source": "03-uppdrag/aktivt-uppdrag.md",
+      "summary": "Sektion i 03-uppdrag/aktivt-uppdrag.md",
+      "degree": 1
+    },
+    {
+      "id": "sec:01-privat/oversikt.md:viktiga återkommande datum & avtal",
+      "label": "Viktiga återkommande datum & avtal",
+      "cluster": "Privatliv & Mål",
+      "color": "#15803d",
+      "kind": "Delområde",
+      "source": "01-privat/oversikt.md",
+      "summary": "Sektion i 01-privat/oversikt.md",
+      "degree": 1
+    },
+    {
+      "id": "ent:årshjul privat",
+      "label": "Årshjul privat",
+      "cluster": "Privatliv & Mål",
+      "color": "#15803d",
+      "kind": "Entitet / Punkt",
+      "source": "01-privat/oversikt.md",
+      "summary": "(Deklaration, sommarplanering m.m.)",
+      "degree": 1
+    }
+  ],
+  "edges": [
+    {
+      "source": "hub:min-atlas",
+      "target": "file:.agents/skills/atlas-coach/SKILL.md",
+      "label": "styr / omfattar",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:.agents/skills/atlas-coach/SKILL.md",
+      "target": "sec:.agents/skills/atlas-coach/SKILL.md:flöde när användaren skriver \"starta min atlas\" (onboarding)",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "hub:min-atlas",
+      "target": "file:.agents/skills/graphify/SKILL.md",
+      "label": "styr / omfattar",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "hub:min-atlas",
+      "target": "file:.agents/skills/styrgrupps-grillare/SKILL.md",
+      "label": "styr / omfattar",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:.agents/skills/styrgrupps-grillare/SKILL.md",
+      "target": "sec:.agents/skills/styrgrupps-grillare/SKILL.md:5-punkts uppdragskontrakt",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "hub:min-atlas",
+      "target": "file:01-privat/oversikt.md",
+      "label": "styr / omfattar",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:01-privat/oversikt.md",
+      "target": "sec:01-privat/oversikt.md:pågående privata projekt",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:01-privat/oversikt.md",
+      "target": "sec:01-privat/oversikt.md:viktiga återkommande datum & avtal",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:01-privat/oversikt.md",
+      "target": "ent:exempel – boende / brf / hus",
+      "label": "beskriver",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:01-privat/oversikt.md",
+      "target": "ent:exempel – familj & fritid",
+      "label": "beskriver",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:01-privat/oversikt.md",
+      "target": "ent:försäkringar & elavtal",
+      "label": "beskriver",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:01-privat/oversikt.md",
+      "target": "ent:årshjul privat",
+      "label": "beskriver",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "hub:min-atlas",
+      "target": "file:02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "label": "styr / omfattar",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "target": "sec:02-bolag-och-topofminds/mitt-bolag-och-profil.md:roll & profil på top of minds",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "target": "sec:02-bolag-och-topofminds/mitt-bolag-och-profil.md:eget konsultbolag / administration (om tillämpligt)",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "target": "sec:02-bolag-och-topofminds/mitt-bolag-och-profil.md:sälj, avrop & kompetensbevis",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "target": "ent:namn & roll",
+      "label": "beskriver",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "target": "ent:kärnstyrkor i konsultrollen",
+      "label": "beskriver",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "target": "ent:kopplade kollegor & nätverk",
+      "label": "beskriver",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "target": "ent:månadsrutin",
+      "label": "beskriver",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "target": "ent:redovisning & ekonomi",
+      "label": "beskriver",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "hub:min-atlas",
+      "target": "file:03-uppdrag/aktivt-uppdrag.md",
+      "label": "styr / omfattar",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:03-uppdrag/aktivt-uppdrag.md",
+      "target": "sec:03-uppdrag/aktivt-uppdrag.md:aktuellt fokusuppdrag",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:03-uppdrag/aktivt-uppdrag.md",
+      "target": "sec:03-uppdrag/aktivt-uppdrag.md:viktiga metodlärdomar att återanvända",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:03-uppdrag/aktivt-uppdrag.md",
+      "target": "ent:uppdragstyp",
+      "label": "beskriver",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:03-uppdrag/aktivt-uppdrag.md",
+      "target": "ent:mitt mål de närmaste 30 dagarna",
+      "label": "beskriver",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:03-uppdrag/aktivt-uppdrag.md",
+      "target": "ent:koppling till bolagsprofil",
+      "label": "beskriver",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "hub:min-atlas",
+      "target": "file:04-personer-och-natverk/kontakter.md",
+      "label": "styr / omfattar",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:04-personer-och-natverk/kontakter.md",
+      "target": "sec:04-personer-och-natverk/kontakter.md:nätverk & samarbetspartners",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:04-personer-och-natverk/kontakter.md",
+      "target": "ent:top of minds-teamet",
+      "label": "beskriver",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:04-personer-och-natverk/kontakter.md",
+      "target": "ent:ekonomi / revisor",
+      "label": "beskriver",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "hub:min-atlas",
+      "target": "file:AGENTS.md",
+      "label": "styr / omfattar",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:AGENTS.md",
+      "target": "sec:AGENTS.md:roll & mandat",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:AGENTS.md",
+      "target": "sec:AGENTS.md:sanningskälla & kunskapsgraf (nolltolerans mot gissningar)",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:AGENTS.md",
+      "target": "sec:AGENTS.md:gyllene sekretess- & nda-regeln (privat + bolag vs. kunddata)",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:AGENTS.md",
+      "target": "sec:AGENTS.md:håll kunskapsgrafen levande",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:.agents/skills/atlas-coach/SKILL.md",
+      "target": "sec:.agents/skills/styrgrupps-grillare/SKILL.md:5-punkts uppdragskontrakt",
+      "label": "kopplar till",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "file:.agents/skills/atlas-coach/SKILL.md",
+      "target": "ent:månadsrutin",
+      "label": "kopplar till",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "file:02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "target": "file:04-personer-och-natverk/kontakter.md",
+      "label": "länkar till",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "target": "file:03-uppdrag/aktivt-uppdrag.md",
+      "label": "länkar till",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:03-uppdrag/aktivt-uppdrag.md",
+      "target": "file:02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "label": "kopplar till",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "file:04-personer-och-natverk/kontakter.md",
+      "target": "file:02-bolag-och-topofminds/mitt-bolag-och-profil.md",
+      "label": "kopplar till",
+      "confidence": "INFERRED"
+    }
+  ]
+}
