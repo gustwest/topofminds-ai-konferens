@@ -489,6 +489,69 @@
       color: rgb(248 250 252 / 0.82);
     }
 
+    /* ===== SECTION 00: GRUNDEN FÖR PM, LEDARE & CHEFER ===== */
+    .ai-truth-vs {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
+      margin-block-end: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .ai-truth-vs {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .truth-panel {
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+      padding: 1.45rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .truth-panel.is-llm {
+      border-inline-start: 4px solid var(--tom-warning);
+    }
+
+    .truth-panel.is-agent {
+      border-inline-start: 4px solid var(--tom-purple);
+      box-shadow: 0 10px 26px rgb(15 23 42 / 0.05);
+    }
+
+    .truth-badge {
+      display: inline-flex;
+      align-self: flex-start;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 0.22rem 0.55rem;
+    }
+
+    .truth-badge.warn {
+      background: var(--tom-warning-soft);
+      color: var(--tom-warning);
+    }
+
+    .truth-badge.good {
+      background: var(--tom-purple-soft);
+      color: var(--tom-purple);
+    }
+
+    .truth-equation {
+      margin-block-start: 0.35rem;
+      background: var(--tom-background);
+      border: 1px solid var(--tom-border);
+      padding: 0.65rem 0.85rem;
+      font-family: var(--font-mono);
+      font-size: 0.77rem;
+      font-weight: 700;
+      color: var(--tom-primary);
+    }
+
     /* ===== SECTION 01: VERKTYGSLANDSKAPET ===== */
     .filter-bar {
       display: flex;
@@ -1915,7 +1978,8 @@
       </a>
 
       <nav class="primary-nav" aria-label="Kapitel i presentationen">
-        <a href="#verktyg" class="nav-link is-active">01 Verktyg</a>
+        <a href="#grunden" class="nav-link is-active">Grunden</a>
+        <a href="#verktyg" class="nav-link">01 Verktyg</a>
         <a href="#anatomi" class="nav-link">02 Så funkar agenten</a>
         <a href="#roller" class="nav-link">03 Personas &amp; Team</a>
         <a href="#vardag" class="nav-link">04 PM-vardag</a>
@@ -1944,7 +2008,7 @@
           </p>
 
           <div class="hero-actions">
-            <a href="#verktyg" class="btn-purple">Börja med verktygskartan ↓</a>
+            <a href="#grunden" class="btn-purple">Börja med 2-minutersgrunden ↓</a>
             <a href="./floden.html" class="btn-outline-light">Öppna Visuella Flöden &amp; Loopar →</a>
           </div>
 
@@ -1982,6 +2046,16 @@
         <aside class="hero-compass" aria-label="Snabbnavigering till de fem områdena">
           <p class="hero-compass-title">Klicka dig rakt in i respektive område</p>
           <ul class="compass-list" role="list">
+            <li>
+              <a class="compass-link" href="#grunden">
+                <span class="compass-num">00</span>
+                <span>
+                  <span class="compass-name">Grunden för PM, ledare &amp; chefer</span>
+                  <span class="compass-sub">Vad AI faktiskt är, låsta kundmiljöer &amp; människa vs maskin</span>
+                </span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </li>
             <li>
               <a class="compass-link" href="#verktyg">
                 <span class="compass-num">01</span>
@@ -2034,6 +2108,59 @@
             </li>
           </ul>
         </aside>
+      </div>
+    </section>
+
+    <!-- KAPITEL 00: GRUNDEN FÖR PROJEKTLEDARE, LEDARE & CHEFER -->
+    <section id="grunden" class="section-band band-secondary">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow eyebrow-purple">Grunden på 2 minuter · För projektledare, ledare &amp; chefer</span>
+          <h2>Vad AI faktiskt är – och hur ni skapar verklig hävstång i kunduppdragen</h2>
+          <p>Förstår man en enda grundprincip om hur språkmodeller fungerar, blir det omedelbart glasklart varför vanliga chattar gissar – och hur en styrd agent förändrar konsultrollen.</p>
+        </div>
+
+        <!-- Kontrast: Sannolikhetsmotor vs Agent -->
+        <div class="ai-truth-vs" aria-label="Skillnaden mellan en vanlig språkmodell och en styrd AI-agent">
+          <article class="truth-panel is-llm">
+            <span class="truth-badge warn">Vanlig AI-chatt (utan ramar)</span>
+            <h3 style="font-size:1.18rem; font-weight:800;">En sannolikhetsmotor för språk – inte ett uppslagsverk</h3>
+            <p style="font-size:0.88rem; color:var(--tom-muted-foreground);">
+              En språkmodell <em>vet</em> egentligen ingenting och är usel på huvudräkning – den gissar nästa rimliga ord baserat på mönster. Därför låter den lika tvärsäker när den har rätt som när den fyller i en lucka eller räknar fel på 300 Excel-rader.
+            </p>
+            <div class="truth-equation">Fråga i chatt → Sannolik textgissning → Du måste dubbelkolla allt själv</div>
+          </article>
+
+          <article class="truth-panel is-agent">
+            <span class="truth-badge good">Styrd AI-Agent (det vi bygger idag)</span>
+            <h3 style="font-size:1.18rem; font-weight:800;">Språkmotorn kopplad till fasta regler, riktiga verktyg &amp; självkontroll</h3>
+            <p style="font-size:0.88rem; color:var(--tom-muted-foreground);">
+              När vi sätter ramar runt språkmodellen tvingas den läsa riktiga avtalsdokument, köra exakta kalkylskript för siffror och granska sitt eget svar i en loop <em>innan</em> den lägger beslutsunderlaget på ditt bord.
+            </p>
+            <div class="truth-equation">Språkmodell + Lagbok (AGENTS.md) + Mallar (Skills) + Skriptloop = Pålitlig leverans</div>
+          </article>
+        </div>
+
+        <!-- 3 strategiska frågor för PM, konsulter och ledning -->
+        <div class="subgrid-3">
+          <article class="tom-card">
+            <h3>1. Var blir konsulten 10× viktigare?</h3>
+            <p><strong>Delegera grovjobbet (80 % av tråk-tiden):</strong> Korsläsa 40 filer, kontrollräkna Excel-planer och formatera statusrapporter.<br><strong>Behåll spetsen hos människan:</strong> Läsa det politiska spelet i rummet, lösa målkonflikter, leda människor genom förändring och bära affärsansvaret.</p>
+            <span class="card-foot-tag">Rollskiftet: Från administratör till strategisk ledare</span>
+          </article>
+
+          <article class="tom-card">
+            <h3>2. ”Men min kunddator är helt låst!”</h3>
+            <p><strong>Spår A (Inne hos låst kund):</strong> Metoden med <em>5-punkts Persona-kontrakt</em> och stegvisa arbetsmallar fungerar direkt i kundens befintliga M365 Copilot / Enterprise ChatGPT.<br><strong>Spår B (Din Top of Minds-dator):</strong> I Antigravity bygger du återanvändbara mallar och <em>anonymiserade</em> klickbara prototyper helt utan kunddata.</p>
+            <span class="card-foot-tag">Fungerar på måndag morgon – oavsett kundmiljö</span>
+          </article>
+
+          <article class="tom-card">
+            <h3>3. Från privat-chatt till bolagskapital</h3>
+            <p>Så länge konsulter bara chattar var för sig stannar kunskapen på enskilda skärmar. När Top of Minds paketerar sina bästa arbetssätt (<em>Uppdragsröntgen, Go-Live-Readiness, Styrgruppspuls</em>) som delade <code>Skills</code> får varje konsult hela bolagets samlade spets i ryggen.</p>
+            <span class="card-foot-tag">Ledningsperspektivet: Delbar kvalitet &amp; lägstanivå</span>
+          </article>
+        </div>
       </div>
     </section>
 
