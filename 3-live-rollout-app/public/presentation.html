@@ -1412,6 +1412,43 @@
     }
 
     /* Persona Before/After switcher */
+    .persona-def-banner {
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+      border-inline-start: 4px solid var(--tom-purple);
+      padding: 1.35rem 1.5rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .persona-def-banner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .persona-def-example {
+      background: var(--tom-background);
+      border: 1px solid var(--tom-border);
+      padding: 0.95rem 1.1rem;
+      font-size: 0.85rem;
+      color: var(--tom-foreground);
+    }
+
+    .workshop-two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 900px) {
+      .workshop-two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .persona-compare {
       margin-block-start: 1.5rem;
       background: var(--tom-card);
@@ -1884,7 +1921,7 @@
           <div class="hero-stats">
             <div class="stat-item">
               <div>
-                <p class="stat-num">6</p>
+                <p class="stat-num">7</p>
                 <p class="stat-label">Verktygsfamiljer</p>
               </div>
               <span class="stat-sep" aria-hidden="true"></span>
@@ -1920,7 +1957,7 @@
                 <span class="compass-num">01</span>
                 <span>
                   <span class="compass-name">Verktygslandskapet idag</span>
-                  <span class="compass-sub">Antigravity, Copilot, Claude, VS Code &amp; Lovable</span>
+                  <span class="compass-sub">Antigravity, ChatGPT, Copilot, Claude, VS Code &amp; Lovable</span>
                 </span>
                 <span aria-hidden="true">→</span>
               </a>
@@ -1969,8 +2006,8 @@
               <a class="compass-link" href="#konferens">
                 <span class="compass-num">06</span>
                 <span>
-                  <span class="compass-name">4-timmarskonferensen &amp; övningar</span>
-                  <span class="compass-sub">Tidsplan och 6 hands-on-moment på plats</span>
+                  <span class="compass-name">4-timmarskonferensen – Upplägg</span>
+                  <span class="compass-sub">Egen måndagstidstjuv i Antigravity &amp; gemensam live-studio</span>
                 </span>
                 <span aria-hidden="true">→</span>
               </a>
@@ -1991,7 +2028,7 @@
 
         <div class="filter-bar" role="group" aria-label="Filtrera verktyg efter uppgift">
           <span class="filter-label">Vad vill du lösa?</span>
-          <button type="button" class="filter-chip" data-scenario="all" aria-pressed="true">Visa alla (6)</button>
+          <button type="button" class="filter-chip" data-scenario="all" aria-pressed="true">Visa alla (7)</button>
           <button type="button" class="filter-chip" data-scenario="pm-audit" aria-pressed="false">Korsgranska avtal &amp; Excel</button>
           <button type="button" class="filter-chip" data-scenario="prototype" aria-pressed="false">Klickbar kundprototyp på 15 min</button>
           <button type="button" class="filter-chip" data-scenario="office" aria-pressed="false">Snabb hjälp i Teams &amp; Office</button>
@@ -2008,6 +2045,15 @@
               </div>
               <span class="tool-card-title">Google Antigravity 2.0</span>
               <span class="tool-card-summary">Arbetar rakt i en projektmapp med avtal, Excel, kod, Skills, kunskapsgrafer, webbläsare och subagenter.</span>
+            </button>
+
+            <button type="button" class="tool-card-btn" data-tool="chatgpt">
+              <div class="tool-card-top">
+                <span class="icon-plate" aria-hidden="true">GPT</span>
+                <span class="tool-category-tag">Allround-chatt &amp; Research</span>
+              </div>
+              <span class="tool-card-title">ChatGPT (Team / Enterprise)</span>
+              <span class="tool-card-summary">Marknadens vanligaste AI-bollplank med Projects, Custom GPTs, Deep Research, röstläge och dataanalys i sandlåda.</span>
             </button>
 
             <button type="button" class="tool-card-btn" data-tool="m365-copilot">
@@ -2088,7 +2134,7 @@
         </div>
 
         <details class="matrix-details">
-          <summary>Visa hela jämförelsetabellen sida vid sida (Alla 6 verktygsfamiljer)</summary>
+          <summary>Visa hela jämförelsetabellen sida vid sida (Alla 7 verktygsfamiljer)</summary>
           <div class="table-scroll">
             <table class="tom-table">
               <caption>Översikt över primär målgrupp, styrka, djup i beroendeanalys och anpassningsgrad</caption>
@@ -2108,6 +2154,13 @@
                   <td>Mappbaserad agent + Skills + MCP + Browser + Subagenter</td>
                   <td><code>AGENTS.md</code>, <code>SKILL.md</code>, <code>graphify</code></td>
                   <td>Kräver installation på datorn (olåst klient)</td>
+                </tr>
+                <tr>
+                  <th scope="row">ChatGPT (Team / Ent.)</th>
+                  <td>Alla konsulter &amp; beslutsfattare</td>
+                  <td>Snabb idésparring, Deep Research, Canvas, röst &amp; Custom GPTs</td>
+                  <td>Projects-instruktioner &amp; uppladdade filer</td>
+                  <td>Arbetar i webbsandlåda – ser inte en hel lokal projektmapp/Git-repo</td>
                 </tr>
                 <tr>
                   <th scope="row">M365 Copilot</th>
@@ -2244,7 +2297,7 @@
             <p class="dark-detail-lead" id="node-lead">
               En helt vanlig textfil i rotmappen som agenten läser automatiskt innan den gör något alls. Här sätter du ramarna en gång för alla så du slipper upprepa samma instruktioner i varje chatt.
             </p>
-            <pre class="code-peek" tabindex="0" role="region" aria-label="Exempel på konfiguration eller flöde"><code id="node-code"># AGENTS.md (Projekt OmniPOS)
+            <pre class="code-peek" tabindex="0" role="region" aria-label="Exempel på konfiguration eller flöde"><code id="node-code"># AGENTS.md (Kundprojekt – Utrullning)
 Roll: Kritisk Senior PMO-revisor på Top of Minds.
 1. Gissa ALDRIG datum eller belopp – citera exakt fil &amp; paragraf.
 2. Vid sifferanalys i CSV/Excel: kör alltid ett skript, huvudräkna inte.
@@ -2524,29 +2577,24 @@ Roll: Kritisk Senior PMO-revisor på Top of Minds.
     <section id="roller" class="section-band band-light">
       <div class="container">
         <div class="section-header">
-          <span class="eyebrow eyebrow-purple">04 · Roller, Team-agenter &amp; Orkestrering</span>
+          <span class="eyebrow eyebrow-purple">04 · Personas, Team-agenter &amp; Orkestrering</span>
           <h2>Från personlig assistent till digital lagkamrat i teamet</h2>
-          <p>Hur sätter man egentligen en roll (persona) så att den ger verklig effekt – och hur fungerar visionen om agenter som reagerar på händelser i teamet eller styr andra agenter?</p>
+          <p>Vad menar vi egentligen med en AI-persona, hur skriver man den så att den ger verklig effekt – och hur skalar vi från enskild konsult till agenter som hjälper hela teamet?</p>
         </div>
 
-        <div class="subgrid-3">
-          <article class="tom-card">
-            <h3>1. Projektrollen (AGENTS.md)</h3>
-            <p>Styr grundbeteendet för alla som arbetar i samma mapp eller repo – t.ex. arkitekturprinciper, säkerhetsregler, terminologi och förbud mot påhittade antaganden.</p>
-            <span class="card-foot-tag">Plats: /AGENTS.md eller /CLAUDE.md</span>
-          </article>
-
-          <article class="tom-card">
-            <h3>2. Metodrollen (SKILL.md)</h3>
-            <p>Ger agenten en specifik expertroll för ett avgränsat moment – t.ex. <em>Go-Live-revisor</em> inför styrgrupp eller <em>Kravkonsoliderare</em> efter en inspelad kundworkshop.</p>
-            <span class="card-foot-tag">Plats: /.agents/skills/&lt;namn&gt;/SKILL.md</span>
-          </article>
-
-          <article class="tom-card">
-            <h3>3. Specialist-subagent</h3>
-            <p>En egen isolerad agent med separat minne och begränsade verktyg (t.ex. endast läsrättighet för en <em>Säkerhets- &amp; Avtalsgranskare</em> så den aldrig råkar ändra produktionskod).</p>
-            <span class="card-foot-tag">Plats: /.agents/agents/&lt;roll&gt;.md</span>
-          </article>
+        <!-- Tydlig förklaring av Persona (Linns feedback) -->
+        <div class="persona-def-banner">
+          <div>
+            <span class="eyebrow eyebrow-purple">Grundbegrepp · Vad är en ”Persona”?</span>
+            <h3 style="font-size:1.2rem; font-weight:800; margin-block-end:0.35rem;">Yrkesrollen, glasögonen och mandatet du ger AI:n</h3>
+            <p style="font-size:0.88rem; color:var(--tom-muted-foreground);">
+              Utan styrning svarar en språkmodell som en artig allmänassistent som gärna slätar över problem och håller med dig. En <strong>persona</strong> sätter en tydlig yrkesroll, ett perspektiv och ett granskningsmandat så att AI:n bedömer underlaget med rätt specialistglasögon.
+            </p>
+          </div>
+          <div class="persona-def-example">
+            <strong>Konkret skillnad på samma tidsplan:</strong><br>
+            Ber du en generisk chatt <em>”Kolla min tidsplan”</em> får du språklig puts. Ger du agenten personan <strong>Kritisk Kvalitetsrevisor</strong> eller <strong>CFO</strong> letar den aktivt efter avtalsbrott, dolda beroenden och kostnadsrisker i SEK – och vågar säga stopp.
+          </div>
         </div>
 
         <!-- Persona Before / After -->
@@ -2739,116 +2787,68 @@ Leveransformat: Tabell med [Avvikelse | Källa § | Ekonomisk risk i SEK | Åtg�
       </div>
     </section>
 
-    <!-- KAPITEL 06: 4-TIMMARSKONFERENSEN & ÖVNINGSMENY -->
+    <!-- KAPITEL 06: 4-TIMMARSKONFERENSEN -->
     <section id="konferens" class="section-band band-dark dark-band">
       <div class="container">
         <div class="section-header">
           <span class="eyebrow eyebrow-light">06 · Upplägg för 4 roliga &amp; konkreta timmar</span>
-          <h2>Så lägger vi upp en 4-timmarskonferens med maximal aha-effekt</h2>
-          <p>Hemligheten bakom 4 lyckade timmar är att <strong>inte</strong> fastna i API-krångel: deltagarna kör hands-on i ett färdigdukat realistiskt PM-case under första halvan, och vi avslutar med en gemensam live-final där ett inspelat möte förvandlas till ny appversion och team-agenter.</p>
+          <h2>Noll fiktivt skolkrångel – fokus på konsulternas riktiga vardag</h2>
+          <p>Alla installerar fristående <strong>Google Antigravity</strong> på 5 minuter före konferensen. På plats slipper vi krångliga zip-paket och påhittade lekprojekt – vi varvar konsulternas egna ”måndagstidstjuvar” med en gemensam live-studio på storskärm.</p>
         </div>
 
         <div class="timeline-strip">
           <article class="slot-card">
-            <span class="slot-time">00:00 – 00:35 (35 min)</span>
-            <h3>Pass 1 · Kartan &amp; Verktygen</h3>
-            <p>Interaktiv genomgång på denna karta: Copilot vs Antigravity vs Claude vs Lovable, samt hur agentens motor fungerar.</p>
+            <span class="slot-time">00:00 – 00:40 (40 min)</span>
+            <h3>Pass 1 · Kartan &amp; Flödet</h3>
+            <p>Visuell genomgång av verktygslandskapet och hur <code>AGENTS.md</code>, <code>Skills</code>, kunskapsgraf, <code>MCP</code> och <code>Hooks</code> hänger ihop.</p>
           </article>
           <article class="slot-card">
-            <span class="slot-time">00:35 – 01:30 (55 min)</span>
-            <h3>Pass 2 · Hands-on: Regler &amp; Skills</h3>
-            <p>Alla öppnar <em>Projekt OmniPOS</em> på egen dator, kör sin första PM-skill och bygger om agentens persona/regelbok.</p>
+            <span class="slot-time">00:40 – 01:35 (55 min)</span>
+            <h3>Pass 2 · Din Måndagstidstjuv</h3>
+            <p>Hands-on på egen dator i Antigravity: varje konsult väljer en verklig (anonymiserad) tidstjuv och bygger sin första skarpa persona + <code>Skill</code>.</p>
           </article>
           <article class="slot-card">
-            <span class="slot-time">01:30 – 01:50 (20 min)</span>
+            <span class="slot-time">01:35 – 01:55 (20 min)</span>
             <h3>Paus &amp; Kaffe</h3>
-            <p>Bensträckare, reflektion kring hur detta passar i deltagarnas pågående kunduppdrag.</p>
+            <p>Erfarenhetsutbyte kring vilka moment i kunduppdragen som ger störst tidsbesparing direkt på måndag.</p>
           </article>
           <article class="slot-card">
-            <span class="slot-time">01:50 – 02:55 (65 min)</span>
-            <h3>Pass 3 · Kunskapsgraf &amp; MCP</h3>
-            <p>2 min domino-intro på storskärm → utforska <code>graph.html</code> + låt agenten registrera skarpa eskaleringsärenden via MCP.</p>
+            <span class="slot-time">01:55 – 02:55 (60 min)</span>
+            <h3>Pass 3 · Kunskapsgraf &amp; System</h3>
+            <p>Domino-demo på storskärm: när vanlig RAG/ordsökning missar dolda avtalsberoenden – och hur <code>MCP</code> kopplar insikt till handling.</p>
           </article>
           <article class="slot-card">
             <span class="slot-time">02:55 – 04:00 (65 min)</span>
-            <h3>Pass 4 · Live-final: Team &amp; Svärm</h3>
-            <p>10 min rollspelat styrgruppsmöte i rummet → Krav-agent + Bygg-agent + Gransknings-agent bygger v0.2 live framför gruppen!</p>
+            <h3>Pass 4 · Gemensam Live-studio</h3>
+            <p>Publiken styr kraven i rummet medan vi live bygger och kopplar ihop flöden, granskningsagenter och klickbart beslutsunderlag på sekunder.</p>
           </article>
         </div>
 
-        <h3 style="font-size:1.25rem; font-weight:800; margin-block-end:1rem;">6 praktiska övningar att köra på plats (färdigförberedda i repot)</h3>
+        <h3 style="font-size:1.25rem; font-weight:800; margin-block-end:1rem;">Två skarpa verkstadsmoment istället för fiktiva skolövningar</h3>
 
-        <div class="dark-exercise-grid">
+        <div class="workshop-two-col">
           <article class="dark-ex-card">
             <div>
               <div class="dark-ex-head">
                 <span class="ex-num">01</span>
-                <span class="ex-time-pill">25 min · Hands-on</span>
+                <span class="ex-time-pill">Individuellt · Egen dator i Antigravity</span>
               </div>
-              <h4>”Morgondagens styrgrupp” – Kör en PM-Skill</h4>
-              <p>Deltagarna kör <code>go-live-readiness</code> över 8 motstridiga projektfiler och hittar på 60 sekunder dubbelbokningar, 14-dagarsgaten och Black Week-krocken.</p>
+              <h4>Utmana din egen ”Måndagstidstjuv”</h4>
+              <p>Deltagarna öppnar en tom arbetsmapp i Antigravity och tar sig an ett återkommande moment från sin egen konsultvardag (t.ex. veckovis statuspuls, kravstädning efter workshop, avtals-/beroendekoll eller testplan). Alla skriver ett 5-punkts uppdragskontrakt i <code>AGENTS.md</code> och paketerar en återanvändbar <code>SKILL.md</code> som de har nytta av redan nästa vecka.</p>
             </div>
-            <div class="ex-trains">Tränar: Skills (SKILL.md) &amp; källkritisk korsläsning</div>
+            <div class="ex-trains">Förberedelse före konferens: Endast installera Antigravity.app (5 min) + tänka ut 1 vardagstidstjuv</div>
           </article>
 
           <article class="dark-ex-card">
             <div>
               <div class="dark-ex-head">
                 <span class="ex-num">02</span>
-                <span class="ex-time-pill">25 min · Hands-on</span>
+                <span class="ex-time-pill">Gemensamt · Live-studio på storskärm</span>
               </div>
-              <h4>”Skapa din egen konsult-persona”</h4>
-              <p>Varje deltagare skräddarsyr <code>AGENTS.md</code> eller <code>styrgrupps-puls</code> (t.ex. <em>CFO-fokus i SEK</em> eller <em>utkast till sponsor-mejl</em>) och jämför hur svaret förändras direkt.</p>
+              <h4>Från mötesbeslut till färdig leverans &amp; specialistagenter live</h4>
+              <p>Istället för att 25 personer ska felsöka API-nycklar och databaser kör vi den tunga system- och multi-agent-orkestreringen gemensamt på storskärm. Gruppen kastar in verkliga ändringskrav och ser live hur kravanalys, kunskapsgraf, kod/beslutsvy och en kritisk granskningsagent jobbar ihop i realtid.</p>
             </div>
-            <div class="ex-trains">Tränar: Personas, AGENTS.md &amp; leveranskontrakt</div>
-          </article>
-
-          <article class="dark-ex-card">
-            <div>
-              <div class="dark-ex-head">
-                <span class="ex-num">03</span>
-                <span class="ex-time-pill">30 min · Hands-on</span>
-              </div>
-              <h4>”Domino-detektiven” med Kunskapsgraf</h4>
-              <p>Deltagarna filtrerar kluster i <code>graph.html</code>, hittar <em>God Nodes</em> och avtalsgråzonen om förseningsvite (75 000 kr/v) som vanlig ordsökning/RAG missar.</p>
-            </div>
-            <div class="ex-trains">Tränar: Kunskapsgraf vs RAG &amp; beroendeanalys</div>
-          </article>
-
-          <article class="dark-ex-card">
-            <div>
-              <div class="dark-ex-head">
-                <span class="ex-num">04</span>
-                <span class="ex-time-pill">25 min · Hands-on</span>
-              </div>
-              <h4>Från insikt till systemåtgärd med MCP</h4>
-              <p>Deltagarna ber agenten läsa befintliga tickets i det lokala PMO-systemet (via MCP) och registrera tre nya eskaleringsärenden utan klipp-och-klistra.</p>
-            </div>
-            <div class="ex-trains">Tränar: MCP (Model Context Protocol) &amp; verktygsanrop</div>
-          </article>
-
-          <article class="dark-ex-card">
-            <div>
-              <div class="dark-ex-head">
-                <span class="ex-num">05</span>
-                <span class="ex-time-pill">20 min · Parövning /Valbar</span>
-              </div>
-              <h4>”Döda PowerPointen” – Snabb kundvy</h4>
-              <p>Två och två beskriver deltagarna en enkel styrgrupps- eller kundvy utifrån ett kalkylark och ser hur snabbt ett klickbart beslutsunderlag växer fram.</p>
-            </div>
-            <div class="ex-trains">Tränar: Visuell prototypning (Lovable / Antigravity)</div>
-          </article>
-
-          <article class="dark-ex-card">
-            <div>
-              <div class="dark-ex-head">
-                <span class="ex-num">06</span>
-                <span class="ex-time-pill">45 min · Gemensam Final</span>
-              </div>
-              <h4>Live-orkestrering: Inspelat möte → v0.2</h4>
-              <p>Gruppen agerar styrgrupp i 10 min. Inspelningen matas in till en kedja av <em>Krav-agent → Bygg-agent → Kritisk QA-agent</em> som skeppar nya funktioner live till alla i rummet!</p>
-            </div>
-            <div class="ex-trains">Tränar: Team-agenter &amp; agent som styr andra agenter</div>
+            <div class="ex-trains">Ger 100 % fokus på metodik, arkitektur och aha-upplevelse – 0 % teknikstrul i lokalen</div>
           </article>
         </div>
       </div>
@@ -2891,7 +2891,7 @@ Leveransformat: Tabell med [Avvikelse | Källa § | Ekonomisk risk i SEK | Åtg�
       <a class="dialog-card-link" href="https://gustwest.github.io/topofminds-ai-konferens/graphify-out/graph.html" target="_blank" rel="noopener">
         <div>
           <strong>3. Skarpa kunskapsgrafen (graph.html – 49 noder)</strong>
-          <span>Projekt OmniPOS interaktiva beroendekarta med 6 kluster och God Nodes.</span>
+          <span>Exempel på interaktiv beroendekarta med 6 kluster och God Nodes.</span>
         </div>
         <span aria-hidden="true">↗</span>
       </a>
@@ -2917,6 +2917,22 @@ Leveransformat: Tabell med [Avvikelse | Källa § | Ekonomisk risk i SEK | Åtg�
             'Ovant första 15 minuterna för den som bara använt webbchatt tidigare.'
           ],
           verdict: '<strong>Konsultens tumregel:</strong> Välj Antigravity när uppgiften kräver spårbarhet över många filer, återanvändbara PM-metoder eller kombination av analys och bygge.'
+        },
+        chatgpt: {
+          title: 'ChatGPT (Plus / Team / Enterprise)',
+          badge: 'Allround-chatt & Deep Research',
+          scenarios: ['office', 'pm-audit', 'prototype'],
+          how: 'OpenAI:s webb- och desktopassistent – det verktyg flest konsulter och kunder redan använder dagligen. Kombinerar snabb dialog, <em>Projects</em> (mappar med fasta instruktioner), <em>Deep Research</em> för omvärldsbevakning, <em>Canvas</em> för textredigering och Python-sandlåda för enstaka Excel-filer.',
+          pros: [
+            'Lägst tröskel av alla – suveränt bollplank för omvärldsanalys (Deep Research), workshops och textutkast.',
+            '<em>Custom GPTs</em> och <em>Projects</em> gör det enkelt att spara en rollinstruktion för ett avgränsat moment.',
+            'Mycket starkt röstläge och bild-/diagramstöd när man vill tänka högt på språng.'
+          ],
+          cons: [
+            'Jobbar i en isolerad webbsandlåda – kan inte arbeta direkt i en hel lokal projektmapp eller versionshantera Skills i Git.',
+            'Kräver Team- eller Enterprise-licens (med avstängd modellträning) innan kundspecifik information får klistras in!'
+          ],
+          verdict: '<strong>Konsultens tumregel:</strong> Oslagbar vardagspartner för research, strukturering och bollplank i webbläsaren – men byt till en mappbaserad agent (Antigravity/Claude Code) när 30 projektfiler ska korsgranskas eller byggas ihop.'
         },
         'm365-copilot': {
           title: 'Microsoft 365 Copilot',
@@ -3049,7 +3065,7 @@ Leveransformat: Tabell med [Avvikelse | Källa § | Ekonomisk risk i SEK | Åtg�
           eyebrow: 'Komponent 01 · Stående styrning (Alltid aktiv)',
           title: 'AGENTS.md / CLAUDE.md – Projektets lagbok',
           lead: 'En helt vanlig textfil i rotmappen som agenten läser automatiskt innan den gör något alls. Här sätter du ramarna en gång för alla så du slipper upprepa samma instruktioner i varje chatt.',
-          code: `# AGENTS.md (Projekt OmniPOS)\nRoll: Kritisk Senior PMO-revisor på Top of Minds.\n1. Gissa ALDRIG datum eller belopp – citera exakt fil & paragraf.\n2. Vid sifferanalys i CSV/Excel: kör alltid ett skript, huvudräkna inte.\n3. Kvantifiera alltid affärsrisk i SEK (t.ex. ombokningsavgift eller vite).`,
+          code: `# AGENTS.md (Kundprojekt – Utrullning)\nRoll: Kritisk Senior PMO-revisor på Top of Minds.\n1. Gissa ALDRIG datum eller belopp – citera exakt fil & paragraf.\n2. Vid sifferanalys i CSV/Excel: kör alltid ett skript, huvudräkna inte.\n3. Kvantifiera alltid affärsrisk i SEK (t.ex. ombokningsavgift eller vite).`,
           pitfall: '<strong>Viktig insikt:</strong> Håll <code>AGENTS.md</code> kort och skarp (max 50–100 rader). Om du klistrar in 20 sidor rutiner här dränks kontextfönstret – lägg detaljerade arbetsmetoder i <code>Skills</code> istället!',
           extraLink: ''
         },

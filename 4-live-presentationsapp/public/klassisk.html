@@ -1,0 +1,3499 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Agenter i Praktiken – Interaktiv Karta &amp; Konferensupplägg | Top of Minds</title>
+  <style>
+    @font-face {
+      font-family: 'Manrope';
+      src: local('Manrope'), url('./fonts/Manrope-VariableFont_wght.ttf') format('truetype');
+      font-weight: 200 800;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      /* Exakta designtokens från Topofminds.se */
+      --tom-background: #f1f4f6;
+      --tom-foreground: #0f172a;
+      --tom-card: #ffffff;
+      --tom-card-foreground: #0f172a;
+      --tom-primary: #09213a;
+      --tom-primary-deep: #061729;
+      --tom-primary-foreground: #f8fafc;
+      --tom-secondary: #e4eaee;
+      --tom-secondary-foreground: #0f172a;
+      --tom-muted: #e4eaee;
+      --tom-muted-foreground: #57616f;
+      --tom-purple: #7c3aed;
+      --tom-purple-hover: #6d28d9;
+      --tom-purple-soft: rgb(124 58 237 / 0.10);
+      --tom-purple-foreground: #ffffff;
+      --tom-border: #d7dee4;
+      --tom-success: #15803d;
+      --tom-success-soft: #dcfce7;
+      --tom-warning: #b45309;
+      --tom-warning-soft: #fef3c7;
+      --tom-danger: #dc2626;
+      --tom-danger-soft: #fee2e2;
+      --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'Space Grotesk', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: clip;
+      font-family: var(--font-sans);
+      background: var(--tom-background);
+      color: var(--tom-foreground);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    body {
+      min-block-size: 100dvb;
+      display: flex;
+      flex-direction: column;
+    }
+
+    section[id] {
+      scroll-margin-block-start: 4.5rem;
+    }
+
+    /* Accessible visually-hidden utility */
+    .visually-hidden:where(:not(:focus-within, :active)) {
+      position: absolute !important;
+      clip-path: inset(50%) !important;
+      overflow: hidden !important;
+      width: 1px !important;
+      height: 1px !important;
+      margin: -1px !important;
+      padding: 0 !important;
+      border: 0 !important;
+      white-space: nowrap !important;
+    }
+
+    .skip-link:is(:focus, :active) {
+      position: fixed;
+      inset-block-start: 0.75rem;
+      inset-inline-start: 0.75rem;
+      z-index: 100;
+      background: var(--tom-purple);
+      color: var(--tom-purple-foreground);
+      padding: 0.6rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    :where(a:any-link, button, summary, [tabindex="0"]):focus-visible {
+      outline: 3px solid var(--tom-purple);
+      outline-offset: 3px;
+    }
+
+    .dark-band :where(a:any-link, button, summary, [tabindex="0"]):focus-visible {
+      outline-color: #c4b5fd;
+    }
+
+    /* ===== TOP OF MINDS STICKY HEADER (< 12% viewport height) ===== */
+    .site-header {
+      position: sticky;
+      inset-block-start: 0;
+      z-index: 50;
+      background: var(--tom-primary);
+      border-block-end: 1px solid rgb(248 250 252 / 0.12);
+    }
+
+    .header-inner {
+      max-inline-size: 80rem;
+      margin-inline: auto;
+      block-size: 4rem;
+      padding-inline: 1.5rem;
+      display: flex;
+      align-items: safe center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.85rem;
+      color: var(--tom-primary-foreground);
+      text-decoration: none;
+      min-inline-size: 0;
+      flex-shrink: 0;
+    }
+
+    .brand-logo {
+      display: block;
+      block-size: 2rem;
+      inline-size: auto;
+    }
+
+    .brand-divider {
+      inline-size: 1px;
+      block-size: 1.4rem;
+      background: rgb(248 250 252 / 0.22);
+    }
+
+    .brand-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgb(248 250 252 / 0.82);
+      white-space: nowrap;
+    }
+
+    .primary-nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .primary-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-link {
+      color: rgb(248 250 252 / 0.78);
+      text-decoration: none;
+      font-size: 0.84rem;
+      font-weight: 600;
+      padding-block: 0.5rem;
+      border-block-end: 2px solid transparent;
+      white-space: nowrap;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.is-active {
+      color: var(--tom-primary-foreground);
+    }
+
+    .nav-link.is-active {
+      border-block-end-color: var(--tom-purple);
+    }
+
+    .btn-purple {
+      appearance: none;
+      border: 0;
+      background: var(--tom-purple);
+      color: var(--tom-purple-foreground);
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.55rem 1.1rem;
+      min-block-size: 2.35rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background-color 0.15s ease;
+    }
+
+    .btn-purple:hover {
+      background: var(--tom-purple-hover);
+    }
+
+    .btn-outline-light {
+      appearance: none;
+      border: 1px solid rgb(248 250 252 / 0.4);
+      background: transparent;
+      color: var(--tom-primary-foreground);
+      font: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.65rem 1.25rem;
+      min-block-size: 2.65rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-outline-light:hover {
+      background: rgb(248 250 252 / 0.08);
+      border-color: var(--tom-primary-foreground);
+    }
+
+    @media (max-width: 980px) {
+      .brand-divider,
+      .brand-tag {
+        display: none;
+      }
+    }
+
+    /* ===== HERO SECTION (#09213a Top of Minds Style) ===== */
+    .hero {
+      position: relative;
+      background:
+        radial-gradient(circle at 82% 24%, rgb(124 58 237 / 0.28), transparent 42%),
+        linear-gradient(135deg, #09213a 0%, #0d2d4f 58%, #09213a 100%);
+      color: var(--tom-primary-foreground);
+      overflow: clip;
+    }
+
+    .hero-grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgb(248 250 252 / 0.045) 1px, transparent 1px),
+        linear-gradient(to bottom, rgb(248 250 252 / 0.045) 1px, transparent 1px);
+      background-size: 3.5rem 3.5rem;
+      pointer-events: none;
+    }
+
+    .container {
+      position: relative;
+      max-inline-size: 80rem;
+      margin-inline: auto;
+      padding-inline: 1.5rem;
+    }
+
+    .hero-inner {
+      padding-block: 4rem 4.25rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.9fr);
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    @media (max-width: 960px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        padding-block: 3rem 3.25rem;
+      }
+    }
+
+    .eyebrow {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-block-end: 0.85rem;
+      display: inline-block;
+    }
+
+    .eyebrow-purple {
+      color: var(--tom-purple);
+    }
+
+    .eyebrow-light {
+      color: #c4b5fd;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.15rem, 4.4vw, 3.65rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      font-weight: 500;
+      color: #ddd6fe;
+    }
+
+    .hero-lead {
+      margin-block-start: 1.25rem;
+      max-inline-size: 40rem;
+      font-size: 1.08rem;
+      line-height: 1.7;
+      color: rgb(248 250 252 / 0.86);
+    }
+
+    .hero-actions {
+      margin-block-start: 1.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+    }
+
+    .hero-actions .btn-purple {
+      padding: 0.65rem 1.4rem;
+      min-block-size: 2.65rem;
+      font-size: 0.88rem;
+    }
+
+    .hero-stats {
+      margin-block-start: 2.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1.1rem;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 1.1rem;
+    }
+
+    .stat-num {
+      font-size: 1.75rem;
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--tom-primary-foreground);
+    }
+
+    .stat-label {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: rgb(248 250 252 / 0.82);
+      white-space: nowrap;
+    }
+
+    .stat-sep {
+      inline-size: 1px;
+      block-size: 2.4rem;
+      background: rgb(248 250 252 / 0.25);
+    }
+
+    @media (max-width: 640px) {
+      .stat-sep {
+        display: none;
+      }
+    }
+
+    /* Hero right quick-jump overview box */
+    .hero-compass {
+      background: rgb(248 250 252 / 0.07);
+      border: 1px solid rgb(248 250 252 / 0.16);
+      backdrop-filter: blur(8px);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .hero-compass-title {
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #ddd6fe;
+    }
+
+    .compass-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .compass-link {
+      display: grid;
+      grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 0.75rem;
+      background: rgb(9 33 58 / 0.55);
+      border: 1px solid rgb(248 250 252 / 0.12);
+      color: var(--tom-primary-foreground);
+      text-decoration: none;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .compass-link:hover {
+      border-color: #a78bfa;
+      background: rgb(124 58 237 / 0.22);
+    }
+
+    .compass-num {
+      inline-size: 2.25rem;
+      block-size: 2.25rem;
+      background: var(--tom-purple);
+      color: var(--tom-purple-foreground);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .compass-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+      display: block;
+    }
+
+    .compass-sub {
+      font-size: 0.76rem;
+      color: rgb(248 250 252 / 0.75);
+      display: block;
+    }
+
+    /* ===== SHARED SECTION STYLES ===== */
+    .section-band {
+      padding-block: 4.25rem;
+    }
+
+    .band-light {
+      background: var(--tom-background);
+      color: var(--tom-foreground);
+    }
+
+    .band-secondary {
+      background: var(--tom-secondary);
+      color: var(--tom-secondary-foreground);
+    }
+
+    .band-dark {
+      background: var(--tom-primary);
+      color: var(--tom-primary-foreground);
+    }
+
+    .section-header {
+      max-inline-size: 48rem;
+      margin-block-end: 2rem;
+    }
+
+    .section-header h2 {
+      font-size: clamp(1.75rem, 3vw, 2.35rem);
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -0.015em;
+    }
+
+    .section-header p {
+      margin-block-start: 0.75rem;
+      font-size: 1.02rem;
+      color: var(--tom-muted-foreground);
+    }
+
+    .band-dark .section-header p {
+      color: rgb(248 250 252 / 0.82);
+    }
+
+    /* ===== SECTION 01: VERKTYGSLANDSKAPET ===== */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      flex-wrap: balance;
+      align-items: center;
+      gap: 0.5rem;
+      margin-block-end: 1.5rem;
+    }
+
+    .filter-label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--tom-muted-foreground);
+      margin-inline-end: 0.35rem;
+    }
+
+    .filter-chip {
+      appearance: none;
+      border: 1px solid var(--tom-border);
+      background: var(--tom-card);
+      color: var(--tom-foreground);
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.42rem 0.85rem;
+      min-block-size: 2.15rem;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .filter-chip:hover {
+      border-color: var(--tom-purple);
+    }
+
+    .filter-chip[aria-pressed="true"] {
+      background: var(--tom-primary);
+      border-color: var(--tom-primary);
+      color: var(--tom-primary-foreground);
+    }
+
+    .tools-master-detail {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .tools-master-detail {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .tool-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+
+    @media (max-width: 640px) {
+      .tool-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .tool-card-btn {
+      appearance: none;
+      text-align: start;
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+      padding: 1.2rem;
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, opacity 0.2s ease;
+    }
+
+    .tool-card-btn:hover {
+      border-color: rgb(124 58 237 / 0.6);
+    }
+
+    .tool-card-btn.is-selected {
+      border: 2px solid var(--tom-purple);
+      padding: calc(1.2rem - 1px);
+      box-shadow: 0 10px 26px rgb(15 23 42 / 0.08);
+    }
+
+    .tool-card-btn.is-recommended {
+      box-shadow: inset 4px 0 0 var(--tom-purple);
+    }
+
+    .tool-card-btn.is-dimmed {
+      opacity: 0.42;
+    }
+
+    .tool-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .icon-plate {
+      inline-size: 2.75rem;
+      block-size: 2.75rem;
+      background: var(--tom-purple-soft);
+      color: var(--tom-purple);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 800;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .tool-card-btn:hover .icon-plate,
+    .tool-card-btn.is-selected .icon-plate {
+      background: var(--tom-purple);
+      color: var(--tom-purple-foreground);
+    }
+
+    .tool-category-tag {
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--tom-muted-foreground);
+      background: var(--tom-background);
+      padding: 0.2rem 0.5rem;
+    }
+
+    .tool-card-title {
+      font-size: 1.02rem;
+      font-weight: 800;
+      color: var(--tom-foreground);
+    }
+
+    .tool-card-summary {
+      font-size: 0.83rem;
+      color: var(--tom-muted-foreground);
+      line-height: 1.5;
+    }
+
+    /* Right detail panel for selected tool */
+    .inspector-panel {
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+      border-block-start: 4px solid var(--tom-purple);
+      padding: 1.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      box-shadow: 0 12px 30px rgb(15 23 42 / 0.06);
+    }
+
+    .inspector-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding-block-end: 0.85rem;
+      border-block-end: 1px solid var(--tom-border);
+    }
+
+    .inspector-head h3 {
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+
+    .inspector-badge {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: var(--tom-purple-soft);
+      color: var(--tom-purple);
+      padding: 0.25rem 0.6rem;
+    }
+
+    .inspector-how {
+      font-size: 0.92rem;
+      color: var(--tom-muted-foreground);
+    }
+
+    .inspector-cols {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      .inspector-cols {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .mini-box {
+      padding: 0.95rem;
+      background: var(--tom-background);
+      border: 1px solid var(--tom-border);
+    }
+
+    .mini-box h4 {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-block-end: 0.5rem;
+    }
+
+    .mini-box.good h4 {
+      color: var(--tom-success);
+    }
+
+    .mini-box.warn h4 {
+      color: var(--tom-warning);
+    }
+
+    .bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      font-size: 0.83rem;
+    }
+
+    .bullet-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.45rem;
+    }
+
+    .verdict-strip {
+      background: var(--tom-primary);
+      color: var(--tom-primary-foreground);
+      padding: 0.9rem 1.1rem;
+      font-size: 0.86rem;
+    }
+
+    .verdict-strip strong {
+      color: #ddd6fe;
+    }
+
+    /* Comparison matrix disclosure */
+    .matrix-details {
+      margin-block-start: 1.5rem;
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+    }
+
+    .matrix-details summary {
+      padding: 0.95rem 1.25rem;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      list-style-position: inside;
+    }
+
+    .matrix-details[open] summary {
+      border-block-end: 1px solid var(--tom-border);
+      color: var(--tom-purple);
+    }
+
+    .table-scroll {
+      overflow-x: auto;
+      scrollbar-gutter: stable;
+    }
+
+    .tom-table {
+      inline-size: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+      text-align: start;
+    }
+
+    .tom-table caption {
+      padding: 0.75rem 1.25rem 0.25rem;
+      text-align: start;
+      font-size: 0.8rem;
+      color: var(--tom-muted-foreground);
+    }
+
+    .tom-table th,
+    .tom-table td {
+      padding: 0.75rem 1.1rem;
+      border-block-end: 1px solid var(--tom-border);
+      vertical-align: top;
+    }
+
+    .tom-table thead th {
+      background: var(--tom-background);
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--tom-muted-foreground);
+    }
+
+    /* ===== SECTION 02: INTERAKTIV AGENTKARTA (#09213a DARK BAND) ===== */
+    .anatomy-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+      gap: 1.75rem;
+      align-items: stretch;
+    }
+
+    @media (max-width: 1024px) {
+      .anatomy-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .map-board {
+      background: var(--tom-primary-deep);
+      border: 1px solid rgb(248 250 252 / 0.16);
+      padding: 1.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .map-board-caption {
+      font-size: 0.8rem;
+      color: rgb(248 250 252 / 0.76);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    /* Interactive Architecture Map Grid */
+    .arch-map-canvas {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.85rem;
+    }
+
+    .arch-core-banner {
+      grid-column: 1 / -1;
+      background: linear-gradient(90deg, rgb(124 58 237 / 0.32), rgb(124 58 237 / 0.14));
+      border: 2px solid #a78bfa;
+      padding: 1rem 1.15rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .arch-core-steps {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: #ede9fe;
+    }
+
+    .core-step-pill {
+      background: rgb(9 33 58 / 0.8);
+      border: 1px solid rgb(196 181 253 / 0.4);
+      padding: 0.2rem 0.55rem;
+    }
+
+    .map-node-btn {
+      appearance: none;
+      text-align: start;
+      background: rgb(248 250 252 / 0.06);
+      border: 1px solid rgb(248 250 252 / 0.16);
+      color: var(--tom-primary-foreground);
+      padding: 1rem;
+      font: inherit;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      transition: background-color 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
+    }
+
+    .map-node-btn:hover {
+      background: rgb(248 250 252 / 0.11);
+      border-color: #a78bfa;
+    }
+
+    .map-node-btn.is-selected {
+      background: rgb(124 58 237 / 0.28);
+      border: 2px solid #c4b5fd;
+      padding: calc(1rem - 1px);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .map-node-btn.is-selected {
+        transform: translateY(-2px);
+      }
+    }
+
+    .map-node-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .map-node-num {
+      inline-size: 2rem;
+      block-size: 2rem;
+      background: var(--tom-purple);
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 800;
+    }
+
+    .map-node-when {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #ddd6fe;
+      background: rgb(9 33 58 / 0.65);
+      padding: 0.15rem 0.45rem;
+    }
+
+    .map-node-title {
+      font-size: 0.96rem;
+      font-weight: 800;
+    }
+
+    .map-node-sub {
+      font-size: 0.79rem;
+      color: rgb(248 250 252 / 0.76);
+      line-height: 1.45;
+    }
+
+    @media (max-width: 600px) {
+      .arch-map-canvas {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Dark detail panel on right side of Anatomy */
+    .dark-detail-panel {
+      background: rgb(248 250 252 / 0.08);
+      border: 1px solid rgb(248 250 252 / 0.18);
+      border-block-start: 4px solid #a78bfa;
+      padding: 1.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .dark-detail-panel h3 {
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+
+    .dark-detail-lead {
+      font-size: 0.93rem;
+      color: rgb(248 250 252 / 0.88);
+    }
+
+    .code-peek {
+      background: #040d17;
+      border: 1px solid rgb(248 250 252 / 0.16);
+      padding: 0.95rem 1.05rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      line-height: 1.55;
+      color: #e2e8f0;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      min-inline-size: 0;
+    }
+
+    .pitfall-callout {
+      background: rgb(124 58 237 / 0.2);
+      border-inline-start: 3px solid #c4b5fd;
+      padding: 0.8rem 1rem;
+      font-size: 0.84rem;
+      color: #f8fafc;
+    }
+
+    /* 4-layer Governance Model inside Section 02 */
+    .governance-strip {
+      margin-block-start: 2.5rem;
+      padding-block-start: 2.25rem;
+      border-block-start: 1px solid rgb(248 250 252 / 0.14);
+    }
+
+    .governance-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-block-end: 1.35rem;
+    }
+
+    .governance-head h3 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      line-height: 1.22;
+    }
+
+    .governance-trap-note {
+      max-inline-size: 34rem;
+      font-size: 0.83rem;
+      color: #ede9fe;
+      background: rgb(124 58 237 / 0.22);
+      border-inline-start: 3px solid #c4b5fd;
+      padding: 0.65rem 0.9rem;
+    }
+
+    .gov-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    @media (max-width: 1080px) {
+      .gov-grid-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .gov-grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .gov-card {
+      background: rgb(248 250 252 / 0.07);
+      border: 1px solid rgb(248 250 252 / 0.16);
+      padding: 1.25rem;
+      grid-row: span 3;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      grid-template-rows: subgrid;
+      gap: 0.75rem;
+    }
+
+    .gov-card-top {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .gov-badge-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .gov-metaphor {
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #ddd6fe;
+    }
+
+    .gov-card h4 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--tom-primary-foreground);
+    }
+
+    .gov-card p {
+      font-size: 0.82rem;
+      color: rgb(248 250 252 / 0.82);
+      line-height: 1.55;
+    }
+
+    .gov-foot {
+      font-family: var(--font-mono);
+      font-size: 0.73rem;
+      color: #c4b5fd;
+      padding-block-start: 0.65rem;
+      border-block-start: 1px solid rgb(248 250 252 / 0.14);
+      min-inline-size: 0;
+    }
+
+    /* ===== SECTION 03: SJÄLVGÅENDE BI- & DATA VAULT-AGENT BLUEPRINT ===== */
+    .dv-pipeline-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.35rem;
+      margin-block-end: 1.4rem;
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+      padding: 0.75rem 0.9rem;
+    }
+
+    .dv-pipe-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--tom-muted-foreground);
+      margin-inline-end: 0.4rem;
+    }
+
+    .dv-stage-btn {
+      appearance: none;
+      border: 1px solid var(--tom-border);
+      background: var(--tom-background);
+      color: var(--tom-foreground);
+      font: inherit;
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 0.4rem 0.68rem;
+      min-block-size: 2rem;
+      cursor: pointer;
+      transition: background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+    }
+
+    .dv-stage-btn:hover {
+      border-color: var(--tom-purple);
+    }
+
+    .dv-stage-btn[aria-pressed="true"] {
+      background: var(--tom-primary);
+      border-color: var(--tom-primary);
+      color: var(--tom-primary-foreground);
+    }
+
+    .dv-stage-arrow {
+      font-size: 0.78rem;
+      color: var(--tom-muted-foreground);
+      font-weight: 700;
+    }
+
+    .bi-blueprint-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.95fr);
+      gap: 1.35rem;
+      align-items: start;
+    }
+
+    @media (max-width: 1080px) {
+      .bi-blueprint-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .bi-diagram-board {
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.95rem;
+      box-shadow: 0 10px 26px rgb(15 23 42 / 0.05);
+    }
+
+    .bi-zone {
+      border: 1px dashed #b8c4cf;
+      background: #f7f9fb;
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .bi-zone-label {
+      font-size: 0.69rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--tom-muted-foreground);
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .bi-row-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .bi-row-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .bi-mid-engine {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr) minmax(0, 1fr);
+      gap: 0.75rem;
+      align-items: stretch;
+    }
+
+    @media (max-width: 760px) {
+      .bi-row-2,
+      .bi-row-3,
+      .bi-mid-engine {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .bi-home-btn {
+      appearance: none;
+      text-align: start;
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+      padding: 0.85rem;
+      font: inherit;
+      color: var(--tom-foreground);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.45rem;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, opacity 0.18s ease, background-color 0.15s ease;
+    }
+
+    .bi-home-btn:hover {
+      border-color: var(--tom-purple);
+    }
+
+    .bi-home-btn.is-selected {
+      border: 2px solid var(--tom-purple);
+      padding: calc(0.85rem - 1px);
+      background: #faf7ff;
+      box-shadow: 0 8px 20px rgb(124 58 237 / 0.12);
+    }
+
+    .bi-home-btn.is-stage-lit {
+      box-shadow: inset 4px 0 0 var(--tom-purple);
+    }
+
+    .bi-home-btn.is-stage-dim {
+      opacity: 0.38;
+    }
+
+    .bi-home-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.45rem;
+    }
+
+    .bi-letter {
+      inline-size: 1.75rem;
+      block-size: 1.75rem;
+      background: var(--tom-purple-soft);
+      color: var(--tom-purple);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 800;
+    }
+
+    .bi-home-btn.is-selected .bi-letter,
+    .bi-home-btn:hover .bi-letter {
+      background: var(--tom-purple);
+      color: #ffffff;
+    }
+
+    .bi-mode-tag {
+      font-size: 0.66rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: var(--tom-background);
+      color: var(--tom-muted-foreground);
+      padding: 0.15rem 0.42rem;
+    }
+
+    .bi-home-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      display: block;
+    }
+
+    .bi-home-desc {
+      font-size: 0.76rem;
+      color: var(--tom-muted-foreground);
+      line-height: 1.42;
+      display: block;
+    }
+
+    .bi-home-path {
+      font-family: var(--font-mono);
+      font-size: 0.69rem;
+      font-weight: 700;
+      color: var(--tom-purple);
+      padding-block-start: 0.4rem;
+      border-block-start: 1px solid var(--tom-border);
+      display: block;
+      min-inline-size: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .bi-core-node {
+      background: var(--tom-primary);
+      color: var(--tom-primary-foreground);
+      border: 2px solid var(--tom-purple);
+      padding: 0.95rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.45rem;
+    }
+
+    .bi-core-node strong {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .bi-core-node p {
+      font-size: 0.76rem;
+      color: rgb(248 250 252 / 0.84);
+      line-height: 1.45;
+    }
+
+    .bi-connector-arrows {
+      display: flex;
+      justify-content: space-around;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--tom-purple);
+      line-height: 1;
+    }
+
+    /* 5-step handoff bar below blueprint */
+    .handoff-strip {
+      margin-block-start: 1.35rem;
+      background: var(--tom-primary);
+      color: var(--tom-primary-foreground);
+      padding: 1.1rem 1.25rem;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.85rem;
+    }
+
+    @media (max-width: 980px) {
+      .handoff-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .handoff-step {
+      border-inline-start: 2px solid #a78bfa;
+      padding-inline-start: 0.75rem;
+    }
+
+    .handoff-step strong {
+      display: block;
+      font-size: 0.8rem;
+      color: #ddd6fe;
+    }
+
+    .handoff-step span {
+      font-size: 0.77rem;
+      color: rgb(248 250 252 / 0.86);
+      line-height: 1.4;
+      display: block;
+      margin-block-start: 0.15rem;
+    }
+
+    /* ===== SECTION 03: PERSONAS, TEAM-AGENTER & ORKESTRERING ===== */
+    .subgrid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.15rem;
+    }
+
+    @media (max-width: 920px) {
+      .subgrid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .tom-card {
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+      padding: 1.4rem;
+      grid-row: span 3;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      grid-template-rows: subgrid;
+      gap: 0.75rem;
+    }
+
+    .tom-card h3 {
+      font-size: 1.06rem;
+      font-weight: 800;
+    }
+
+    .tom-card p {
+      font-size: 0.87rem;
+      color: var(--tom-muted-foreground);
+    }
+
+    .card-foot-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--tom-purple);
+      padding-block-start: 0.65rem;
+      border-block-start: 1px solid var(--tom-border);
+    }
+
+    /* Persona Before/After switcher */
+    .persona-def-banner {
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+      border-inline-start: 4px solid var(--tom-purple);
+      padding: 1.35rem 1.5rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .persona-def-banner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .persona-def-example {
+      background: var(--tom-background);
+      border: 1px solid var(--tom-border);
+      padding: 0.95rem 1.1rem;
+      font-size: 0.85rem;
+      color: var(--tom-foreground);
+    }
+
+    .workshop-two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 900px) {
+      .workshop-two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .persona-compare {
+      margin-block-start: 1.5rem;
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .persona-compare {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .checklist-5 {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin-block-start: 0.75rem;
+    }
+
+    .checklist-5 li {
+      display: grid;
+      grid-template-columns: 1.65rem minmax(0, 1fr);
+      gap: 0.65rem;
+      font-size: 0.86rem;
+      align-items: start;
+    }
+
+    .step-sq {
+      inline-size: 1.65rem;
+      block-size: 1.65rem;
+      background: var(--tom-purple);
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    .toggle-pair {
+      display: inline-flex;
+      border: 1px solid var(--tom-border);
+      background: var(--tom-background);
+      margin-block-end: 0.75rem;
+    }
+
+    .toggle-pair button {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      font: inherit;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.45rem 0.85rem;
+      cursor: pointer;
+      color: var(--tom-muted-foreground);
+    }
+
+    .toggle-pair button[aria-pressed="true"] {
+      background: var(--tom-primary);
+      color: var(--tom-primary-foreground);
+    }
+
+    /* Maturity Tabs (Individ -> Team-agent -> Orkestrering) */
+    .maturity-block {
+      margin-block-start: 2.25rem;
+    }
+
+    .maturity-tablist {
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+      border-block-end: 0;
+    }
+
+    .maturity-tablist [role="tab"] {
+      position: relative;
+      flex: 1 0 auto;
+      appearance: none;
+      border: 0;
+      border-inline-end: 1px solid var(--tom-border);
+      background: transparent;
+      color: var(--tom-muted-foreground);
+      font: inherit;
+      font-size: 0.88rem;
+      font-weight: 700;
+      padding: 0.9rem 1.25rem;
+      cursor: pointer;
+      white-space: nowrap;
+      text-align: start;
+    }
+
+    .maturity-tablist [role="tab"][aria-selected="true"] {
+      color: var(--tom-foreground);
+      background: #faf8ff;
+    }
+
+    .maturity-tablist [role="tab"][aria-selected="true"]::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      border-block-end: 3px solid var(--tom-purple);
+    }
+
+    /* No styling directly on [role="tabpanel"] so hidden="until-found" leaves 0px strip */
+    .maturity-panel-inner {
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.1rem;
+    }
+
+    @media (max-width: 900px) {
+      .maturity-panel-inner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .flow-step-card {
+      background: var(--tom-background);
+      border: 1px solid var(--tom-border);
+      padding: 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .flow-step-card h4 {
+      font-size: 0.95rem;
+      font-weight: 800;
+    }
+
+    .flow-step-card p {
+      font-size: 0.83rem;
+      color: var(--tom-muted-foreground);
+    }
+
+    /* ===== SECTION 04: PM VARDAGSFALL & BEGRÄNSNINGAR ===== */
+    .usecase-selector {
+      display: grid;
+      grid-template-columns: 20rem minmax(0, 1fr);
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    @media (max-width: 920px) {
+      .usecase-selector {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .usecase-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .usecase-btn {
+      appearance: none;
+      text-align: start;
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+      padding: 0.85rem 1rem;
+      font: inherit;
+      font-size: 0.87rem;
+      font-weight: 700;
+      color: var(--tom-foreground);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      transition: border-color 0.14s ease, background-color 0.14s ease, color 0.14s ease;
+    }
+
+    .usecase-btn:hover {
+      border-color: var(--tom-purple);
+    }
+
+    .usecase-btn.is-selected {
+      background: var(--tom-primary);
+      border-color: var(--tom-primary);
+      color: var(--tom-primary-foreground);
+    }
+
+    .limits-grid {
+      margin-block-start: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 0.9rem;
+    }
+
+    .limit-card {
+      background: var(--tom-card);
+      border: 1px solid var(--tom-border);
+      border-block-start: 3px solid var(--tom-danger);
+      padding: 1.1rem;
+    }
+
+    .limit-card h4 {
+      font-size: 0.9rem;
+      font-weight: 800;
+      margin-block-end: 0.35rem;
+    }
+
+    .limit-card p {
+      font-size: 0.8rem;
+      color: var(--tom-muted-foreground);
+    }
+
+    /* ===== SECTION 05: 4-TIMMARSKONFERENSEN & ÖVNINGAR ===== */
+    .timeline-strip {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.85rem;
+      margin-block-end: 2.25rem;
+    }
+
+    @media (max-width: 1024px) {
+      .timeline-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .slot-card {
+      background: rgb(248 250 252 / 0.08);
+      border: 1px solid rgb(248 250 252 / 0.18);
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .slot-time {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #c4b5fd;
+    }
+
+    .slot-card h3 {
+      font-size: 0.96rem;
+      font-weight: 800;
+    }
+
+    .slot-card p {
+      font-size: 0.8rem;
+      color: rgb(248 250 252 / 0.8);
+    }
+
+    .dark-exercise-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    @media (max-width: 920px) {
+      .dark-exercise-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .dark-ex-card {
+      background: var(--tom-card);
+      color: var(--tom-foreground);
+      padding: 1.35rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.85rem;
+    }
+
+    .dark-ex-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .ex-num {
+      inline-size: 2.25rem;
+      block-size: 2.25rem;
+      background: var(--tom-purple);
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .ex-time-pill {
+      font-size: 0.72rem;
+      font-weight: 800;
+      background: var(--tom-background);
+      color: var(--tom-muted-foreground);
+      padding: 0.2rem 0.55rem;
+    }
+
+    .dark-ex-card h4 {
+      font-size: 1rem;
+      font-weight: 800;
+      margin-block-start: 0.5rem;
+    }
+
+    .dark-ex-card p {
+      font-size: 0.83rem;
+      color: var(--tom-muted-foreground);
+      margin-block-start: 0.35rem;
+    }
+
+    .ex-trains {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--tom-purple);
+      padding-block-start: 0.65rem;
+      border-block-start: 1px solid var(--tom-border);
+    }
+
+    /* ===== NATIVE LIGHT-DISMISS DIALOG ===== */
+    dialog#lab-dialog[open] {
+      margin: auto;
+      inline-size: min(40rem, calc(100% - 2rem));
+      border: 1px solid var(--tom-border);
+      border-block-start: 4px solid var(--tom-purple);
+      background: var(--tom-card);
+      color: var(--tom-foreground);
+      padding: 1.6rem;
+    }
+
+    dialog:modal {
+      overscroll-behavior: contain;
+    }
+
+    dialog::backdrop {
+      overflow: hidden;
+      overscroll-behavior: contain;
+      background: rgb(9 33 58 / 0.72);
+      backdrop-filter: blur(3px);
+    }
+
+    .dialog-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-block-end: 1rem;
+    }
+
+    .dialog-head h2 {
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    .dialog-close-btn {
+      appearance: none;
+      border: 1px solid var(--tom-border);
+      background: var(--tom-background);
+      color: var(--tom-foreground);
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.4rem 0.75rem;
+      min-block-size: 2rem;
+      cursor: pointer;
+    }
+
+    .dialog-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .dialog-card-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem;
+      border: 1px solid var(--tom-border);
+      background: var(--tom-background);
+      color: var(--tom-foreground);
+      text-decoration: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .dialog-card-link:hover {
+      border-color: var(--tom-purple);
+    }
+
+    .dialog-card-link strong {
+      display: block;
+      font-size: 0.95rem;
+    }
+
+    .dialog-card-link span {
+      font-size: 0.8rem;
+      color: var(--tom-muted-foreground);
+    }
+
+    /* Footer */
+    .site-footer {
+      background: var(--tom-primary-deep);
+      color: rgb(248 250 252 / 0.72);
+      border-block-start: 1px solid rgb(248 250 252 / 0.1);
+      padding-block: 1.75rem;
+      font-size: 0.8rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header dark-band">
+    <a href="#hero-heading" class="skip-link visually-hidden">Hoppa till huvudinnehåll</a>
+    <div class="header-inner">
+      <a href="#top" class="brand-link" aria-label="Top of Minds – till toppen av presentationen">
+        <img class="brand-logo" src="data:image/png;base64,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" width="170" height="55" alt="Top of Minds – Part of Digia Group">
+        <span class="brand-divider" aria-hidden="true"></span>
+        <span class="brand-tag">AI-Agenter i Praktiken</span>
+      </a>
+
+      <nav class="primary-nav" aria-label="Kapitel i presentationen">
+        <a href="#verktyg" class="nav-link is-active">01 Verktyg</a>
+        <a href="#anatomi" class="nav-link">02 Anatomi</a>
+        <a href="#bi-agent" class="nav-link">03 BI-Agenten</a>
+        <a href="#roller" class="nav-link">04 Roller &amp; Team</a>
+        <a href="#vardag" class="nav-link">05 PM-vardag</a>
+        <a href="#konferens" class="nav-link">06 Konferens 4h</a>
+      </nav>
+
+      <button type="button" class="btn-purple" id="open-lab-btn">Öppna Live-labb ↗</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero dark-band">
+      <div class="hero-grid-bg" aria-hidden="true"></div>
+      <div class="container hero-inner">
+        <div>
+          <span class="eyebrow eyebrow-light">Top of Minds · Interaktiv Kunskapskarta</span>
+          <h1 id="hero-heading" tabindex="-1">
+            När AI-agenter gör skillnad <em>på riktigt.</em>
+          </h1>
+          <p class="hero-lead">
+            En interaktiv guide för projektledare, konsulter och ledare: hur dagens verktyg skiljer sig åt, hur regler, skills, RAG, kunskapsgrafer och MCP samverkar – och hur vi bygger agenter som stöttar hela team.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#anatomi" class="btn-purple">Utforska agentkartan ↓</a>
+            <a href="#konferens" class="btn-outline-light">Se 4-timmarskonferensen ↓</a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat-item">
+              <div>
+                <p class="stat-num">7</p>
+                <p class="stat-label">Verktygsfamiljer</p>
+              </div>
+              <span class="stat-sep" aria-hidden="true"></span>
+            </div>
+            <div class="stat-item">
+              <div>
+                <p class="stat-num">6</p>
+                <p class="stat-label">Klickbara byggstenar</p>
+              </div>
+              <span class="stat-sep" aria-hidden="true"></span>
+            </div>
+            <div class="stat-item">
+              <div>
+                <p class="stat-num">3</p>
+                <p class="stat-label">Steg: Individ → Team → Svärm</p>
+              </div>
+              <span class="stat-sep" aria-hidden="true"></span>
+            </div>
+            <div class="stat-item">
+              <div>
+                <p class="stat-num">4 h</p>
+                <p class="stat-label">Praktiskt konferensupplägg</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-compass" aria-label="Snabbnavigering till de fem områdena">
+          <p class="hero-compass-title">Klicka dig rakt in i respektive område</p>
+          <ul class="compass-list" role="list">
+            <li>
+              <a class="compass-link" href="#verktyg">
+                <span class="compass-num">01</span>
+                <span>
+                  <span class="compass-name">Verktygslandskapet idag</span>
+                  <span class="compass-sub">Antigravity, ChatGPT, Copilot, Claude, VS Code &amp; Lovable</span>
+                </span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </li>
+            <li>
+              <a class="compass-link" href="#anatomi">
+                <span class="compass-num">02</span>
+                <span>
+                  <span class="compass-name">Agentens anatomi (Interaktiv karta)</span>
+                  <span class="compass-sub">AGENTS.md, Skills, RAG, Kunskapsgraf &amp; MCP</span>
+                </span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </li>
+            <li>
+              <a class="compass-link" href="#bi-agent">
+                <span class="compass-num">03</span>
+                <span>
+                  <span class="compass-name"> Helhetsritning: ”Självgående BI-utvecklare”</span>
+                  <span class="compass-sub">Data Vault (Lake → RDV → BV → Mart → Kub) &amp; var allt bor</span>
+                </span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </li>
+            <li>
+              <a class="compass-link" href="#roller">
+                <span class="compass-num">04</span>
+                <span>
+                  <span class="compass-name">Personas, Team-agenter &amp; Orkestrering</span>
+                  <span class="compass-sub">Rollkontrakt, händelsestyrning &amp; agenter som styr agenter</span>
+                </span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </li>
+            <li>
+              <a class="compass-link" href="#vardag">
+                <span class="compass-num">05</span>
+                <span>
+                  <span class="compass-name">Projektledarens vardag &amp; gränser</span>
+                  <span class="compass-sub">5 praktiska konsultfall, uppsättning &amp; fallgropar</span>
+                </span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </li>
+            <li>
+              <a class="compass-link" href="#konferens">
+                <span class="compass-num">06</span>
+                <span>
+                  <span class="compass-name">4-timmarskonferensen – Upplägg</span>
+                  <span class="compass-sub">Egen måndagstidstjuv i Antigravity &amp; gemensam live-studio</span>
+                </span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- KAPITEL 01: VERKTYGSKARTAN -->
+    <section id="verktyg" class="section-band band-light">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow eyebrow-purple">01 · Verktygslandskapet idag</span>
+          <h2>Rätt verktyg för rätt jobb – inte en hammare för allt</h2>
+          <p>Dagens AI-verktyg tävlar inte på samma planhalva. Filtrera på en vardagssituation nedan eller klicka på respektive plattform för att se hur den fungerar och var gränsen går.</p>
+        </div>
+
+        <div class="filter-bar" role="group" aria-label="Filtrera verktyg efter uppgift">
+          <span class="filter-label">Vad vill du lösa?</span>
+          <button type="button" class="filter-chip" data-scenario="all" aria-pressed="true">Visa alla (7)</button>
+          <button type="button" class="filter-chip" data-scenario="pm-audit" aria-pressed="false">Korsgranska avtal &amp; Excel</button>
+          <button type="button" class="filter-chip" data-scenario="prototype" aria-pressed="false">Klickbar kundprototyp på 15 min</button>
+          <button type="button" class="filter-chip" data-scenario="office" aria-pressed="false">Snabb hjälp i Teams &amp; Office</button>
+          <button type="button" class="filter-chip" data-scenario="dev" aria-pressed="false">Tung systemutveckling i kod</button>
+          <button type="button" class="filter-chip" data-scenario="enterprise-search" aria-pressed="false">Söka i hela bolagets intranät</button>
+        </div>
+
+        <div class="tools-master-detail">
+          <div class="tool-cards-grid" id="tool-cards-grid">
+            <button type="button" class="tool-card-btn is-selected" data-tool="antigravity">
+              <div class="tool-card-top">
+                <span class="icon-plate" aria-hidden="true">AG</span>
+                <span class="tool-category-tag">Agentisk arbetsyta</span>
+              </div>
+              <span class="tool-card-title">Google Antigravity 2.0</span>
+              <span class="tool-card-summary">Arbetar rakt i en projektmapp med avtal, Excel, kod, Skills, kunskapsgrafer, webbläsare och subagenter.</span>
+            </button>
+
+            <button type="button" class="tool-card-btn" data-tool="chatgpt">
+              <div class="tool-card-top">
+                <span class="icon-plate" aria-hidden="true">GPT</span>
+                <span class="tool-category-tag">Allround-chatt &amp; Research</span>
+              </div>
+              <span class="tool-card-title">ChatGPT (Team / Enterprise)</span>
+              <span class="tool-card-summary">Marknadens vanligaste AI-bollplank med Projects, Custom GPTs, Deep Research, röstläge och dataanalys i sandlåda.</span>
+            </button>
+
+            <button type="button" class="tool-card-btn" data-tool="m365-copilot">
+              <div class="tool-card-top">
+                <span class="icon-plate" aria-hidden="true">M365</span>
+                <span class="tool-category-tag">Kontorsassistent</span>
+              </div>
+              <span class="tool-card-title">Microsoft 365 Copilot</span>
+              <span class="tool-card-summary">Inbyggd i Teams, Outlook, Word, PowerPoint och SharePoint utifrån dina befintliga behörigheter.</span>
+            </button>
+
+            <button type="button" class="tool-card-btn" data-tool="claude">
+              <div class="tool-card-top">
+                <span class="icon-plate" aria-hidden="true">CL</span>
+                <span class="tool-category-tag">Resonemang &amp; CLI-agent</span>
+              </div>
+              <span class="tool-card-title">Claude (Desktop / Cowork / Code)</span>
+              <span class="tool-card-summary">Spets på djup text- och avtalsanalys, kravarbete, Projects-arbetsrum och terminalagenten Claude Code.</span>
+            </button>
+
+            <button type="button" class="tool-card-btn" data-tool="vscode">
+              <div class="tool-card-top">
+                <span class="icon-plate" aria-hidden="true">IDE</span>
+                <span class="tool-category-tag">Utvecklar-IDE</span>
+              </div>
+              <span class="tool-card-title">VS Code + GitHub Copilot / Cursor</span>
+              <span class="tool-card-summary">Utvecklarnas kodmiljö för rad-för-rad-kodning, refaktorering, enhetstester och Git-granskning.</span>
+            </button>
+
+            <button type="button" class="tool-card-btn" data-tool="lovable">
+              <div class="tool-card-top">
+                <span class="icon-plate" aria-hidden="true">LV</span>
+                <span class="tool-category-tag">Prompt-till-app</span>
+              </div>
+              <span class="tool-card-title">Lovable / v0 / Bolt</span>
+              <span class="tool-card-summary">Genererar en visuell, klickbar webbapplikation direkt i webbläsaren på minuter utan lokal installation.</span>
+            </button>
+
+            <button type="button" class="tool-card-btn" data-tool="enterprise-rag">
+              <div class="tool-card-top">
+                <span class="icon-plate" aria-hidden="true">ENT</span>
+                <span class="tool-category-tag">Företagssök / Moln</span>
+              </div>
+              <span class="tool-card-title">Gemini Enterprise / Företags-RAG</span>
+              <span class="tool-card-summary">Centralt sökindex över hela bolagets Google Drive, Confluence, Jira och SharePoint med SSO-säkerhet.</span>
+            </button>
+          </div>
+
+          <article class="inspector-panel" id="tool-inspector" aria-live="polite">
+            <div class="inspector-head">
+              <h3 id="tool-detail-title">Google Antigravity 2.0</h3>
+              <span class="inspector-badge" id="tool-detail-badge">Agentisk arbetsyta</span>
+            </div>
+            <p class="inspector-how" id="tool-detail-how">
+              Öppnar en hel arbetsmapp på datorn (inte bara ett chattfönster). Agenten läser projektets regler i <code>AGENTS.md</code>, laddar återanvändbara metoder via <code>Skills</code>, bygger lokala kunskapsgrafer, kör Python/JS för exakt sifferkontroll och kopplar upp mot system via <code>MCP</code>.
+            </p>
+            <div class="inspector-cols">
+              <div class="mini-box good">
+                <h4>Lämpar sig bäst för</h4>
+                <ul class="bullet-list" id="tool-detail-pros" role="list">
+                  <li><span>✓</span><span>Korsgranska 10–100 projektfiler (avtal, protokoll, CSV/Excel) utan gissningar.</span></li>
+                  <li><span>✓</span><span>Paketera egna konsultmetoder som återanvändbara <code>SKILL.md</code>.</span></li>
+                  <li><span>✓</span><span>Bygga och vidareutveckla riktiga verktyg samt orkestrera subagenter.</span></li>
+                </ul>
+              </div>
+              <div class="mini-box warn">
+                <h4>Begränsningar &amp; fällor</h4>
+                <ul class="bullet-list" id="tool-detail-cons" role="list">
+                  <li><span>!</span><span>Kräver att filerna finns i en mapp eller via en aktiverad MCP-kontakt.</span></li>
+                  <li><span>!</span><span>Ovant första 15 minuterna för den som aldrig öppnat en mappbaserad miljö.</span></li>
+                </ul>
+              </div>
+            </div>
+            <div class="verdict-strip" id="tool-detail-verdict">
+              <strong>Konsultens tumregel:</strong> Välj Antigravity när uppgiften kräver spårbarhet över flera filer, återanvändbara arbetsmetoder eller kombination av analys och bygge.
+            </div>
+          </article>
+        </div>
+
+        <details class="matrix-details">
+          <summary>Visa hela jämförelsetabellen sida vid sida (Alla 7 verktygsfamiljer)</summary>
+          <div class="table-scroll">
+            <table class="tom-table">
+              <caption>Översikt över primär målgrupp, styrka, djup i beroendeanalys och anpassningsgrad</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Verktyg</th>
+                  <th scope="col">Primär användare</th>
+                  <th scope="col">Kärnstyrka</th>
+                  <th scope="col">Styrfiler &amp; Minne</th>
+                  <th scope="col">Typisk begränsning</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Antigravity 2.0</th>
+                  <td>PM, Arkitekt, Utvecklare</td>
+                  <td>Mappbaserad agent + Skills + MCP + Browser + Subagenter</td>
+                  <td><code>AGENTS.md</code>, <code>SKILL.md</code>, <code>graphify</code></td>
+                  <td>Kräver installation på datorn (olåst klient)</td>
+                </tr>
+                <tr>
+                  <th scope="row">ChatGPT (Team / Ent.)</th>
+                  <td>Alla konsulter &amp; beslutsfattare</td>
+                  <td>Snabb idésparring, Deep Research, Canvas, röst &amp; Custom GPTs</td>
+                  <td>Projects-instruktioner &amp; uppladdade filer</td>
+                  <td>Arbetar i webbsandlåda – ser inte en hel lokal projektmapp/Git-repo</td>
+                </tr>
+                <tr>
+                  <th scope="row">M365 Copilot</th>
+                  <td>Alla kontorsanvändare</td>
+                  <td>Mötesnoteringar i Teams, utkast i Word/PPT, M365-behörigheter</td>
+                  <td>Microsoft Graph (automatisk RAG)</td>
+                  <td>Ytlig vid flerstegsberoenden; låst till Office-gränssnittet</td>
+                </tr>
+                <tr>
+                  <th scope="row">Claude (Cowork / Code)</th>
+                  <td>Konsult, Kravanalytiker, Dev</td>
+                  <td>Skarp språk- &amp; kontraktsanalys, Artifacts &amp; CLI-agent</td>
+                  <td><code>CLAUDE.md</code>, Projects, Skills, MCP</td>
+                  <td>Kräver Pro/Max/Team-licens för tungt dagligt bruk</td>
+                </tr>
+                <tr>
+                  <th scope="row">VS Code + GH Copilot</th>
+                  <td>Systemutvecklare</td>
+                  <td>Snabb kodkomplettering, PR-stöd och felsökning i stora repon</td>
+                  <td><code>.github/copilot-instructions.md</code></td>
+                  <td>Byggt för kodfiler – hög tröskel för icke-kodande PM</td>
+                </tr>
+                <tr>
+                  <th scope="row">Lovable / v0</th>
+                  <td>PM, Affärsutvecklare, UX</td>
+                  <td>Från idé på ett möte till delbar webbprototyp på 15 minuter</td>
+                  <td>Projektprompt i webbläsaren</td>
+                  <td>Blir snabbt spretigt vid tung affärslogik eller strikt enterprise-IT</td>
+                </tr>
+                <tr>
+                  <th scope="row">Gemini Enterprise / RAG</th>
+                  <td>Hela organisationen</td>
+                  <td>Säker behörighetsstyrd sökning över Drive, SharePoint &amp; Jira</td>
+                  <td>Centralt företagsindex (ACL)</td>
+                  <td>Hittar liknande textstycken men ritar inte ut projektets kritiska linje</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- KAPITEL 02: INTERAKTIV AGENTKARTA -->
+    <section id="anatomi" class="section-band band-dark dark-band">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow eyebrow-light">02 · Under motorhuven (Klickbar systemkarta)</span>
+          <h2>Hur en AI-agent tänker, minns och agerar</h2>
+          <p>En vanlig chattbot svarar bara med nästa sannolika ord. En <strong>agent</strong> arbetar i en sluten loop styrd av instruktionsfiler, kunskapskällor och verktyg. Klicka på de 6 blocken i kartan för att inspektera varje del.</p>
+        </div>
+
+        <div class="anatomy-layout">
+          <div class="map-board">
+            <div class="map-board-caption">
+              <span><strong>Interaktiv arkitekturkarta</strong> – klicka på block 01–06</span>
+              <span>Vald komponent visas till höger →</span>
+            </div>
+
+            <div class="arch-map-canvas" role="group" aria-label="Agentens sex arkitekturkomponenter">
+              <div class="arch-core-banner">
+                <div>
+                  <strong style="font-size:0.92rem; display:block;">AGENT-MOTORN (Modell + Exekveringsloop)</strong>
+                  <span style="font-size:0.78rem; color:rgb(248 250 252 / 0.78);">Läser kontext → Planerar steg → Anropar verktyg → Verifierar resultat</span>
+                </div>
+                <div class="arch-core-steps" aria-hidden="true">
+                  <span class="core-step-pill">Tänk</span>
+                  <span>→</span>
+                  <span class="core-step-pill">Agera</span>
+                  <span>→</span>
+                  <span class="core-step-pill">Kontrollera</span>
+                </div>
+              </div>
+
+              <button type="button" class="map-node-btn is-selected" data-node="agents-md">
+                <div class="map-node-head">
+                  <span class="map-node-num">01</span>
+                  <span class="map-node-when">Alltid i minnet</span>
+                </div>
+                <span class="map-node-title">AGENTS.md / CLAUDE.md</span>
+                <span class="map-node-sub">Projektets lagbok: roll, källkrav, säkerhetsgränser och tonläge.</span>
+              </button>
+
+              <button type="button" class="map-node-btn" data-node="skills">
+                <div class="map-node-head">
+                  <span class="map-node-num">02</span>
+                  <span class="map-node-when">Laddas vid behov</span>
+                </div>
+                <span class="map-node-title">Skills (SKILL.md)</span>
+                <span class="map-node-sub">Konsultens paketerade metodböcker (SOP:ar) och mallar.</span>
+              </button>
+
+              <button type="button" class="map-node-btn" data-node="rag">
+                <div class="map-node-head">
+                  <span class="map-node-num">03</span>
+                  <span class="map-node-when">Likhetssökning</span>
+                </div>
+                <span class="map-node-title">RAG (Företagets sökindex)</span>
+                <span class="map-node-sub">Hämtar textstycken ur stora PDF- och intranätarkiv.</span>
+              </button>
+
+              <button type="button" class="map-node-btn" data-node="knowledge-graph">
+                <div class="map-node-head">
+                  <span class="map-node-num">04</span>
+                  <span class="map-node-when">Beroenderöntgen</span>
+                </div>
+                <span class="map-node-title">Kunskapsgraf (graphify)</span>
+                <span class="map-node-sub">Karta över entiteter, flaskhalsar och konsekvenser i flera led.</span>
+              </button>
+
+              <button type="button" class="map-node-btn" data-node="mcp">
+                <div class="map-node-head">
+                  <span class="map-node-num">05</span>
+                  <span class="map-node-when">Systemkontakt</span>
+                </div>
+                <span class="map-node-title">MCP (Agentens händer)</span>
+                <span class="map-node-sub">”USB-C för AI” – kopplar mot Jira, Slack, Drive och databaser.</span>
+              </button>
+
+              <button type="button" class="map-node-btn" data-node="agent-loop">
+                <div class="map-node-head">
+                  <span class="map-node-num">06</span>
+                  <span class="map-node-when">Självkontroll</span>
+                </div>
+                <span class="map-node-title">Verifieringsloopen</span>
+                <span class="map-node-sub">Varför en agent kan köra skript, testa och rätta sina egna fel.</span>
+              </button>
+            </div>
+          </div>
+
+          <article class="dark-detail-panel" id="anatomy-inspector" aria-live="polite">
+            <span class="eyebrow eyebrow-light" id="node-eyebrow">Komponent 01 · Stående styrning</span>
+            <h3 id="node-title">AGENTS.md / CLAUDE.md – Projektets lagbok</h3>
+            <p class="dark-detail-lead" id="node-lead">
+              En helt vanlig textfil i rotmappen som agenten läser automatiskt innan den gör något alls. Här sätter du ramarna en gång för alla så du slipper upprepa samma instruktioner i varje chatt.
+            </p>
+            <pre class="code-peek" tabindex="0" role="region" aria-label="Exempel på konfiguration eller flöde"><code id="node-code"># AGENTS.md (Kundprojekt – Utrullning)
+Roll: Kritisk Senior PMO-revisor på Top of Minds.
+1. Gissa ALDRIG datum eller belopp – citera exakt fil &amp; paragraf.
+2. Vid sifferanalys i CSV/Excel: kör alltid ett skript, huvudräkna inte.
+3. Kvantifiera alltid affärsrisk i SEK (t.ex. ombokningsavgift eller vite).</code></pre>
+            <div class="pitfall-callout" id="node-pitfall">
+              <strong>Viktig insikt:</strong> Håll <code>AGENTS.md</code> kort och skarp (max 50–100 rader). Om du klistrar in 20 sidor rutiner här tappar modellen fokus – lägg detaljerade arbetsmetoder i <code>Skills</code> istället!
+            </div>
+            <div id="node-extra-link"></div>
+          </article>
+        </div>
+
+        <!-- 4-LAGERSMODELLEN FÖR DESIGNMÅLBILD, DOMÄNKUNSKAP, PROCESSER & REGLER -->
+        <div class="governance-strip">
+          <div class="governance-head">
+            <div>
+              <span class="eyebrow eyebrow-light">Arkitektens nyckelfråga · Var bor målbild, domän, team &amp; processer?</span>
+              <h3>Så placerar du målbild, domänkunskap, ansvariga, releaseprocess och regler</h3>
+            </div>
+            <p class="governance-trap-note">
+              <strong>Två vanliga fällor:</strong> 1) Man skriver <em>aldrig</em> för hand i kunskapsgrafen – man skriver i vanliga dokument (<code>docs/</code>) som grafen indexerar automatiskt. 2) Lägg aldrig hårda release- eller komponentförbud <em>enbart</em> i en valfri <code>Skill</code>!
+            </p>
+          </div>
+
+          <div class="gov-grid-4">
+            <article class="gov-card">
+              <div class="gov-card-top">
+                <div class="gov-badge-row">
+                  <span class="map-node-num">L1</span>
+                  <span class="gov-metaphor">Trafikreglerna · Alltid på</span>
+                </div>
+                <h4>Rules (AGENTS.md)</h4>
+              </div>
+              <p>Korta, ovillkorliga ”röda linjer”: tillåtna UI-komponenter, hårda <strong>release-spärrar</strong> (t.ex. <em>”deploya aldrig direkt till prod”</em>) samt en kort vägvisare till var team- och domändokument ligger.</p>
+              <span class="gov-foot">/AGENTS.md · /src/ui/AGENTS.md</span>
+            </article>
+
+            <article class="gov-card">
+              <div class="gov-card-top">
+                <div class="gov-badge-row">
+                  <span class="map-node-num">L2</span>
+                  <span class="gov-metaphor">Fakta &amp; Samband (Vad &amp; Vem)</span>
+                </div>
+                <h4>Docs + Kunskapsgraf</h4>
+              </div>
+              <p><strong>Målbildsarkitektur, domänkunskap, team/ansvariga</strong> och beslut skrivs i läsbara Markdown-filer (<code>docs/</code>). <strong>Kunskapsgrafen byggs automatiskt ovanpå</strong> dem så agenten ser hur personer, system och regler hänger ihop.</p>
+              <span class="gov-foot">/docs/{doman,team,malbild}.md → graphify</span>
+            </article>
+
+            <article class="gov-card">
+              <div class="gov-card-top">
+                <div class="gov-badge-row">
+                  <span class="map-node-num">L3</span>
+                  <span class="gov-metaphor">Arbetssätt steg för steg (Hur)</span>
+                </div>
+                <h4>Skills (SKILL.md)</h4>
+              </div>
+              <p>Upprepbara <strong>arbetssätt och körscheman</strong> som laddas när momentet ska utföras: hela <strong>releaseprocessen</strong>, hur en ny vy byggs enligt designsystemet, eller hur teamet gör PR- och kravgranskning.</p>
+              <span class="gov-foot">/.agents/skills/{release,design-system}/</span>
+            </article>
+
+            <article class="gov-card">
+              <div class="gov-card-top">
+                <div class="gov-badge-row">
+                  <span class="map-node-num">L4</span>
+                  <span class="gov-metaphor">Mitträcket · 100 % garanti</span>
+                </div>
+                <h4>Hooks &amp; Skriptgrindar</h4>
+              </div>
+              <p>En språkmodell följer textregler till ~95 %. Automatiska kontrollskript (<code>hooks.json</code> eller CI-checkar i releasepipelinen) stoppar direkt om fel komponent, rå HTML-tagg eller felaktigt projekt-ID används.</p>
+              <span class="gov-foot">hooks.json · scripts/deploy-check.mjs</span>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KAPITEL 03: SJÄLVGÅENDE BI- & DATA VAULT-AGENT (VISUELL HELHETSRITNING) -->
+    <section id="bi-agent" class="section-band band-secondary">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow eyebrow-purple">03 · Praktiskt Arkitekturcase (Data Vault &amp; BI)</span>
+          <h2>Helhetsritning: Så byggs en ”självgående BI-utvecklare”</h2>
+          <p>Hur gör vi så att en projektledare eller verksamhetskunnig kan driva ett nytt dataflöde från källintegration hela vägen till Power BI-kub enligt <strong>Data Vault 2.0</strong> – med en trygg 5-minuters granskning av en utvecklare före produktion? Klicka i kedjan eller på block <strong>A–G</strong> för att se var allt har sin hemvist!</p>
+        </div>
+
+        <!-- Horisontell Data Vault-pipeline -->
+        <div class="dv-pipeline-bar" role="group" aria-label="Filtrera ritningen per steg i BI- och Data Vault-kedjan">
+          <span class="dv-pipe-label">Datakedjan:</span>
+          <button type="button" class="dv-stage-btn" data-dv-stage="all" aria-pressed="true">Helhetsvy (A–G)</button>
+          <button type="button" class="dv-stage-btn" data-dv-stage="lake" aria-pressed="false">1. Integration &amp; Lake</button>
+          <span class="dv-stage-arrow" aria-hidden="true">→</span>
+          <button type="button" class="dv-stage-btn" data-dv-stage="rdv" aria-pressed="false">2. Raw Vault (RDV)</button>
+          <span class="dv-stage-arrow" aria-hidden="true">→</span>
+          <button type="button" class="dv-stage-btn" data-dv-stage="bv" aria-pressed="false">3. Business Vault (BV)</button>
+          <span class="dv-stage-arrow" aria-hidden="true">→</span>
+          <button type="button" class="dv-stage-btn" data-dv-stage="mart" aria-pressed="false">4. Marts &amp; Kub</button>
+          <span class="dv-stage-arrow" aria-hidden="true">→</span>
+          <button type="button" class="dv-stage-btn" data-dv-stage="pr" aria-pressed="false">5. Test &amp; Utvecklar-PR</button>
+        </div>
+
+        <div class="bi-blueprint-grid">
+          <!-- Vänster: Visuell Hemvist-ritning (Zoner + Pilar + Central BI-motor) -->
+          <div class="bi-diagram-board" aria-label="Visuell karta över var alla instruktioner, data och skydd bor">
+            <div class="bi-zone">
+              <div class="bi-zone-label">
+                <span>Zon 1 · Styrning &amp; Domänminne (Läses in före kodning)</span>
+                <span>Lagar + Vad datan betyder</span>
+              </div>
+              <div class="bi-row-2">
+                <button type="button" class="bi-home-btn is-selected" data-bi-home="rules">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">A</span>
+                      <span class="bi-mode-tag">Alltid i minnet</span>
+                    </div>
+                    <span class="bi-home-title">AGENTS.md &amp; Mapp-regler</span>
+                    <span class="bi-home-desc">Namnstandard (HUB/LNK/SAT), 0 % affärslogik i Raw Vault, Business Key-krav &amp; prod-spärr.</span>
+                  </div>
+                  <span class="bi-home-path">/AGENTS.md · /models/{rdv,bv,marts}/AGENTS.md</span>
+                </button>
+
+                <button type="button" class="bi-home-btn" data-bi-home="graph">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">B</span>
+                      <span class="bi-mode-tag">Domän &amp; Lineage</span>
+                    </div>
+                    <span class="bi-home-title">docs/ + Kunskapsgraf</span>
+                    <span class="bi-home-desc">ELM-affärsbegrepp, PII-klassning &amp; KPI-katalog + automatisk kolumn-lineage Källa → Kub.</span>
+                  </div>
+                  <span class="bi-home-path">/docs/{elm,pii,kpi}/ → /graphify-out/</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="bi-connector-arrows" aria-hidden="true">
+              <span>↓ Styr med lagar</span>
+              <span>↓ Matar domän &amp; beroenden</span>
+            </div>
+
+            <div class="bi-zone">
+              <div class="bi-zone-label">
+                <span>Zon 2 · Hantverk, Exekveringsmotor &amp; Sandlåda</span>
+                <span>Hur koden byggs &amp; provkörs</span>
+              </div>
+              <div class="bi-mid-engine">
+                <button type="button" class="bi-home-btn" data-bi-home="skills">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">C</span>
+                      <span class="bi-mode-tag">Laddas per skikt</span>
+                    </div>
+                    <span class="bi-home-title">5 BI-Skills (SKILL.md)</span>
+                    <span class="bi-home-desc">Recept &amp; SQL/dbt/DAX-mallar för Lake, RDV, BV, Stjärnschema/Kub och Testsvit.</span>
+                  </div>
+                  <span class="bi-home-path">/.agents/skills/01-lake..05-test/</span>
+                </button>
+
+                <div class="bi-core-node">
+                  <span class="eyebrow eyebrow-light" style="margin:0;">Självgående motor</span>
+                  <strong>BI- &amp; Data Vault-Agent</strong>
+                  <p>Tar affärsbehov på svenska → Frågar om Business Key → Profilerar rådata → Bygger SQL/dbt &amp; kubmått → Kör tester i loop tills 0 fel.</p>
+                </div>
+
+                <button type="button" class="bi-home-btn" data-bi-home="mcp">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">D</span>
+                      <span class="bi-mode-tag">Ögon &amp; Testbänk</span>
+                    </div>
+                    <span class="bi-home-title">MCP + Dev-Sandbox</span>
+                    <span class="bi-home-desc">Read-only profilering av Laken, eget ofarligt <code>dev</code>-schema i DW samt Jira/Git-MCP.</span>
+                  </div>
+                  <span class="bi-home-path">mcp_config.json + schema: dev_sandbox</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="bi-connector-arrows" aria-hidden="true">
+              <span>↓ Tvingande självbesiktning</span>
+              <span>↓ Oberoende 4-ögon-granskning</span>
+              <span>↓ Mänskligt Go före Prod</span>
+            </div>
+
+            <div class="bi-zone">
+              <div class="bi-zone-label">
+                <span>Zon 3 · Det som gör att en icke-utvecklare kan köra tryggt!</span>
+                <span>100 % Kvalitetsspärrar före produktion</span>
+              </div>
+              <div class="bi-row-3">
+                <button type="button" class="bi-home-btn" data-bi-home="hooks">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">E</span>
+                      <span class="bi-mode-tag">Automatisk vakt</span>
+                    </div>
+                    <span class="bi-home-title">Hooks &amp; Avstämning</span>
+                    <span class="bi-home-desc">Stoppar lagerbrott/DROP och kräver radantals- &amp; kronsummekontroll (0,00 kr diff).</span>
+                  </div>
+                  <span class="bi-home-path">/.agents/hooks.json + CI-tester</span>
+                </button>
+
+                <button type="button" class="bi-home-btn" data-bi-home="reviewer">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">F</span>
+                      <span class="bi-mode-tag">Subagent (Read-only)</span>
+                    </div>
+                    <span class="bi-home-title">DV-Reviewer Subagent</span>
+                    <span class="bi-home-desc">Separat arkitekt-agent med rent minne som letar grain-dubblering &amp; glömd PII-split.</span>
+                  </div>
+                  <span class="bi-home-path">/.agents/agents/dv-reviewer.md</span>
+                </button>
+
+                <button type="button" class="bi-home-btn" data-bi-home="plugin-pr">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">G</span>
+                      <span class="bi-mode-tag">Paket &amp; Slutgrind</span>
+                    </div>
+                    <span class="bi-home-title">Plugin + Utvecklar-PR</span>
+                    <span class="bi-home-desc">Paketerar allt för teamet och skapar en visuell 5-minuters PR för senior BI-utvecklare.</span>
+                  </div>
+                  <span class="bi-home-path">plugin.json → GitHub Pull Request</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Höger: Detaljerat titthål för valt block eller datasteg -->
+          <article class="inspector-panel" id="bi-inspector" aria-live="polite">
+            <div class="inspector-head">
+              <h3 id="bi-detail-title">A. AGENTS.md &amp; Mapp-lokala Rules</h3>
+              <span class="inspector-badge" id="bi-detail-owner">Ägare: BI-Arkitekt</span>
+            </div>
+            <p class="inspector-how" id="bi-detail-lead">
+              <strong>Hemvist:</strong> <code>/AGENTS.md</code> i roten + lokala <code>AGENTS.md</code> inne i <code>models/raw_vault/</code>, <code>business_vault/</code> och <code>marts/</code>. Laddas alltid in automatiskt för den mapp agenten arbetar i!
+            </p>
+            <pre class="code-peek" tabindex="0" role="region" aria-label="Exempel ur BI-agentens filer"><code id="bi-detail-code"># /models/raw_vault/AGENTS.md
+1. NOLL affärslogik, filtrering eller beräkning i Raw Data Vault (100 % källspegling).
+2. Namnstandard: HUB_&lt;BEGREPP&gt;, LNK_&lt;A&gt;_&lt;B&gt;, SAT_&lt;BEGREPP&gt;_&lt;KÄLLA&gt;.
+3. Gissa ALDRIG en Business Key – den måste finnas i /docs/elm/ eller bekräftas av användaren.
+4. Personuppgifter (GDPR) SKA alltid separeras i en egen *_PII-Satellite.</code></pre>
+            <div class="verdict-strip" id="bi-detail-takeaway">
+              <strong>Varför här och inte i en Skill?</strong> Dessa regler får <em>aldrig</em> vara valfria. Även om någon bara ber om en ”snabb tabelljustering” ligger lagboken alltid aktiv i minnet.
+            </div>
+          </article>
+        </div>
+
+        <!-- 5-stegs arbetsflöde från icke-utvecklare till prod -->
+        <div class="handoff-strip" aria-label="Arbetsflöde i fem steg från icke-utvecklare till produktion">
+          <div class="handoff-step">
+            <strong>1. Behov på affärssvenska</strong>
+            <span>Du (icke-utvecklare) beskriver vilken källdata och vilket KPI i kuben som behövs.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>2. Business Key-kontroll</strong>
+            <span>Agenten slår upp ELM i <code>docs/</code> + profilerar Laken via MCP och ställer 2 kontrollfrågor.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>3. Självgående bygge i Sandbox</strong>
+            <span>Agenten laddar rätt <code>Skill</code> per lager och bygger Stage → RDV → BV → Mart → Kub i <code>dev</code>.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>4. Hooks + Reviewer-subagent</strong>
+            <span>Automatiska tester verifierar 0 dubbletter &amp; 0,00 kr diff mot källa; subagenten granskar.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>5. 5-minuters Utvecklar-PR</strong>
+            <span>Senior BI-utvecklare granskar Hub-Link-Sat-diagram + testbevis och trycker <em>Merge</em>!</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KAPITEL 04: PERSONAS, TEAM-AGENTER & ORKESTRERING -->
+    <section id="roller" class="section-band band-light">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow eyebrow-purple">04 · Personas, Team-agenter &amp; Orkestrering</span>
+          <h2>Från personlig assistent till digital lagkamrat i teamet</h2>
+          <p>Vad menar vi egentligen med en AI-persona, hur skriver man den så att den ger verklig effekt – och hur skalar vi från enskild konsult till agenter som hjälper hela teamet?</p>
+        </div>
+
+        <!-- Tydlig förklaring av Persona (Linns feedback) -->
+        <div class="persona-def-banner">
+          <div>
+            <span class="eyebrow eyebrow-purple">Grundbegrepp · Vad är en ”Persona”?</span>
+            <h3 style="font-size:1.2rem; font-weight:800; margin-block-end:0.35rem;">Yrkesrollen, glasögonen och mandatet du ger AI:n</h3>
+            <p style="font-size:0.88rem; color:var(--tom-muted-foreground);">
+              Utan styrning svarar en språkmodell som en artig allmänassistent som gärna slätar över problem och håller med dig. En <strong>persona</strong> sätter en tydlig yrkesroll, ett perspektiv och ett granskningsmandat så att AI:n bedömer underlaget med rätt specialistglasögon.
+            </p>
+          </div>
+          <div class="persona-def-example">
+            <strong>Konkret skillnad på samma tidsplan:</strong><br>
+            Ber du en generisk chatt <em>”Kolla min tidsplan”</em> får du språklig puts. Ger du agenten personan <strong>Kritisk Kvalitetsrevisor</strong> eller <strong>CFO</strong> letar den aktivt efter avtalsbrott, dolda beroenden och kostnadsrisker i SEK – och vågar säga stopp.
+          </div>
+        </div>
+
+        <!-- Persona Before / After -->
+        <div class="persona-compare">
+          <div>
+            <span class="eyebrow eyebrow-purple">Vad krävs för att en persona ska fungera?</span>
+            <h3 style="font-size:1.25rem; font-weight:800;">Sluta skriva rollspel – skriv ett uppdragskontrakt</h3>
+            <p style="font-size:0.88rem; color:var(--tom-muted-foreground); margin-block-start:0.4rem;">
+              Att skriva <em>”Du är en glad projektledare med 20 års erfarenhet”</em> ger nästan noll kvalitetshöjning. En skarp agentroll kräver fem konkreta saker:
+            </p>
+            <ol class="checklist-5" role="list">
+              <li><span class="step-sq">1</span><span><strong>Mandat &amp; kritisk hållning:</strong> Ska agenten utmana och hitta risker istället för att hålla med?</span></li>
+              <li><span class="step-sq">2</span><span><strong>Tillåten sanning (Källor):</strong> Vilka dokument/system gäller som facit vid konflikt? (t.ex. SOW slår gammal PPT).</span></li>
+              <li><span class="step-sq">3</span><span><strong>Verktyg (Skills &amp; MCP):</strong> Vilka system får rollen läsa respektive skriva till?</span></li>
+              <li><span class="step-sq">4</span><span><strong>Hårda stoppregler:</strong> Vad får den <em>aldrig</em> göra på egen hand? (t.ex. skicka kundmejl utan godkännande).</span></li>
+              <li><span class="step-sq">5</span><span><strong>Leveranskontrakt (Definition of Done):</strong> Exakt struktur och verifieringskrav på leveransen.</span></li>
+            </ol>
+          </div>
+
+          <div>
+            <div class="toggle-pair" role="group" aria-label="Jämför svag och skarp persona">
+              <button type="button" id="btn-persona-weak" aria-pressed="false">✕ Svag ”Fluff-persona”</button>
+              <button type="button" id="btn-persona-strong" aria-pressed="true">✓ Skarp ”Kontrakts-persona”</button>
+            </div>
+            <pre class="code-peek" tabindex="0" role="region" aria-label="Exempel på agentpersona"><code id="persona-code-view"># Roll: Kritisk Kvalitets- &amp; Kontraktsrevisor (Subagent)
+Mandat: Granska utrullningsplanen skoningslöst mot signerade avtal.
+Sanninghierarki: 1) SOW &amp; SLA-avtal  2) Beslutade frysmejl  3) Excel-plan.
+Verktyg: Endast läsverktyg + Python för datumkontroll (inga skrivverktyg).
+Stoppregel: Godkänn ALDRIG en våg om ett enda skall-krav i SOW § 2.1 saknar bevis.
+Leveransformat: Tabell med [Avvikelse | Källa § | Ekonomisk risk i SEK | Åtgärd].</code></pre>
+          </div>
+        </div>
+
+        <!-- 3 Maturity Steps (Chefens vision!) -->
+        <div class="maturity-block">
+          <span class="eyebrow eyebrow-purple">Chefens framtidsspår · Tre mognadssteg</span>
+          <h3 style="font-size:1.35rem; font-weight:800; margin-block-end:0.9rem;">Så skalar vi från enskild konsult till team-agenter och orkestrering</h3>
+
+          <div class="maturity-tablist" role="tablist" focusgroup="tablist nomemory" aria-label="Mognadssteg för AI-agenter">
+            <button type="button" role="tab" id="mat-tab-1" aria-selected="true" focusgroupstart tabindex="0">Steg 1 · Individens agent (Idag)</button>
+            <button type="button" role="tab" id="mat-tab-2" aria-selected="false" tabindex="-1">Steg 2 · Händelsestyrd Team-agent</button>
+            <button type="button" role="tab" id="mat-tab-3" aria-selected="false" tabindex="-1">Steg 3 · Agent som styr andra agenter</button>
+          </div>
+
+          <div role="tabpanel" id="mat-panel-1" aria-labelledby="mat-tab-1" tabindex="0">
+            <div class="maturity-panel-inner">
+              <div class="flow-step-card">
+                <span class="eyebrow eyebrow-purple">Hur det startar</span>
+                <h4>Konsulten triggar i sin arbetsyta</h4>
+                <p>Projektledaren eller utvecklaren ber aktivt sin agent granska ett underlag, uppdatera en plan eller bygga en prototyp på sin dator.</p>
+              </div>
+              <div class="flow-step-card">
+                <span class="eyebrow eyebrow-purple">Vad som delas i teamet</span>
+                <h4>Gemensam AGENTS.md &amp; Skills i Git</h4>
+                <p>När en konsult förfinar en skill (t.ex. <code>styrgrupps-puls</code>) checkas den in i repot – hela teamet får direkt samma superkraft.</p>
+              </div>
+              <div class="flow-step-card">
+                <span class="eyebrow eyebrow-purple">Insats &amp; Risk</span>
+                <h4>Lägst tröskel, 100 % kontroll</h4>
+                <p>Kräver ingen serverinfrastruktur. Människan ser varje steg på sin egen skärm innan något skickas vidare.</p>
+              </div>
+            </div>
+          </div>
+
+          <div role="tabpanel" id="mat-panel-2" aria-labelledby="mat-tab-2" hidden="until-found">
+            <div class="maturity-panel-inner">
+              <div class="flow-step-card">
+                <span class="eyebrow eyebrow-purple">Händelse i utvecklingsteamet</span>
+                <h4>Ny Pull Request / Kravändring</h4>
+                <p>När en utvecklare öppnar en PR väcks en <strong>Krav- &amp; QA-agent</strong> automatiskt: den läser Jira-kravet via MCP, kontrollerar att acceptanskriterier och säkerhetsregler hålls och lägger en förgranskning i PR:en.</p>
+              </div>
+              <div class="flow-step-card">
+                <span class="eyebrow eyebrow-purple">Händelse i projektledningen</span>
+                <h4>Nytt mötesprotokoll eller försenad leverans</h4>
+                <p>När en fil landar i projektmappen eller ett datum ändras i Jira kör en <strong>PMO-vaktagent</strong> konsekvensanalys mot kunskapsgrafen och postar en beredd varning i teamets Slack/Teams-kanal.</p>
+              </div>
+              <div class="flow-step-card">
+                <span class="eyebrow eyebrow-purple">Så sätter man upp det</span>
+                <h4>Webhook / Schema + Smal roll + Mänskligt Go</h4>
+                <p>Byggs med GitHub Actions, Cloud Run-jobb eller schemalagda automationer. Gyllene regel: team-agenten <em>bereder och flaggar</em> – teamet godkänner med ett klick.</p>
+              </div>
+            </div>
+          </div>
+
+          <div role="tabpanel" id="mat-panel-3" aria-labelledby="mat-tab-3" hidden="until-found">
+            <div class="maturity-panel-inner">
+              <div class="flow-step-card">
+                <span class="eyebrow eyebrow-purple">1. Orkestreraren (Lead Agent)</span>
+                <h4>Bryter ner målet &amp; fördelar arbete</h4>
+                <p>Tar emot ett stort uppdrag (t.ex. <em>”Ta fram reviderad utrullningsplan v0.2 efter styrgruppsmötet”</em>) och delar ut tydliga deluppdrag till 3–4 specialister parallellt.</p>
+              </div>
+              <div class="flow-step-card">
+                <span class="eyebrow eyebrow-purple">2. Parallella Specialistagenter</span>
+                <h4>Var och en med eget rent fokus</h4>
+                <p><strong>Agent A (Krav)</strong> skriver <code>SPEC_DELTA.md</code>, <strong>Agent B (Kod/Plan)</strong> uppdaterar verktyget, och <strong>Agent C (Oberoende Kritiker)</strong> letar fel mot SOW-avtalet utan att vara ”kär i sin egen lösning”.</p>
+              </div>
+              <div class="flow-step-card">
+                <span class="eyebrow eyebrow-purple">3. Fallgropar att undvika</span>
+                <h4>Akta er för ”viskningsleken”</h4>
+                <p>Använd inte multi-agent för enkla uppgifter (dyrare och långsammare). Kräv alltid skriftliga delkontrakt mellan agenterna och en mänsklig beslutspunkt före skarp publicering.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KAPITEL 05: PRAKTISKA PM-FALL & BEGRÄNSNINGAR -->
+    <section id="vardag" class="section-band band-secondary">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow eyebrow-purple">05 · Konsultens vardag &amp; ärliga begränsningar</span>
+          <h2>5 konkreta sätt en projektledare sparar timmar varje vecka</h2>
+          <p>Välj ett vardagsfall till vänster för att se exakt hur du sätter upp det och vad du måste se upp med.</p>
+        </div>
+
+        <div class="usecase-selector">
+          <div class="usecase-menu" role="group" aria-label="Välj praktiskt användarfall för projektledare">
+            <button type="button" class="usecase-btn is-selected" data-case="onboarding">
+              <span>1. Dag 1 i nytt uppdrag (Röntgen)</span>
+              <span aria-hidden="true">→</span>
+            </button>
+            <button type="button" class="usecase-btn" data-case="workshop">
+              <span>2. Från mötesinspelning till Spec &amp; Jira</span>
+              <span aria-hidden="true">→</span>
+            </button>
+            <button type="button" class="usecase-btn" data-case="rollout">
+              <span>3. Levande utrullnings- &amp; vågplan</span>
+              <span aria-hidden="true">→</span>
+            </button>
+            <button type="button" class="usecase-btn" data-case="prototype">
+              <span>4. Klickbar kundprototyp på 20 min</span>
+              <span aria-hidden="true">→</span>
+            </button>
+            <button type="button" class="usecase-btn" data-case="pulse">
+              <span>5. Veckovis styrgruppspuls &amp; RAID</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+
+          <article class="inspector-panel" id="usecase-inspector" aria-live="polite">
+            <div class="inspector-head">
+              <h3 id="case-title">Dag 1 i nytt uppdrag: Avtals- &amp; beroenderöntgen</h3>
+              <span class="inspector-badge" id="case-time">Effekt: 3 veckor → 1 timme</span>
+            </div>
+            <p class="inspector-how" id="case-problem">
+              <strong>Vardagsproblemet:</strong> Du kliver in i ett pågående kundprojekt med 40 filer (SOW, SLA-avtal, gamla styrgrupps-PPTs och två spretiga Excel-planer) och har styrgrupp imorgon bitti.
+            </p>
+            <div class="inspector-cols">
+              <div class="mini-box good">
+                <h4>Så sätter du upp det</h4>
+                <ul class="bullet-list" id="case-setup" role="list">
+                  <li><span>1.</span><span>Lägg projektfilerna i en mapp (i kundens godkända miljö) med en <code>AGENTS.md</code> som kräver exakta källcitat.</span></li>
+                  <li><span>2.</span><span>Generera en lokal kunskapsgraf (<code>graphify</code>) som hittar projektets <em>God Nodes</em> och avtalsgråzoner.</span></li>
+                  <li><span>3.</span><span>Kör din återanvändbara <code>go-live-readiness</code>-skill för att lista alla dolda krockar.</span></li>
+                </ul>
+              </div>
+              <div class="mini-box warn">
+                <h4>Begränsning att ha koll på</h4>
+                <ul class="bullet-list" id="case-limit" role="list">
+                  <li><span>!</span><span>Muntliga korridorsbeslut som aldrig skrivits ned finns inte i grafen – använd grafens <em>Knowledge Gaps</em> som intervjulista med nyckelpersonerna!</span></li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="limits-grid">
+          <article class="limit-card">
+            <h4>1. Sekretess &amp; NDA</h4>
+            <p>Klistra aldrig in kundavtal eller personuppgifter i privata gratis-konton. Använd kundens godkända Enterprise-miljö eller anonymiserad data när ni bygger mallar.</p>
+          </article>
+          <article class="limit-card">
+            <h4>2. Ingen huvudräkning i text</h4>
+            <p>Språkmodeller gissar om de ska summera 400 Excel-rader i huvudet. Tvinga agenten i <code>AGENTS.md</code> att köra ett Python-/JS-skript för 100 % exakt matematik.</p>
+          </article>
+          <article class="limit-card">
+            <h4>3. Kontexttrötthet</h4>
+            <p>Dumpar du 100 sidor instruktioner i samma chatt glömmer modellen reglerna i mitten. Dela upp i korta <code>Skills</code> som laddas först när de behövs.</p>
+          </article>
+          <article class="limit-card">
+            <h4>4. Tysta antaganden</h4>
+            <p>Utan tydliga stoppregler vill AI:n ”vara duktig” och fylla i luckor. Kräv att den skriver <code>SAKNAS I UNDERLAG</code> när fakta saknas.</p>
+          </article>
+          <article class="limit-card">
+            <h4>5. Mänskligt ansvar</h4>
+            <p>En agent kan korsläsa på sekunder, men bär aldrig affärs- eller leveransansvar. Projektledaren granskar och äger alltid beslutet.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- KAPITEL 06: 4-TIMMARSKONFERENSEN -->
+    <section id="konferens" class="section-band band-dark dark-band">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow eyebrow-light">06 · Upplägg för 4 roliga &amp; konkreta timmar</span>
+          <h2>Noll fiktivt skolkrångel – fokus på konsulternas riktiga vardag</h2>
+          <p>Alla installerar fristående <strong>Google Antigravity</strong> på 5 minuter före konferensen. På plats slipper vi krångliga zip-paket och påhittade lekprojekt – vi varvar konsulternas egna ”måndagstidstjuvar” med en gemensam live-studio på storskärm.</p>
+        </div>
+
+        <div class="timeline-strip">
+          <article class="slot-card">
+            <span class="slot-time">00:00 – 00:40 (40 min)</span>
+            <h3>Pass 1 · Kartan &amp; Flödet</h3>
+            <p>Visuell genomgång av verktygslandskapet och hur <code>AGENTS.md</code>, <code>Skills</code>, kunskapsgraf, <code>MCP</code> och <code>Hooks</code> hänger ihop.</p>
+          </article>
+          <article class="slot-card">
+            <span class="slot-time">00:40 – 01:35 (55 min)</span>
+            <h3>Pass 2 · Din Måndagstidstjuv</h3>
+            <p>Hands-on på egen dator i Antigravity: varje konsult väljer en verklig (anonymiserad) tidstjuv och bygger sin första skarpa persona + <code>Skill</code>.</p>
+          </article>
+          <article class="slot-card">
+            <span class="slot-time">01:35 – 01:55 (20 min)</span>
+            <h3>Paus &amp; Kaffe</h3>
+            <p>Erfarenhetsutbyte kring vilka moment i kunduppdragen som ger störst tidsbesparing direkt på måndag.</p>
+          </article>
+          <article class="slot-card">
+            <span class="slot-time">01:55 – 02:55 (60 min)</span>
+            <h3>Pass 3 · Kunskapsgraf &amp; System</h3>
+            <p>Domino-demo på storskärm: när vanlig RAG/ordsökning missar dolda avtalsberoenden – och hur <code>MCP</code> kopplar insikt till handling.</p>
+          </article>
+          <article class="slot-card">
+            <span class="slot-time">02:55 – 04:00 (65 min)</span>
+            <h3>Pass 4 · Gemensam Live-studio</h3>
+            <p>Publiken styr kraven i rummet medan vi live bygger och kopplar ihop flöden, granskningsagenter och klickbart beslutsunderlag på sekunder.</p>
+          </article>
+        </div>
+
+        <h3 style="font-size:1.25rem; font-weight:800; margin-block-end:1rem;">Två skarpa verkstadsmoment istället för fiktiva skolövningar</h3>
+
+        <div class="workshop-two-col">
+          <article class="dark-ex-card">
+            <div>
+              <div class="dark-ex-head">
+                <span class="ex-num">01</span>
+                <span class="ex-time-pill">Individuellt · Egen dator i Antigravity</span>
+              </div>
+              <h4>Utmana din egen ”Måndagstidstjuv”</h4>
+              <p>Deltagarna öppnar en tom arbetsmapp i Antigravity och tar sig an ett återkommande moment från sin egen konsultvardag (t.ex. veckovis statuspuls, kravstädning efter workshop, avtals-/beroendekoll eller testplan). Alla skriver ett 5-punkts uppdragskontrakt i <code>AGENTS.md</code> och paketerar en återanvändbar <code>SKILL.md</code> som de har nytta av redan nästa vecka.</p>
+            </div>
+            <div class="ex-trains">Förberedelse före konferens: Endast installera Antigravity.app (5 min) + tänka ut 1 vardagstidstjuv</div>
+          </article>
+
+          <article class="dark-ex-card">
+            <div>
+              <div class="dark-ex-head">
+                <span class="ex-num">02</span>
+                <span class="ex-time-pill">Gemensamt · Live-studio på storskärm</span>
+              </div>
+              <h4>Från mötesbeslut till färdig leverans &amp; specialistagenter live</h4>
+              <p>Istället för att 25 personer ska felsöka API-nycklar och databaser kör vi den tunga system- och multi-agent-orkestreringen gemensamt på storskärm. Gruppen kastar in verkliga ändringskrav och ser live hur kravanalys, kunskapsgraf, kod/beslutsvy och en kritisk granskningsagent jobbar ihop i realtid.</p>
+            </div>
+            <div class="ex-trains">Ger 100 % fokus på metodik, arkitektur och aha-upplevelse – 0 % teknikstrul i lokalen</div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer dark-band">
+    <div class="container footer-inner">
+      <span>Top of Minds – Part of Digia Group · Interaktiv presentation &amp; arkitekturkarta för AI-konferensen</span>
+      <span>Delbar fristående HTML-vy · 100 % anonymiserade övningsexempel</span>
+    </div>
+  </footer>
+
+  <!-- NATIVE MODAL DIALOG FOR LIVE LAB LINKS -->
+  <dialog id="lab-dialog" closedby="any" aria-labelledby="lab-dialog-title">
+    <div class="dialog-head">
+      <h2 id="lab-dialog-title">Öppna konferensens live-vyer</h2>
+      <form method="dialog">
+        <button type="submit" class="dialog-close-btn" autofocus>Stäng (Esc)</button>
+      </form>
+    </div>
+    <p style="font-size:0.86rem; color:var(--tom-muted-foreground); margin-block-end:1rem;">
+      Här når du direkt våra tre interaktiva konferensmiljöer (kan öppnas på storskärm eller delas med kollegor):
+    </p>
+    <div class="dialog-links">
+      <a class="dialog-card-link" href="https://gustwest.github.io/topofminds-ai-konferens/" target="_blank" rel="noopener">
+        <div>
+          <strong>1. Utrullningsplan (Live-app i 3 nivåer)</strong>
+          <span>Från Excel &amp; PPT-hypoteser till interaktiv vågplanering, butikslista och körschema.</span>
+        </div>
+        <span aria-hidden="true">↗</span>
+      </a>
+      <a class="dialog-card-link" href="https://gustwest.github.io/topofminds-ai-konferens/kunskapsgraf.html" target="_blank" rel="noopener">
+        <div>
+          <strong>2. Kunskapsgraf i praktiken (2-minuters storskärmsintro)</strong>
+          <span>Interaktiv 5-stegs dominokedja som visar skillnaden mot vanlig ordsökning/RAG.</span>
+        </div>
+        <span aria-hidden="true">↗</span>
+      </a>
+      <a class="dialog-card-link" href="https://gustwest.github.io/topofminds-ai-konferens/graphify-out/graph.html" target="_blank" rel="noopener">
+        <div>
+          <strong>3. Skarpa kunskapsgrafen (graph.html – 49 noder)</strong>
+          <span>Exempel på interaktiv beroendekarta med 6 kluster och God Nodes.</span>
+        </div>
+        <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </dialog>
+
+  <script>
+    (() => {
+      // ===== 1. DATA FOR SECTION 01: TOOLS =====
+      const TOOLS = {
+        antigravity: {
+          title: 'Google Antigravity 2.0',
+          badge: 'Agentisk arbetsyta',
+          scenarios: ['pm-audit', 'prototype', 'dev'],
+          how: 'Öppnar en hel arbetsmapp på datorn (inte bara ett chattfönster). Agenten läser projektets regler i <code>AGENTS.md</code>, laddar återanvändbara metoder via <code>Skills</code>, bygger lokala kunskapsgrafer, kör Python/JS för exakt sifferkontroll och kopplar upp mot system via <code>MCP</code>.',
+          pros: [
+            'Korsgranska 10–100 projektfiler (avtal, protokoll, CSV/Excel) utan huvudräkningsfel.',
+            'Paketera egna konsultmetoder som återanvändbara <code>SKILL.md</code>.',
+            'Bygga skarpa appar, styra webbläsare och orkestrera subagenter parallellt.'
+          ],
+          cons: [
+            'Kräver lokal installation på datorn (olåst klient eller godkänd utvecklarmiljö).',
+            'Ovant första 15 minuterna för den som bara använt webbchatt tidigare.'
+          ],
+          verdict: '<strong>Konsultens tumregel:</strong> Välj Antigravity när uppgiften kräver spårbarhet över många filer, återanvändbara PM-metoder eller kombination av analys och bygge.'
+        },
+        chatgpt: {
+          title: 'ChatGPT (Plus / Team / Enterprise)',
+          badge: 'Allround-chatt & Deep Research',
+          scenarios: ['office', 'pm-audit', 'prototype'],
+          how: 'OpenAI:s webb- och desktopassistent – det verktyg flest konsulter och kunder redan använder dagligen. Kombinerar snabb dialog, <em>Projects</em> (mappar med fasta instruktioner), <em>Deep Research</em> för omvärldsbevakning, <em>Canvas</em> för textredigering och Python-sandlåda för enstaka Excel-filer.',
+          pros: [
+            'Lägst tröskel av alla – suveränt bollplank för omvärldsanalys (Deep Research), workshops och textutkast.',
+            '<em>Custom GPTs</em> och <em>Projects</em> gör det enkelt att spara en rollinstruktion för ett avgränsat moment.',
+            'Mycket starkt röstläge och bild-/diagramstöd när man vill tänka högt på språng.'
+          ],
+          cons: [
+            'Jobbar i en isolerad webbsandlåda – kan inte arbeta direkt i en hel lokal projektmapp eller versionshantera Skills i Git.',
+            'Kräver Team- eller Enterprise-licens (med avstängd modellträning) innan kundspecifik information får klistras in!'
+          ],
+          verdict: '<strong>Konsultens tumregel:</strong> Oslagbar vardagspartner för research, strukturering och bollplank i webbläsaren – men byt till en mappbaserad agent (Antigravity/Claude Code) när 30 projektfiler ska korsgranskas eller byggas ihop.'
+        },
+        'm365-copilot': {
+          title: 'Microsoft 365 Copilot',
+          badge: 'Kontorsassistent i Office',
+          scenarios: ['office', 'enterprise-search'],
+          how: 'Sitter inbäddad direkt i Teams, Outlook, Word, Excel och PowerPoint. Använder Microsoft Graph (inbyggd företags-RAG) för att söka i dokument och mejl som din användare redan har behörighet till.',
+          pros: [
+            'Oslagbar friktion för mötessammanfattningar och åtgärdspunkter direkt i Teams.',
+            'Snabba första utkast i Word och PowerPoint utifrån befintliga SharePoint-filer.',
+            'Ärver kundens befintliga säkerhets- och behörighetsmodell i Microsoft 365.'
+          ],
+          cons: [
+            'Tappar snabbt skärpan vid djup korsgranskning av avtal mot stora Excel-tidplaner.',
+            'Svårt att bygga egna strikta arbetsflöden, skriptverifiering eller anpassade verktyg.'
+          ],
+          verdict: '<strong>Konsultens tumregel:</strong> Perfekt som daglig sekreterare i Teams och Outlook – men lita inte på den för komplex konsekvensanalys i projektstyrningen.'
+        },
+        claude: {
+          title: 'Claude (Desktop / Cowork / Claude Code)',
+          badge: 'Djup analys & CLI-agent',
+          scenarios: ['pm-audit', 'dev', 'prototype'],
+          how: 'Anthropics modellfamilj (Sonnet/Opus) i tre former: webb/desktop med <em>Projects</em> &amp; <em>Artifacts</em>, <em>Cowork</em> för dokumentarbete och <em>Claude Code</em> i terminalen styrd av <code>CLAUDE.md</code>. (Kan även väljas som modell inuti Antigravity!).',
+          pros: [
+            'Branschledande nyans i svensk och engelsk avtalstext, kravspecar och arkitekturresonemang.',
+            '<em>Artifacts</em> låter dig förhandsgranska diagram och interaktiva skisser direkt i chatten.',
+            '<code>CLAUDE.md</code>, Skills och MCP fungerar enligt samma öppna principer som i Antigravity.'
+          ],
+          cons: [
+            'Webbversionen har begränsat filutrymme per Project jämfört med en lokal mappagent.',
+            'Gratisnivån slår snabbt i taket – kräver Pro-, Max- eller Team/Enterprise-abonnemang.'
+          ],
+          verdict: '<strong>Konsultens tumregel:</strong> Din skarpaste sparringpartner för svåra kravtexter, kontraktsgranskning och tung systemarkitektur.'
+        },
+        vscode: {
+          title: 'VS Code + GitHub Copilot / Cursor',
+          badge: 'Utvecklarnas kodmiljö',
+          scenarios: ['dev'],
+          how: 'Traditionella kodredigerare (IDE) förstärkta med AI-komplettering rad-för-rad, agentchatt och direktkoppling mot Git, kompilatorer och testsviter.',
+          pros: [
+            'Standardverktyget hos majoriteten av våra kunders utvecklingsteam idag.',
+            'Extremt snabbt för kodkomplettering, enhetstester och refaktorering i stora kodbaser.',
+            'Företagslicenser för GitHub Copilot finns ofta redan upphandlade hos storbolag.'
+          ],
+          cons: [
+            'Gränssnittet är byggt för mjukvaruutvecklare – hög tröskel för projektledare och verksamhetskonsulter.',
+            'Mindre anpassat för att visualisera projektportföljer, mötesflöden och dokumentgrafer.'
+          ],
+          verdict: '<strong>Konsultens tumregel:</strong> Rätt hemmaplan för utvecklingsteamet i leveransen – och som PM vinner du stort på att förstå hur deras <code>copilot-instructions.md</code> styrs!'
+        },
+        lovable: {
+          title: 'Lovable / v0 / Bolt',
+          badge: 'Visuell snabbprototypning',
+          scenarios: ['prototype'],
+          how: 'Webbläsarbaserade ”prompt-till-app”-tjänster. Du beskriver en applikation på vanlig svenska och får inom några minuter ett modernt gränssnitt med publicerad demoadress (exempelvis startade designskissen till Top of Minds nya sajt i Lovable!).',
+          pros: [
+            'Noll teknisk installation – vem som helst kan bygga en klickbar skiss inför en kundworkshop.',
+            'Ersätter abstrakta 40-sidiga kravdokument med något kunden faktiskt kan klicka på och reagera på.',
+            'Snabb visuell iteration av vyer, formulär och dashboards.'
+          ],
+          cons: [
+            'Blir lätt skört när man ska bygga komplex affärslogik, strikta behörigheter eller tung integration.',
+            'Inte byggt för att analysera 50 lokala kunddokument, avtal eller driva projektstyrning.'
+          ],
+          verdict: '<strong>Konsultens tumregel:</strong> Använd Lovable för att vinna kundens förståelse på 20 minuter i förstudien – lämna sedan över koden till Antigravity/IDE när den ska bli produktionsklar.'
+        },
+        'enterprise-rag': {
+          title: 'Gemini Enterprise / Företags-RAG',
+          badge: 'Centralt bolagsindex',
+          scenarios: ['enterprise-search', 'office'],
+          how: 'Molnplattformar (t.ex. Google Cloud Gemini Enterprise eller Azure AI Search) som kopplar ihop hela bolagets Google Drive, SharePoint, Jira och Confluence med respekt för varje anställds inloggning och läsrättigheter.',
+          pros: [
+            'Hittar rätt policy, gammalt anbud eller kompetensprofil tvärs över tusentals dokument på bolaget.',
+            'Enterprise-säkerhet: ingen data tränar publika modeller och behörigheter (ACL) hålls strikt.',
+            'Ingen lokal filhantering krävs för slutanvändaren.'
+          ],
+          cons: [
+            'Bygger på vektorsökning (liknande ord) – missar ofta dolda dominoeffekter i ett specifikt projekt.',
+            'Kräver central uppsättning av IT/molnarkitekt på bolagsnivå.'
+          ],
+          verdict: '<strong>Konsultens tumregel:</strong> Bäst som bolagets gemensamma ”bibliotekarie” – kombinera med lokal kunskapsgraf när du behöver djup röntgen i ett enskilt kundprojekt.'
+        }
+      };
+
+      const toolBtns = Array.from(document.querySelectorAll('[data-tool]'));
+      const filterChips = Array.from(document.querySelectorAll('[data-scenario]'));
+
+      function selectTool(toolKey) {
+        const data = TOOLS[toolKey];
+        if (!data) return;
+        for (const btn of toolBtns) {
+          btn.classList.toggle('is-selected', btn.getAttribute('data-tool') === toolKey);
+        }
+        document.getElementById('tool-detail-title').textContent = data.title;
+        document.getElementById('tool-detail-badge').textContent = data.badge;
+        document.getElementById('tool-detail-how').innerHTML = data.how;
+        document.getElementById('tool-detail-pros').innerHTML = data.pros
+          .map((p) => `<li><span>✓</span><span>${p}</span></li>`)
+          .join('');
+        document.getElementById('tool-detail-cons').innerHTML = data.cons
+          .map((c) => `<li><span>!</span><span>${c}</span></li>`)
+          .join('');
+        document.getElementById('tool-detail-verdict').innerHTML = data.verdict;
+      }
+
+      for (const btn of toolBtns) {
+        btn.addEventListener('click', () => selectTool(btn.getAttribute('data-tool')));
+      }
+
+      for (const chip of filterChips) {
+        chip.addEventListener('click', () => {
+          const scenario = chip.getAttribute('data-scenario');
+          for (const c of filterChips) {
+            c.setAttribute('aria-pressed', String(c === chip));
+          }
+          let firstMatch = null;
+          for (const btn of toolBtns) {
+            const key = btn.getAttribute('data-tool');
+            const matches = scenario === 'all' || TOOLS[key].scenarios.includes(scenario);
+            btn.classList.toggle('is-dimmed', !matches);
+            btn.classList.toggle('is-recommended', scenario !== 'all' && matches);
+            if (matches && !firstMatch) firstMatch = key;
+          }
+          if (firstMatch) selectTool(firstMatch);
+        });
+      }
+
+      // ===== 2. DATA FOR SECTION 02: INTERACTIVE AGENT MAP =====
+      const ANATOMY_NODES = {
+        'agents-md': {
+          eyebrow: 'Komponent 01 · Stående styrning (Alltid aktiv)',
+          title: 'AGENTS.md / CLAUDE.md – Projektets lagbok',
+          lead: 'En helt vanlig textfil i rotmappen som agenten läser automatiskt innan den gör något alls. Här sätter du ramarna en gång för alla så du slipper upprepa samma instruktioner i varje chatt.',
+          code: `# AGENTS.md (Kundprojekt – Utrullning)\nRoll: Kritisk Senior PMO-revisor på Top of Minds.\n1. Gissa ALDRIG datum eller belopp – citera exakt fil & paragraf.\n2. Vid sifferanalys i CSV/Excel: kör alltid ett skript, huvudräkna inte.\n3. Kvantifiera alltid affärsrisk i SEK (t.ex. ombokningsavgift eller vite).`,
+          pitfall: '<strong>Viktig insikt:</strong> Håll <code>AGENTS.md</code> kort och skarp (max 50–100 rader). Om du klistrar in 20 sidor rutiner här dränks kontextfönstret – lägg detaljerade arbetsmetoder i <code>Skills</code> istället!',
+          extraLink: ''
+        },
+        skills: {
+          eyebrow: 'Komponent 02 · Progressive Disclosure (Laddas på begäran)',
+          title: 'Skills (SKILL.md) – Konsultens paketerade metodbok',
+          lead: 'En mapp med en <code>SKILL.md</code> (och ev. hjälpskript/mallar) som beskriver exakt hur en viss konsultleverans ska utföras. Agenten ser bara titeln från start och öppnar hela instruktionen först när uppgiften matchar!',
+          code: `---\nname: go-live-readiness\ndescription: Granskar utrullningsplan mot avtal, SLA, kapacitet och frysdatum.\n---\n1. Korsläs SOW § 2.1 (Gate G2) mot alla datum i Excel 1.\n2. Kontrollera fältteamens kapacitetstak (max 4 butiker/vecka).\n3. Leverera beslutsunderlag med RÖD/GUL/GRÖN status + kostnadsrisk i SEK.`,
+          pitfall: '<strong>Varför detta är en gamechanger för Top of Minds:</strong> Era bästa konsulters arbetsmetoder (förstudie, readiness-revision, datamodellering, teststrategi) kan paketeras som <code>Skills</code> och delas med hela teamet på 1 minut.',
+          extraLink: ''
+        },
+        rag: {
+          eyebrow: 'Komponent 03 · Klassisk företagssökning',
+          title: 'RAG (Retrieval-Augmented Generation) – Sökning på liknande text',
+          lead: 'Det som de flesta företag satt upp när de byggt en ”intern AI-chatt”. Dokument klipps upp i små textbitar (chunks) och sparas i en vektordatabas. När du ställer en fråga hämtas de 5–10 textstycken som språkligt liknar din fråga mest.',
+          code: `Fråga: "Vad händer om Johan Nilsson blir sjuk i 2 veckor?"\n\nVad RAG gör:\n1. Söker efter textbitar som liknar "Johan Nilsson".\n2. Hittar Styrgruppsprotokoll #3 (där hans namn står).\n3. MISSAR Excel-planen, SOW-avtalet och TeliaNet-SLA:t eftersom orden\n   "Johan Nilsson" aldrig nämns i de filerna!`,
+          pitfall: '<strong>När RAG är rätt vs fel:</strong> RAG är utmärkt för att hitta ”var står policyn om friskvård?” bland 10 000 PDF:er – men farligt när du behöver spåra kedjereaktioner mellan avtal, tidplan och ekonomi.',
+          extraLink: ''
+        },
+        'knowledge-graph': {
+          eyebrow: 'Komponent 04 · Strukturerat domän- & beroendeminne',
+          title: 'Kunskapsgraf (graphify) – Projektets röntgenblick',
+          lead: 'Istället för lösa textbitar extraherar kunskapsgrafen <strong>Noder</strong> (personer, butiker, system, avtalskrav) och <strong>Relationer</strong> med ärlighetsstämpel (<code>EXTRACTED</code>, <code>INFERRED</code>, <code>AMBIGUOUS</code>). Då kan agenten vandra längs beroendekedjan i 5 led!',
+          code: `[Johan Nilsson] ──levererar──▶ [Adyen Hotfix v4.2.4]\n   ──krävs_för──▶ [Pilot NR-001 Uppsala] ──styr──▶ [Gate G2: 14 dgr (SOW § 2.1)]\n   ──förskjuter──▶ [Våg 3 Flagships] ──krockar_med──▶ [Black Week & TeliaNet 35 000 kr]`,
+          pitfall: '<strong>Dubbel vinst:</strong> Agenten hittar både flaskhalsarna (<em>God Nodes</em>) och avtalsmotsägelserna (<em>Ambiguous Edges</em>), samtidigt som den läser ~70× mindre textmassa per fråga.',
+          extraLink: '<a class="btn-purple" href="https://gustwest.github.io/topofminds-ai-konferens/kunskapsgraf.html" target="_blank" rel="noopener" style="align-self:flex-start;">Öppna den interaktiva Kunskapsgraf-demon ↗</a>'
+        },
+        mcp: {
+          eyebrow: 'Komponent 05 · Standardiserad systemkoppling',
+          title: 'MCP (Model Context Protocol) – ”USB-C-kontakten” för AI',
+          lead: 'En öppen branschstandard som ger agenten säkra ”händer och ögon” mot externa system som Jira, ServiceNow, Google Drive, Slack, GitHub och databaser – utan att du behöver kopiera och klistra mellan fönster.',
+          code: `// Agenten anropar er PMO/Jira-MCP direkt ur samtalet:\ncall_mcp_tool("nordic-retail-pmo", "create_escalation_ticket", {\n  title: "KRITISK: Våg 1 bryter mot SOW § 2.1 (Gate G2)",\n  severity: "P1",\n  financial_exposure_sek: 350000,\n  owner: "Anna Lindqvist (COO)"\n})`,
+          pitfall: '<strong>Säkerhetsprincip:</strong> Ge agenten läsrättighet brett, men kräv alltid bekräftelse eller begränsa skrivrättigheter till utkast/staging när MCP kopplas mot skarpa kundsystem.',
+          extraLink: ''
+        },
+        'agent-loop': {
+          eyebrow: 'Komponent 06 · Det som skiljer agent från chattbot',
+          title: 'Verifieringsloopen – Planera, utföra, kontrollera & rätta',
+          lead: 'En chattbot gissar ett svar i ett enda svep. En agent bryter ner uppgiften i steg, kör ett verktyg eller skript, <em>läser felmeddelandet eller kontrollsumman</em>, och rättar sig själv innan den presenterar resultatet för dig.',
+          code: `Steg 1 (Tänk):   "Jag ska kontrollera om några butiker ligger på måndag/fredag."\nSteg 2 (Verktyg): Kör Python-skript mot 07_Excel1_Butiksutrullning_Veckor.csv\nSteg 3 (Resultat): Skriptet hittar 5 regelbrott + dubbelbokat fältteam i v.46.\nSteg 4 (Kontroll): Dubbelkollar mot TeliaNet SLA § 2.1 (max 5 butiker/vecka).\nSteg 5 (Leverans): Presenterar verifierad tabell med noll gissningar.`,
+          pitfall: '<strong>Nyckel för PM:</strong> Be alltid agenten <em>verifiera</em> sitt eget utkast mot källfilerna i ett eget steg innan den svarar – det kapar 90 % av alla slarvfel.',
+          extraLink: ''
+        }
+      };
+
+      const mapBtns = Array.from(document.querySelectorAll('[data-node]'));
+      for (const btn of mapBtns) {
+        btn.addEventListener('click', () => {
+          const key = btn.getAttribute('data-node');
+          const d = ANATOMY_NODES[key];
+          if (!d) return;
+          for (const b of mapBtns) {
+            b.classList.toggle('is-selected', b === btn);
+          }
+          document.getElementById('node-eyebrow').textContent = d.eyebrow;
+          document.getElementById('node-title').textContent = d.title;
+          document.getElementById('node-lead').innerHTML = d.lead;
+          document.getElementById('node-code').textContent = d.code;
+          document.getElementById('node-pitfall').innerHTML = d.pitfall;
+          document.getElementById('node-extra-link').innerHTML = d.extraLink;
+        });
+      }
+
+      // ===== 3. PERSONA WEAK VS STRONG TOGGLE =====
+      const weakBtn = document.getElementById('btn-persona-weak');
+      const strongBtn = document.getElementById('btn-persona-strong');
+      const personaCode = document.getElementById('persona-code-view');
+
+      const WEAK_PERSONA = `# Svag prompt (vanligt rollspel utan ramar)\n"Du är en glad, hjälpsam och mycket erfaren senior projektledare\nmed 25 års erfarenhet av detaljhandel. Titta på våra filer och säg\nom tidplanen ser bra ut inför mötet imorgon!"\n\n→ Resultat: AI:n svarar artigt och övergripande, håller med dig,\n  och missar de exakta kontrakts- och kapacitetsbrotten i CSV-filen.`;
+
+      const STRONG_PERSONA = `# Roll: Kritisk Kvalitets- & Kontraktsrevisor (Subagent)\nMandat: Granska utrullningsplanen skoningslöst mot signerade avtal.\nSanninghierarki: 1) SOW & SLA-avtal  2) Beslutade frysmejl  3) Excel-plan.\nVerktyg: Endast läsverktyg + Python för datumkontroll (inga skrivverktyg).\nStoppregel: Godkänn ALDRIG en våg om ett enda skall-krav i SOW § 2.1 saknar bevis.\nLeveransformat: Tabell med [Avvikelse | Källa § | Ekonomisk risk i SEK | Åtgärd].`;
+
+      weakBtn?.addEventListener('click', () => {
+        weakBtn.setAttribute('aria-pressed', 'true');
+        strongBtn.setAttribute('aria-pressed', 'false');
+        personaCode.textContent = WEAK_PERSONA;
+      });
+
+      strongBtn?.addEventListener('click', () => {
+        strongBtn.setAttribute('aria-pressed', 'true');
+        weakBtn.setAttribute('aria-pressed', 'false');
+        personaCode.textContent = STRONG_PERSONA;
+      });
+
+      // ===== 4. MATURITY TABS (INDIVID -> TEAM -> SVÄRM) =====
+      const matTabs = Array.from(document.querySelectorAll('.maturity-tablist [role="tab"]'));
+      const matPanels = matTabs.map((t) => document.querySelector(`[aria-labelledby="${t.id}"]`));
+
+      function selectMatTab(nextTab, moveFocus = false) {
+        if (!nextTab) return;
+        for (let i = 0; i < matTabs.length; i++) {
+          const t = matTabs[i];
+          const p = matPanels[i];
+          const selected = t === nextTab;
+          t.setAttribute('aria-selected', String(selected));
+          t.toggleAttribute('focusgroupstart', selected);
+          t.tabIndex = selected ? 0 : -1;
+          if (p) {
+            if (selected) {
+              p.removeAttribute('hidden');
+              p.tabIndex = 0;
+            } else {
+              p.setAttribute('hidden', 'until-found');
+              p.removeAttribute('tabindex');
+            }
+          }
+        }
+        if (moveFocus) nextTab.focus();
+      }
+
+      for (const t of matTabs) {
+        t.addEventListener('click', () => selectMatTab(t, false));
+      }
+
+      if (!Object.hasOwn(HTMLElement.prototype, 'focusGroup')) {
+        document.querySelector('.maturity-tablist')?.addEventListener('keydown', (e) => {
+          const idx = matTabs.indexOf(document.activeElement);
+          if (idx === -1) return;
+          let next = -1;
+          if (e.key === 'ArrowRight') next = (idx + 1) % matTabs.length;
+          else if (e.key === 'ArrowLeft') next = (idx - 1 + matTabs.length) % matTabs.length;
+          else if (e.key === 'Home') next = 0;
+          else if (e.key === 'End') next = matTabs.length - 1;
+          if (next !== -1) {
+            e.preventDefault();
+            selectMatTab(matTabs[next], true);
+          }
+        });
+      } else {
+        for (const t of matTabs) {
+          t.addEventListener('focus', () => selectMatTab(t, false));
+        }
+      }
+
+      matPanels.forEach((panel, i) => {
+        panel?.addEventListener('beforematch', () => selectMatTab(matTabs[i], false));
+      });
+
+      // ===== 5. SECTION 04: PM USE CASES =====
+      const PM_CASES = {
+        onboarding: {
+          title: 'Dag 1 i nytt uppdrag: Avtals- & beroenderöntgen',
+          time: 'Effekt: 3 veckor → 1 timme',
+          problem: '<strong>Vardagsproblemet:</strong> Du kliver in i ett pågående kundprojekt med 40 filer (SOW, SLA-avtal, gamla styrgrupps-PPTs och två spretiga Excel-planer) och har styrgrupp imorgon bitti.',
+          setup: [
+            'Lägg projektfilerna i en arbetsmapp med en <code>AGENTS.md</code> som kräver exakta källcitat.',
+            'Kör <code>graphify</code> för att bygga kunskapsgrafen och se projektets <em>God Nodes</em> och avtalsgråzoner.',
+            'Kör en <code>go-live-readiness</code>-skill som listar alla regelbrott och kostnadsrisker i SEK.'
+          ],
+          limit: [
+            'Muntliga korridorsbeslut som aldrig dokumenterats syns inte – använd grafens <em>Knowledge Gaps</em> som checklista vid dina första intervjuer!'
+          ]
+        },
+        workshop: {
+          title: 'Från inspelat krav-/styrgruppsmöte till Spec & Jira',
+          time: 'Effekt: 4 timmars efterarbete → 10 min',
+          problem: '<strong>Vardagsproblemet:</strong> Efter en intensiv workshop tar det timmar att renskriva anteckningar, vaska fram faktiska beslut, uppdatera kravspecen och skapa ärenden i Jira.',
+          setup: [
+            'Spela in mötet (med deltagarnas godkännande) eller exportera Teams-transkriptet.',
+            'Kör en <code>krav-konsoliderare</code>-skill som skiljer på <em>Beslutat</em>, <em>Öppna frågor</em> och <em>Parkerat</em>.',
+            'Låt agenten skapa färdiga Jira-/PMO-ärenden via <code>MCP</code> efter att du granskat listan.'
+          ],
+          limit: [
+            'Rösttranskribering kan höra fel på interna förkortningar och systemnamn – ha en ordlista i projektets <code>AGENTS.md</code> och godkänn alltid innan utskick!'
+          ]
+        },
+        rollout: {
+          title: 'Från tung Excel-utrullningsplan till interaktivt styrgruppsverktyg',
+          time: 'Effekt: Slipp rita om PPT varje vecka',
+          problem: '<strong>Vardagsproblemet:</strong> Du älskar strukturen i din Excel-plan (t.ex. 70 butiker/våg × 23 aktiviteter), men ledningen vill se en visuell tidplan med scenarier – och varje datumflytt tvingar dig att rita om PowerPoint för hand.',
+          setup: [
+            'Låt Antigravity läsa in Excel-strukturen och generera en ren 3-stegsvy (Månader → Veckor → Körschema) med CSV-import/export.',
+            'Bygg in projektets affärsregler direkt i vyn (t.ex. <em>Inga utrullningar måndag/fredag</em> och automatisk kaskadflytt).',
+            'Dela på en intern länk inför styrgruppen så ni kan testa ”vad händer om piloten flyttas 2 veckor?” live i mötet!'
+          ],
+          limit: [
+            'Bestäm tydligt var ”master-datan” bor (antingen i Excel med CSV-synk eller i webbverktyget) så ni inte får två konkurrerande planer.'
+          ]
+        },
+        prototype: {
+          title: 'Klickbar visuell kundprototyp under pågående förstudie',
+          time: 'Effekt: Gemensam målbild dag 2',
+          problem: '<strong>Vardagsproblemet:</strong> Verksamheten och IT tolkar en 35-sidig textspecifikation helt olika, och missförståndet upptäcks först tre månader senare vid UAT.',
+          setup: [
+            'Ta anteckningarna från workshopen in i Lovable eller Antigravity och generera en klickbar skiss på 20 minuter.',
+            'Låt beställaren och slutanvändarna klicka runt och lämna kommentarer direkt i prototypen.',
+            'Frys kraven utifrån det kunden faktiskt såg och bekräftade på skärmen.'
+          ],
+          limit: [
+            'Var övertydlig mot kunden att prototypen är en <em>fasad med testdata</em> – så inte ledningen tror att hela bakomliggande ERP-integrationen redan är färdigbyggd!'
+          ]
+        },
+        pulse: {
+          title: 'Automatiserad veckopuls, RAID-uppföljning & portföljvakt',
+          time: 'Effekt: Konsekvent kvalitet varje fredag',
+          problem: '<strong>Vardagsproblemet:</strong> Fredag eftermiddag går åt till att jaga status i fem kanaler och sammanställa veckorapporten till sponsor och styrgrupp.',
+          setup: [
+            'Skapa en <code>styrgrupps-puls</code>-skill med exakt den rapportmall och de KPI:er din kund vill ha.',
+            'Koppla läs-MCP mot Jira/planen och en schemalagd körning varje fredag kl. 13:00 som tar fram ett källhänvisat utkast.',
+            'Du lägger 10 minuter på din seniora analys och rekommendation – istället för 2 timmar på klipp-och-klistra.'
+          ],
+          limit: [
+            'En grön biljett i Jira kan dölja en stressad leverantör – AI-pulsen frigör tid så att du kan prata <em>mer</em> med människorna i projektet, inte mindre.'
+          ]
+        }
+      };
+
+      const caseBtns = Array.from(document.querySelectorAll('[data-case]'));
+      for (const btn of caseBtns) {
+        btn.addEventListener('click', () => {
+          const key = btn.getAttribute('data-case');
+          const c = PM_CASES[key];
+          if (!c) return;
+          for (const b of caseBtns) {
+            b.classList.toggle('is-selected', b === btn);
+          }
+          document.getElementById('case-title').textContent = c.title;
+          document.getElementById('case-time').textContent = c.time;
+          document.getElementById('case-problem').innerHTML = c.problem;
+          document.getElementById('case-setup').innerHTML = c.setup
+            .map((s, idx) => `<li><span>${idx + 1}.</span><span>${s}</span></li>`)
+            .join('');
+          document.getElementById('case-limit').innerHTML = c.limit
+            .map((l) => `<li><span>!</span><span>${l}</span></li>`)
+            .join('');
+        });
+      }
+
+      // ===== 5B. SECTION 03: SJÄLVGÅENDE BI- & DATA VAULT-AGENT BLUEPRINT =====
+      const BI_HOMES = {
+        rules: {
+          title: 'A. AGENTS.md & Mapp-lokala Rules',
+          owner: 'Ägare: BI-Arkitekt',
+          lead: '<strong>Hemvist:</strong> <code>/AGENTS.md</code> i roten + lokala <code>AGENTS.md</code> inne i <code>models/raw_vault/</code>, <code>business_vault/</code> och <code>marts/</code>. Laddas alltid in automatiskt för den mapp agenten arbetar i!',
+          code: `# /models/raw_vault/AGENTS.md\n1. NOLL affärslogik, filtrering eller beräkning i Raw Data Vault (100 % källspegling).\n2. Namnstandard: HUB_<BEGREPP>, LNK_<A>_<B>, SAT_<BEGREPP>_<KÄLLA>.\n3. Gissa ALDRIG en Business Key – den måste finnas i /docs/elm/ eller bekräftas av användaren.\n4. Personuppgifter (GDPR) SKA alltid separeras i en egen *_PII-Satellite.`,
+          takeaway: '<strong>Varför här och inte i en Skill?</strong> Dessa regler får <em>aldrig</em> vara valfria. Även om någon bara ber om en ”snabb tabelljustering” ligger lagboken alltid aktiv i minnet.'
+        },
+        graph: {
+          title: 'B. docs/ + Kunskapsgraf (Domän & Lineage)',
+          owner: 'Ägare: PM / Verksamhet + Automatisk graf',
+          lead: '<strong>Hemvist:</strong> Människor skriver affärsbegrepp (ELM), PII-klassning och KPI-definitioner i <code>/docs/</code>. Ovanpå <code>docs/</code> + SQL/dbt + kubens <code>.bim</code> bygger <code>graphify</code> automatiskt hela beroendekartan!',
+          code: `# /docs/elm/skadearende.md (Sanningskälla på svenska)\nAffärsbegrepp: Skadeärende (Claim)\nBusiness Key:  claim_number (globalt unik i källsystemet SkadeSys)\nRelationer:    Kopplas via LNK_CLAIM_POLICY till Försäkringsavtal & Kund\nGDPR / PII:    skadebeskrivning_fritext & personnr → SKA ligga i SAT_CLAIM_PII!\n\n# Kunskapsgrafen kopplar automatiskt hela lineage-kedjan:\n[SkadeSys.claims] → [STG_CLAIMS] → [HUB_CLAIM / SAT_CLAIM] → [BV_PIT_CLAIM] → [FCT_CLAIMS] → [Kub: Skadeprocent %]`,
+          takeaway: '<strong>Noll manuell kolumnlista:</strong> Du uppdaterar bara affärsbegreppen i text – kunskapsgrafen ritar själv ut hur källtabeller, Hubs, Marts och Power BI-mått hänger ihop.'
+        },
+        skills: {
+          title: 'C. 5 Modulära BI-Skills (SKILL.md + examples/)',
+          owner: 'Ägare: Seniora BI-utvecklare',
+          lead: '<strong>Hemvist:</strong> <code>/.agents/skills/01-lake..05-test/</code>. Här paketerar era skarpaste Data Vault-utvecklare sina bästa mallar och arbetssteg en gång – så agenten kodar exakt enligt er standard!',
+          code: `.agents/skills/\n├── 01-ingest-to-lake/SKILL.md      # Rålandning, LOAD_DTS, RECORD_SOURCE & SHA-256 Hash\n├── 02-model-raw-vault/SKILL.md     # AutomateDV / dbt-mallar för Hub, Link & Satellite\n│   └── examples/hub_and_sat.sql    # Godkänd referenskod som agenten följer exakt\n├── 03-build-business-vault/SKILL.md# PIT, Bridge & mjuka affärsberäkningar\n├── 04-mart-and-cube/SKILL.md       # DIM/FCT stjärnschema + DAX-mått i kuben\n└── 05-bi-test-suite/SKILL.md       # Unicitet, referensintegritet, grain- & summatester`,
+          takeaway: '<strong>Sparar 90 % kontextminne:</strong> När agenten modellerar Raw Vault öppnar den bara <code>02-model-raw-vault</code>; när den bygger kuben öppnar den <code>04-mart-and-cube</code>.'
+        },
+        mcp: {
+          title: 'D. MCP + Isolerad Dev-Sandbox',
+          owner: 'Ägare: Plattform / Data Engineering',
+          lead: '<strong>Hemvist:</strong> <code>mcp_config.json</code> + ett isolerat <code>dev_&lt;användare&gt;</code>-schema (t.ex. Snowflake Zero-Copy Clone, BigQuery eller Databricks). Ger agenten säkra ögon mot riktig data och en ofarlig testbänk!',
+          code: `// 1. Agenten profilerar råtabellen i Laken (Read-Only MCP) INNAN den modellerar:\nSELECT COUNT(*) AS rows, COUNT(DISTINCT claim_no) AS distinct_bk,\n       SUM(CASE WHEN claim_no IS NULL THEN 1 ELSE 0 END) AS null_bk\nFROM raw_lake.skadesys_claims;\n// → Svar: 142 810 rader, 142 810 unika, 0 NULL (Bekräftar ren Hub-nyckel!)\n\n// 2. Agenten bygger och testkör alla vyer/tabeller i dev_gustav.* (aldrig i prod!)\n// 3. GitHub/Azure DevOps MCP skapar grenen & öppnar Pull Requesten när allt är grönt.`,
+          takeaway: '<strong>Nyckeln till ”självgående”:</strong> Utan en sandbox gissar AI:n bara SQL i blindo. Med MCP + <code>dev</code>-schema provkör den sin egen kod och rättar eventuella fel själv!'
+        },
+        hooks: {
+          title: 'E. Hooks & Automatiska Avstämningsgrindar',
+          owner: 'Ägare: Automatisk exekvering (hooks.json / CI)',
+          lead: '<strong>Hemvist:</strong> <code>/.agents/hooks.json</code> + skript i <code>/scripts/</code>. Triggas automatiskt varje gång agenten sparar en modell eller försöker skapa en PR – går inte att glömma eller runda!',
+          code: `// Automatisk kontrollsvit som MÅSTE passera innan PR får skapas:\n[PASS] DV-Linter: Inga JOIN/WHERE-filter hittades i models/raw_vault/ ✓\n[PASS] GDPR-vakt: Kolumnen 'personnr' ligger isolerad i SAT_CLAIM_PII ✓\n[PASS] Radavstämning: Lake (142 810) == HUB+SAT (142 810) ✓\n[PASS] Grain & Belopp: SUM(utbetalt_belopp) Källa = FCT_CLAIMS (Diff: 0,00 SEK) ✓`,
+          takeaway: '<strong>Trygghet för icke-utvecklaren:</strong> Du behöver inte själv kunna jaga ett felaktigt <code>LEFT JOIN</code> i 300 rader SQL – om beloppet diffar med 1 krona stoppar grinden direkt!'
+        },
+        reviewer: {
+          title: 'F. Oberoende DV-Reviewer Subagent (4-ögon-principen)',
+          owner: 'Ägare: Separat läs-subagent',
+          lead: '<strong>Hemvist:</strong> <code>/.agents/agents/dv-reviewer.md</code>. Innan en mänsklig utvecklare störs väcks en separat, skrivskyddad granskningsagent med <em>helt tomt kontextfönster</em> som kritiskt synar bygg-agentens kod.',
+          code: `# /.agents/agents/dv-reviewer.md (Endast läsverktyg!)\nRoll: Kritisk Certified Data Vault 2.0 Modellerare (CDVDM).\nUppgift: Granska git diff mot /docs/elm/ och Data Vault-standarden.\nKontrollera särskilt:\n1. Har högfrekventa kolumner lagts i samma Satellite som långsamma basdata?\n2. Finns risk för fan-trap / chasm-trap i Business Vault eller FCT-tabellen?\n3. Är kubens DAX-mått identiskt med formeln i /docs/kpi-katalog/?`,
+          takeaway: '<strong>Varför en egen subagent?</strong> Den agent som nyss skrivit koden är lätt ”hemmablind”. En separat granskare med färskt minne fångar arkitekturmissar direkt.'
+        },
+        'plugin-pr': {
+          title: 'G. Plugin-paket + ”5-minuters Utvecklar-PR”',
+          owner: 'Ägare: BI-teamet gemensamt (Human-in-the-Loop)',
+          lead: '<strong>Hemvist:</strong> Hela paketet A–F samlas i <code>/.agents/plugins/tom-datavault-bi/plugin.json</code> så alla får samma setup – och varje körning landar i en <strong>lättgranskad Pull Request</strong> för en mänsklig BI-utvecklare.',
+          code: `## Pull Request #184: Nytt flöde Skadeärenden (Lake → RDV → BV → Mart → Kub)\n- Modellerat diagram: [HUB_CLAIM] ── [LNK_CLAIM_POLICY] ── [HUB_POLICY]\n- Automatiska tester i dev: 18/18 GRÖNA (142 810 rader, 0,00 kr diff mot källa)\n- DV-Reviewer Subagent: Godkänd (PII separerad i SAT_CLAIM_PII)\n\n👉 Till mänsklig BI-utvecklare att syna på 5 min före Merge till Prod:\n1. Bekräfta att partitionering på datum i FCT_CLAIMS följer kostnadsbudget.\n2. Klicka "Approve & Merge" för driftsättning via CI/CD!`,
+          takeaway: '<strong>Resultatet:</strong> Du som PM/beställare gör 90 % av resan på en timme – och seniora BI-utvecklaren lägger 5 fokuserade minuter på arkitekturgodkännande istället för 3 dagars boilerplate-kod!'
+        }
+      };
+
+      const DV_STAGES = {
+        all: {
+          homes: ['rules', 'graph', 'skills', 'mcp', 'hooks', 'reviewer', 'plugin-pr'],
+          focusHome: 'rules'
+        },
+        lake: {
+          homes: ['rules', 'mcp', 'skills', 'hooks'],
+          title: 'Steg 1 i kedjan: Källintegration & Data Lake / Stage',
+          owner: 'Aktiva delar: A, C, D, E',
+          lead: '<strong>Vad händer här?</strong> Agenten använder <strong>MCP (D)</strong> för att profilera rådatan i Laken (hitta <code>NULL</code>, datatyper och dubbletter), följer <strong>Skill 01 (C)</strong> för att sätta tekniska kolumner (<code>LOAD_DTS</code>, <code>RECORD_SOURCE</code>, SHA-256 hash) och kontrolleras av <strong>Hooks (E)</strong>.',
+          code: `-- Genereras av Skill: 01-ingest-to-lake/SKILL.md\nSELECT\n  TRIM(UPPER(claim_number))                   AS claim_bk,\n  SHA2_BINARY(TRIM(UPPER(claim_number)), 256) AS hk_claim,\n  CURRENT_TIMESTAMP()                         AS load_dts,\n  'SKADESYS_DAILY_PARQUET'                    AS record_source,\n  *\nFROM {{ source('lake_skadesys', 'claims_raw') }}`,
+          takeaway: '<strong>Hemvist i detta steg:</strong> Regler i <code>/AGENTS.md</code> (A), mall i <code>skills/01-ingest-to-lake/</code> (C), datakoll via <code>MCP</code> (D) och källräkning via <code>Hooks</code> (E).'
+        },
+        rdv: {
+          homes: ['rules', 'graph', 'skills', 'mcp', 'hooks'],
+          title: 'Steg 2 i kedjan: Raw Data Vault (Hub, Link, Satellite)',
+          owner: 'Aktiva delar: A, B, C, D, E',
+          lead: '<strong>Vad händer här?</strong> Agenten slår upp godkänd Business Key &amp; PII-klassning i <strong>docs/ + Kunskapsgrafen (B)</strong>, laddar <strong>Skill 02 (C)</strong> för att generera <code>HUB_</code>, <code>LNK_</code> och <code>SAT_</code>, och tvingas av <strong>Rules (A) &amp; Hooks (E)</strong> till 0 % affärslogik.',
+          code: `-- Genereras i models/raw_vault/ utifrån ELM i /docs/elm/skadearende.md:\n1. HUB_CLAIM          (hk_claim, claim_bk, load_dts, record_source)\n2. LNK_CLAIM_POLICY   (hk_claim_policy, hk_claim, hk_policy, ...)\n3. SAT_CLAIM_CORE     (status, belopp, skadedatum, hashdiff)\n4. SAT_CLAIM_PII      (personnr, fritext – strikt separerad enligt GDPR-regeln i A!)`,
+          takeaway: '<strong>Hemvist i detta steg:</strong> Affärsnyckeln kommer från <code>docs/elm/</code> (B), mönstret från <code>skills/02-model-raw-vault/</code> (C) och förbudet mot affärslogik från <code>models/raw_vault/AGENTS.md</code> (A).'
+        },
+        bv: {
+          homes: ['rules', 'graph', 'skills', 'mcp', 'hooks'],
+          title: 'Steg 3 i kedjan: Business Vault (PIT, Bridge & Regler)',
+          owner: 'Aktiva delar: A, B, C, D, E',
+          lead: '<strong>Vad händer här?</strong> Först här tillåter <strong>Rules (A)</strong> beräknade affärsregler! Agenten läser formlerna ur <strong>docs/kpi-katalog/ (B)</strong> och använder <strong>Skill 03 (C)</strong> för att bygga <code>PIT</code>-tabeller för snabba tidssnitt och beräknade Satellites.',
+          code: `-- Genereras i models/business_vault/ via 03-build-business-vault/SKILL.md:\n-- Mjuk affärsregel: Nettoersättning exkl. självrisk & moms\nSELECT\n  hk_claim,\n  load_dts,\n  GREATEST(0, brutto_belopp - sjalvrisk_belopp) AS netto_skadekostnad_sek\nFROM {{ ref('sat_claim_core') }}`,
+          takeaway: '<strong>Hemvist i detta steg:</strong> Affärsdefinitionen bor i <code>docs/kpi-katalog/</code> (B) och tekniken för PIT/Bridge bor i <code>skills/03-build-business-vault/</code> (C).'
+        },
+        mart: {
+          homes: ['rules', 'graph', 'skills', 'mcp', 'hooks'],
+          title: 'Steg 4 i kedjan: Information Marts & Semantisk Kub',
+          owner: 'Aktiva delar: A, B, C, D, E',
+          lead: '<strong>Vad händer här?</strong> Agenten bygger stjärnschemat (<code>DIM_*</code>, <code>FCT_*</code>) och måttet i kuben (<code>.bim</code> / DAX) via <strong>Skill 04 (C)</strong>, medan <strong>Kunskapsgrafen (B)</strong> binder ihop hela lineage-spåret ut till rapporten.',
+          code: `// 1. SQL Mart: models/marts/fct_claims.sql (läser ENBART från RDV + BV)\n// 2. Semantisk Kub: models/cubes/forsakring.bim (DAX-mått enligt docs/kpi-katalog/):\nmeasure 'Skadeprocent %' =\n  DIVIDE(\n    SUM('FCT_CLAIMS'[netto_skadekostnad_sek]),\n    SUM('FCT_PREMIER'[intjanad_premie_sek])\n  )\n  formatString: "0.0 %"`,
+          takeaway: '<strong>Hemvist i detta steg:</strong> Stjärnschema- &amp; DAX-mallar i <code>skills/04-mart-and-cube/</code> (C), medan kunskapsgrafen (B) uppdateras så alla ser vilka rapporter som använder måttet.'
+        },
+        pr: {
+          homes: ['hooks', 'reviewer', 'plugin-pr', 'mcp'],
+          title: 'Steg 5 i kedjan: Automatiska tester, Subagent-review & Utvecklar-PR',
+          owner: 'Aktiva delar: D, E, F, G',
+          lead: '<strong>Vad händer här?</strong> Nu kliver säkerhetsbältet in: <strong>Hooks &amp; Testsviten (E)</strong> stämmer av radantal och summor i <code>dev</code>, <strong>DV-Reviewer (F)</strong> gör oberoende arkitekturkoll, och <strong>Git-MCP (D/G)</strong> skapar PR:en för mänskligt godkännande!',
+          code: `✓ Alla 18 dbt- & avstämningstester gröna i dev_sandbox (Diff mot källa: 0,00 SEK)\n✓ DV-Reviewer Subagent: 0 arkitekturavvikelser mot Data Vault 2.0\n✓ Pull Request #184 skapad med ER-diagram & testprotokoll\n→ Väntar på 5-minuters granskning av BI-utvecklare före Merge till main/prod!`,
+          takeaway: '<strong>Varför modellen håller i verkligheten:</strong> Ingen kod når någonsin produktion oprövad – utvecklaren granskar ett färdigtestat paket istället för att koda allt från noll.'
+        }
+      };
+
+      const biHomeBtns = Array.from(document.querySelectorAll('[data-bi-home]'));
+      const dvStageBtns = Array.from(document.querySelectorAll('[data-dv-stage]'));
+
+      function renderBiInspector(info) {
+        document.getElementById('bi-detail-title').textContent = info.title;
+        document.getElementById('bi-detail-owner').textContent = info.owner;
+        document.getElementById('bi-detail-lead').innerHTML = info.lead;
+        document.getElementById('bi-detail-code').textContent = info.code;
+        document.getElementById('bi-detail-takeaway').innerHTML = info.takeaway;
+      }
+
+      function selectBiHome(homeKey) {
+        const info = BI_HOMES[homeKey];
+        if (!info) return;
+        for (const btn of biHomeBtns) {
+          btn.classList.toggle('is-selected', btn.getAttribute('data-bi-home') === homeKey);
+        }
+        renderBiInspector(info);
+      }
+
+      for (const btn of biHomeBtns) {
+        btn.addEventListener('click', () => {
+          selectBiHome(btn.getAttribute('data-bi-home'));
+        });
+      }
+
+      for (const sBtn of dvStageBtns) {
+        sBtn.addEventListener('click', () => {
+          const stageKey = sBtn.getAttribute('data-dv-stage');
+          const stage = DV_STAGES[stageKey];
+          if (!stage) return;
+          for (const b of dvStageBtns) {
+            b.setAttribute('aria-pressed', String(b === sBtn));
+          }
+          for (const hBtn of biHomeBtns) {
+            const hKey = hBtn.getAttribute('data-bi-home');
+            const activeInStage = stage.homes.includes(hKey);
+            hBtn.classList.toggle('is-stage-dim', stageKey !== 'all' && !activeInStage);
+            hBtn.classList.toggle('is-stage-lit', stageKey !== 'all' && activeInStage);
+            hBtn.classList.toggle('is-selected', stageKey === 'all' && hKey === stage.focusHome);
+          }
+          if (stageKey === 'all') {
+            renderBiInspector(BI_HOMES[stage.focusHome]);
+          } else {
+            renderBiInspector(stage);
+          }
+        });
+      }
+
+      // ===== 6. ACTIVE SECTION HIGHLIGHT IN STICKY HEADER =====
+      const navLinks = Array.from(document.querySelectorAll('.primary-nav .nav-link'));
+      const sections = navLinks
+        .map((link) => document.querySelector(link.getAttribute('href')))
+        .filter(Boolean);
+
+      if ('IntersectionObserver' in window && sections.length > 0) {
+        const secObserver = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                const id = `#${entry.target.id}`;
+                for (const link of navLinks) {
+                  link.classList.toggle('is-active', link.getAttribute('href') === id);
+                }
+              }
+            }
+          },
+          { rootMargin: '-25% 0px -60% 0px' }
+        );
+        for (const sec of sections) secObserver.observe(sec);
+      }
+
+      // ===== 7. NATIVE MODAL DIALOG + SAFARI LIGHT-DISMISS FALLBACK =====
+      const labDialog = document.getElementById('lab-dialog');
+      const openLabBtn = document.getElementById('open-lab-btn');
+
+      openLabBtn?.addEventListener('click', () => {
+        labDialog?.showModal();
+      });
+
+      labDialog?.addEventListener('close', () => {
+        labDialog.returnValue = '';
+      });
+
+      if (labDialog && !('closedBy' in HTMLDialogElement.prototype)) {
+        const outside = (e, dialog) => {
+          const r = dialog.getBoundingClientRect();
+          return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+        };
+        let pressedOutside = false;
+        labDialog.addEventListener('pointerdown', (e) => {
+          pressedOutside = outside(e, labDialog);
+        });
+        labDialog.addEventListener('pointerup', (e) => {
+          if (pressedOutside && outside(e, labDialog)) {
+            labDialog.close();
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
