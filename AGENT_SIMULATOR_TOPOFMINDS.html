@@ -42,13 +42,21 @@
       outline-offset: 2px;
     }
 
-    /* ===== LEFT DARK GRAPH STAGE ===== */
+    /* ===== LEFT DARK GRAPH STAGE (3-row flex so bars NEVER cover graph nodes!) ===== */
     .stage {
-      position: relative;
+      display: flex;
+      flex-direction: column;
       width: 100%;
       height: 100%;
       background: radial-gradient(circle at 50% 48%, #103358 0%, #07192d 68%, #04101d 100%);
       overflow: hidden;
+    }
+
+    .canvas-wrap {
+      position: relative;
+      flex: 1 1 0;
+      min-height: 0;
+      width: 100%;
     }
 
     canvas {
@@ -62,26 +70,20 @@
       cursor: grabbing;
     }
 
-    /* Top bar overlaid on graph */
+    /* Top bar above canvas */
     .stage-top {
-      position: absolute;
-      top: 14px;
-      left: 16px;
-      right: 16px;
+      padding: 12px 16px 8px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      pointer-events: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(6, 23, 41, 0.75);
     }
 
     .glass-panel {
-      pointer-events: auto;
-      background: rgba(9, 33, 58, 0.88);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      backdrop-filter: blur(10px);
-      padding: 10px 14px;
+      padding: 2px 0;
     }
 
     .brand-row {
@@ -125,23 +127,16 @@
 
     /* Bottom Prompt Launcher & Step Controls */
     .stage-bottom {
-      position: absolute;
-      bottom: 16px;
-      left: 16px;
-      right: 16px;
+      padding: 8px 16px 12px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      pointer-events: none;
+      gap: 6px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(6, 23, 41, 0.92);
     }
 
     .scenario-bar,
     .control-bar {
-      pointer-events: auto;
-      background: rgba(6, 23, 41, 0.92);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      backdrop-filter: blur(10px);
-      padding: 10px 12px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -426,8 +421,6 @@
 <body>
   <!-- LEFT INTERACTIVE ECOSYSTEM GRAPH -->
   <div class="stage">
-    <canvas id="sim-canvas"></canvas>
-
     <div class="stage-top">
       <div class="glass-panel brand-row">
         <div>
@@ -436,10 +429,14 @@
         </div>
       </div>
 
-      <div style="display:flex; gap:8px; pointer-events:auto;">
+      <div style="display:flex; gap:8px;">
         <a href="./floden.html" class="back-btn">Visuella Flöden</a>
         <a href="./presentation.html" class="back-btn">← Huvudpresentationen</a>
       </div>
+    </div>
+
+    <div class="canvas-wrap">
+      <canvas id="sim-canvas"></canvas>
     </div>
 
     <div class="stage-bottom">
@@ -591,8 +588,8 @@
           home: 'mcp_config.json',
           color: '#0284c7',
           r: 21,
-          nx: 0.22,
-          ny: -0.06,
+          nx: 0.16,
+          ny: -0.09,
           desc: 'Säker standardkontakt (”USB-C för AI”) mot externa system som Jira, Gmail, Kalender och databaser.'
         },
         {
@@ -602,8 +599,8 @@
           home: 'Lokal sandlådekörning',
           color: '#d97706',
           r: 20,
-          nx: 0.17,
-          ny: 0.28,
+          nx: 0.18,
+          ny: 0.30,
           desc: 'Kör deterministisk uträkning på Excel/CSV och kronsummor så språkmodellen aldrig huvudräknar.'
         },
         {
@@ -613,7 +610,7 @@
           home: '/.agents/agents/*.md',
           color: '#db2777',
           r: 20,
-          nx: -0.01,
+          nx: -0.02,
           ny: 0.34,
           desc: 'Separat specialistagent med helt blankt minne (t.ex. CFO/CISO/Revisor) som synar utkastet utan hemmablindhet.'
         },
@@ -624,7 +621,7 @@
           home: '/.agents/hooks.json',
           color: '#ea580c',
           r: 23,
-          nx: 0.33,
+          nx: 0.30,
           ny: 0.14,
           desc: 'Sista säkerhetsbältet: om källa saknas, summa diffar eller godkännande krävs skickas pulsen TILLBAKA i loop!'
         },
@@ -635,7 +632,7 @@
           home: 'Klar rapport / Klickbar vy',
           color: '#16a34a',
           r: 23,
-          nx: 0.43,
+          nx: 0.42,
           ny: -0.06,
           desc: '100 % källhänvisat och kontrollräknat underlag – redo för ditt mänskliga affärsbeslut.'
         }
@@ -903,10 +900,10 @@
         canvas.height = H * devicePixelRatio;
         ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
 
-        const usableW = Math.min(W * 0.88, 1080);
-        const usableH = Math.max(260, H - 185);
-        const cx = W * 0.5;
-        const cy = H * 0.46;
+        const usableW = Math.min(W * 0.9, 1080);
+        const usableH = Math.max(220, H * 0.78);
+        const cx = W * 0.49;
+        const cy = H * 0.47;
 
         for (const n of nodes) {
           if (!n.dragged) {
