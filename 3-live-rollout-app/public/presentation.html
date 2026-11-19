@@ -1338,21 +1338,43 @@
       line-height: 1;
     }
 
-    /* 5-step handoff bar below blueprint */
+    /* Process / Plain-Swedish intro bars at top of sections */
     .handoff-strip {
-      margin-block-start: 1.35rem;
+      margin-block-end: 1.6rem;
       background: var(--tom-primary);
       color: var(--tom-primary-foreground);
-      padding: 1.1rem 1.25rem;
+      padding: 1.15rem 1.3rem;
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 0.85rem;
+      gap: 0.9rem;
+    }
+
+    .handoff-strip.cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .handoff-strip.cols-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .handoff-strip.on-dark {
+      background: rgb(248 250 252 / 0.08);
+      border: 1px solid rgb(248 250 252 / 0.18);
     }
 
     @media (max-width: 980px) {
-      .handoff-strip {
+      .handoff-strip,
+      .handoff-strip.cols-3,
+      .handoff-strip.cols-4 {
         grid-template-columns: 1fr;
       }
+    }
+
+    .sub-eyebrow-note {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--tom-muted-foreground);
+      margin-block-end: 0.75rem;
     }
 
     .handoff-step {
@@ -1894,10 +1916,10 @@
 
       <nav class="primary-nav" aria-label="Kapitel i presentationen">
         <a href="#verktyg" class="nav-link is-active">01 Verktyg</a>
-        <a href="#anatomi" class="nav-link">02 Anatomi</a>
-        <a href="#bi-agent" class="nav-link">03 BI-Agenten</a>
-        <a href="#roller" class="nav-link">04 Roller &amp; Team</a>
-        <a href="#vardag" class="nav-link">05 PM-vardag</a>
+        <a href="#anatomi" class="nav-link">02 Så funkar agenten</a>
+        <a href="#roller" class="nav-link">03 Personas &amp; Team</a>
+        <a href="#vardag" class="nav-link">04 PM-vardag</a>
+        <a href="#bi-agent" class="nav-link">05 Helhetscase (BI)</a>
       </nav>
 
       <button type="button" class="btn-purple" id="open-lab-btn">Öppna Live-labb ↗</button>
@@ -1919,8 +1941,8 @@
           </p>
 
           <div class="hero-actions">
-            <a href="#anatomi" class="btn-purple">Utforska agentkartan ↓</a>
-            <a href="#bi-agent" class="btn-outline-light">Se BI-agentritningen ↓</a>
+            <a href="#verktyg" class="btn-purple">Börja med verktygskartan ↓</a>
+            <a href="#vardag" class="btn-outline-light">Direkt till PM-vardagen ↓</a>
           </div>
 
           <div class="hero-stats">
@@ -1971,38 +1993,38 @@
               <a class="compass-link" href="#anatomi">
                 <span class="compass-num">02</span>
                 <span>
-                  <span class="compass-name">Agentens anatomi (Interaktiv karta)</span>
-                  <span class="compass-sub">AGENTS.md, Skills, RAG, Kunskapsgraf &amp; MCP</span>
-                </span>
-                <span aria-hidden="true">→</span>
-              </a>
-            </li>
-            <li>
-              <a class="compass-link" href="#bi-agent">
-                <span class="compass-num">03</span>
-                <span>
-                  <span class="compass-name"> Helhetsritning: ”Självgående BI-utvecklare”</span>
-                  <span class="compass-sub">Data Vault (Lake → RDV → BV → Mart → Kub) &amp; var allt bor</span>
+                  <span class="compass-name">Så fungerar en AI-agent</span>
+                  <span class="compass-sub">Liknelsen som ny kollega + AGENTS.md, Skills, Graf &amp; MCP</span>
                 </span>
                 <span aria-hidden="true">→</span>
               </a>
             </li>
             <li>
               <a class="compass-link" href="#roller">
-                <span class="compass-num">04</span>
+                <span class="compass-num">03</span>
                 <span>
                   <span class="compass-name">Personas, Team-agenter &amp; Orkestrering</span>
-                  <span class="compass-sub">Rollkontrakt, händelsestyrning &amp; agenter som styr agenter</span>
+                  <span class="compass-sub">Vad en persona är, uppdragskontrakt &amp; 3 mognadssteg</span>
                 </span>
                 <span aria-hidden="true">→</span>
               </a>
             </li>
             <li>
               <a class="compass-link" href="#vardag">
-                <span class="compass-num">05</span>
+                <span class="compass-num">04</span>
                 <span>
                   <span class="compass-name">Projektledarens vardag &amp; gränser</span>
-                  <span class="compass-sub">5 praktiska konsultfall, uppsättning &amp; fallgropar</span>
+                  <span class="compass-sub">5 praktiska konsultfall genom uppdraget &amp; 5 skarpa gränser</span>
+                </span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </li>
+            <li>
+              <a class="compass-link" href="#bi-agent">
+                <span class="compass-num">05</span>
+                <span>
+                  <span class="compass-name">Helhetscase: ”Självgående BI-utvecklare”</span>
+                  <span class="compass-sub">Från affärsbehov på svenska till 5-minuters utvecklar-godkännande</span>
                 </span>
                 <span aria-hidden="true">→</span>
               </a>
@@ -2018,7 +2040,23 @@
         <div class="section-header">
           <span class="eyebrow eyebrow-purple">01 · Verktygslandskapet idag</span>
           <h2>Rätt verktyg för rätt jobb – inte en hammare för allt</h2>
-          <p>Dagens AI-verktyg tävlar inte på samma planhalva. Filtrera på en vardagssituation nedan eller klicka på respektive plattform för att se hur den fungerar och var gränsen går.</p>
+          <p>Börja alltid i hur du ska jobba – inte i vilket verktyg som trendar. Här är grundskillnaden på vanlig svenska innan du klickar runt i verktygskartan:</p>
+        </div>
+
+        <!-- Enkel 3-stegs vardagskompass på ren svenska -->
+        <div class="handoff-strip cols-3" aria-label="Tre huvudkategorier av AI-verktyg på enkel svenska">
+          <div class="handoff-step">
+            <strong>1. Bollplank i ett fönster (ChatGPT &amp; Claude)</strong>
+            <span>När du snabbt vill bolla en tanke, göra omvärldsresearch eller få feedback på ett enskilt utkast i webbläsaren.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>2. Inuti mötet &amp; intranätet (Copilot &amp; Företagssök)</strong>
+            <span>När du vill få mötesnoteringar direkt i Teams eller söka fram en policy bland tusentals dokument på SharePoint.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>3. Självgående i en projektmapp (Antigravity)</strong>
+            <span>När AI:n ska korsläsa 30 projektfiler, följa fasta projektregler, kontrollräkna siffror och bygga ett klickbart underlag.</span>
+          </div>
         </div>
 
         <div class="filter-bar" role="group" aria-label="Filtrera verktyg efter uppgift">
@@ -2199,13 +2237,33 @@
       </div>
     </section>
 
-    <!-- KAPITEL 02: INTERAKTIV AGENTKARTA -->
+    <!-- KAPITEL 02: SÅ FUNGERAR EN AI-AGENT -->
     <section id="anatomi" class="section-band band-dark dark-band">
       <div class="container">
         <div class="section-header">
-          <span class="eyebrow eyebrow-light">02 · Under motorhuven (Klickbar systemkarta)</span>
-          <h2>Hur en AI-agent tänker, minns och agerar</h2>
-          <p>En vanlig chattbot svarar bara med nästa sannolika ord. En <strong>agent</strong> arbetar i en sluten loop styrd av instruktionsfiler, kunskapskällor och verktyg. Klicka på de 6 blocken i kartan för att inspektera varje del.</p>
+          <span class="eyebrow eyebrow-light">02 · Så fungerar en AI-agent (utan teknikjargong)</span>
+          <h2>Tänk på agenten som en ny konsultkollega på ditt uppdrag</h2>
+          <p>En vanlig chatt gissar bara ett snabbt svar i stunden. En <strong>agent</strong> jobbar precis som en noggrann kollega: den läser först projektets spelregler, plockar fram rätt arbetsmall, slår upp fakta och dubbelkollar sina siffror innan den lämnar ifrån sig underlaget.</p>
+        </div>
+
+        <!-- Enkel 4-stegs liknelse på svenska före teknikkartan -->
+        <div class="handoff-strip cols-4 on-dark" aria-label="Agentens arbetssätt i fyra enkla steg">
+          <div class="handoff-step">
+            <strong>1. Läser spelreglerna (AGENTS.md)</strong>
+            <span>Vad gäller alltid i det här uppdraget? T.ex. sekretess, vilka avtal som trumfar vad och förbud mot att gissa.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>2. Öppnar rätt mall (Skills)</strong>
+            <span>Ska vi göra en veckorapport eller en riskanalys? Agenten plockar fram exakt det receptet när det behövs.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>3. Kollar fakta &amp; system (Graf &amp; MCP)</strong>
+            <span>Slår upp hur avtal, datum och ansvariga hänger ihop i projektet och hämtar aktuell status ur t.ex. Jira.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>4. Kontrollerar sig själv (Loop &amp; Hooks)</strong>
+            <span>Istället för att höfta summeringar kör agenten en riktig kalkylkontroll så att siffror och datum stämmer till 100 %.</span>
+          </div>
         </div>
 
         <div class="anatomy-layout">
@@ -2304,15 +2362,15 @@ Roll: Kritisk Senior PMO-revisor på Top of Minds.
           </article>
         </div>
 
-        <!-- 4-LAGERSMODELLEN FÖR DESIGNMÅLBILD, DOMÄNKUNSKAP, PROCESSER & REGLER -->
+        <!-- 4-LAGERSMODELLEN PÅ BEGRIPLIG KONSULTSVENSKA -->
         <div class="governance-strip">
           <div class="governance-head">
             <div>
-              <span class="eyebrow eyebrow-light">Arkitektens nyckelfråga · Var bor målbild, domän, team &amp; processer?</span>
-              <h3>Så placerar du målbild, domänkunskap, ansvariga, releaseprocess och regler</h3>
+              <span class="eyebrow eyebrow-light">Praktisk tumregel · Var lägger man vad i projektmappen?</span>
+              <h3>Fyra enkla lådor för regler, projektfakta, arbetssätt och kvalitetskontroll</h3>
             </div>
             <p class="governance-trap-note">
-              <strong>Två vanliga fällor:</strong> 1) Man skriver <em>aldrig</em> för hand i kunskapsgrafen – man skriver i vanliga dokument (<code>docs/</code>) som grafen indexerar automatiskt. 2) Lägg aldrig hårda release- eller komponentförbud <em>enbart</em> i en valfri <code>Skill</code>!
+              <strong>Två vanliga nybörjarmissar:</strong> 1) Man bygger <em>aldrig</em> kunskapsgrafen för hand – man sparar vanliga dokument i en mapp (<code>docs/</code>) så skapas kartan automatiskt. 2) Viktiga stoppregler ska alltid ligga i <code>AGENTS.md</code>, inte gömda i en valfri mall!
             </p>
           </div>
 
@@ -2321,24 +2379,24 @@ Roll: Kritisk Senior PMO-revisor på Top of Minds.
               <div class="gov-card-top">
                 <div class="gov-badge-row">
                   <span class="map-node-num">L1</span>
-                  <span class="gov-metaphor">Trafikreglerna · Alltid på</span>
+                  <span class="gov-metaphor">Spelreglerna · Alltid på</span>
                 </div>
-                <h4>Rules (AGENTS.md)</h4>
+                <h4>Lagboken (AGENTS.md)</h4>
               </div>
-              <p>Korta, ovillkorliga ”röda linjer”: tillåtna UI-komponenter, hårda <strong>release-spärrar</strong> (t.ex. <em>”deploya aldrig direkt till prod”</em>) samt en kort vägvisare till var team- och domändokument ligger.</p>
-              <span class="gov-foot">/AGENTS.md · /src/ui/AGENTS.md</span>
+              <p>Korta ”röda linjer” som alltid gäller i uppdraget: kräv källhänvisning till avtalsparagraf, gissa aldrig när data saknas, och skicka aldrig kundmejl utan godkännande.</p>
+              <span class="gov-foot">/AGENTS.md (i mappens rot)</span>
             </article>
 
             <article class="gov-card">
               <div class="gov-card-top">
                 <div class="gov-badge-row">
                   <span class="map-node-num">L2</span>
-                  <span class="gov-metaphor">Fakta &amp; Samband (Vad &amp; Vem)</span>
+                  <span class="gov-metaphor">Projektfakta (Vad &amp; Vem)</span>
                 </div>
-                <h4>Docs + Kunskapsgraf</h4>
+                <h4>Underlag + Kunskapsgraf</h4>
               </div>
-              <p><strong>Målbildsarkitektur, domänkunskap, team/ansvariga</strong> och beslut skrivs i läsbara Markdown-filer (<code>docs/</code>). <strong>Kunskapsgrafen byggs automatiskt ovanpå</strong> dem så agenten ser hur personer, system och regler hänger ihop.</p>
-              <span class="gov-foot">/docs/{doman,team,malbild}.md → graphify</span>
+              <p><strong>Avtal, målbild, roller, begrepp och mötesbeslut</strong> sparas som vanliga läsbara dokument i <code>docs/</code>. <strong>Kunskapsgrafen</strong> kopplar ihop dem automatiskt så dolda beroenden syns.</p>
+              <span class="gov-foot">/docs/{avtal,roller,beslut} → graphify</span>
             </article>
 
             <article class="gov-card">
@@ -2347,232 +2405,33 @@ Roll: Kritisk Senior PMO-revisor på Top of Minds.
                   <span class="map-node-num">L3</span>
                   <span class="gov-metaphor">Arbetssätt steg för steg (Hur)</span>
                 </div>
-                <h4>Skills (SKILL.md)</h4>
+                <h4>Metodboken (SKILL.md)</h4>
               </div>
-              <p>Upprepbara <strong>arbetssätt och körscheman</strong> som laddas när momentet ska utföras: hela <strong>releaseprocessen</strong>, hur en ny vy byggs enligt designsystemet, eller hur teamet gör PR- och kravgranskning.</p>
-              <span class="gov-foot">/.agents/skills/{release,design-system}/</span>
+              <p>Återanvändbara <strong>arbetsmallar</strong> för återkommande moment: hur ni gör en <em>Go-Live-readiness</em>, förvandlar workshopnoteringar till krav eller skriver fredagens styrgruppspuls.</p>
+              <span class="gov-foot">/.agents/skills/{styrgrupps-puls,readiness}/</span>
             </article>
 
             <article class="gov-card">
               <div class="gov-card-top">
                 <div class="gov-badge-row">
                   <span class="map-node-num">L4</span>
-                  <span class="gov-metaphor">Mitträcket · 100 % garanti</span>
+                  <span class="gov-metaphor">Säkerhetsbältet · 100 % exakt</span>
                 </div>
-                <h4>Hooks &amp; Skriptgrindar</h4>
+                <h4>Automatisk kontroll (Hooks)</h4>
               </div>
-              <p>En språkmodell följer textregler till ~95 %. Automatiska kontrollskript (<code>hooks.json</code> eller CI-checkar i releasepipelinen) stoppar direkt om fel komponent, rå HTML-tagg eller felaktigt projekt-ID används.</p>
-              <span class="gov-foot">hooks.json · scripts/deploy-check.mjs</span>
+              <p>En språkmodell följer textinstruktioner till ~95 %. Där noll fel tolereras (t.ex. budgetsummering, datumkrockar eller personuppgifter) kör en <code>Hook</code> en automatisk kontroll varje gång.</p>
+              <span class="gov-foot">hooks.json + enkla kontrollskript</span>
             </article>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- KAPITEL 03: SJÄLVGÅENDE BI- & DATA VAULT-AGENT (VISUELL HELHETSRITNING) -->
-    <section id="bi-agent" class="section-band band-secondary">
-      <div class="container">
-        <div class="section-header">
-          <span class="eyebrow eyebrow-purple">03 · Praktiskt Arkitekturcase (Data Vault &amp; BI)</span>
-          <h2>Helhetsritning: Så byggs en ”självgående BI-utvecklare”</h2>
-          <p>Hur gör vi så att en projektledare eller verksamhetskunnig kan driva ett nytt dataflöde från källintegration hela vägen till Power BI-kub enligt <strong>Data Vault 2.0</strong> – med en trygg 5-minuters granskning av en utvecklare före produktion? Klicka i kedjan eller på block <strong>A–G</strong> för att se var allt har sin hemvist!</p>
-        </div>
-
-        <!-- Horisontell Data Vault-pipeline -->
-        <div class="dv-pipeline-bar" role="group" aria-label="Filtrera ritningen per steg i BI- och Data Vault-kedjan">
-          <span class="dv-pipe-label">Datakedjan:</span>
-          <button type="button" class="dv-stage-btn" data-dv-stage="all" aria-pressed="true">Helhetsvy (A–G)</button>
-          <button type="button" class="dv-stage-btn" data-dv-stage="lake" aria-pressed="false">1. Integration &amp; Lake</button>
-          <span class="dv-stage-arrow" aria-hidden="true">→</span>
-          <button type="button" class="dv-stage-btn" data-dv-stage="rdv" aria-pressed="false">2. Raw Vault (RDV)</button>
-          <span class="dv-stage-arrow" aria-hidden="true">→</span>
-          <button type="button" class="dv-stage-btn" data-dv-stage="bv" aria-pressed="false">3. Business Vault (BV)</button>
-          <span class="dv-stage-arrow" aria-hidden="true">→</span>
-          <button type="button" class="dv-stage-btn" data-dv-stage="mart" aria-pressed="false">4. Marts &amp; Kub</button>
-          <span class="dv-stage-arrow" aria-hidden="true">→</span>
-          <button type="button" class="dv-stage-btn" data-dv-stage="pr" aria-pressed="false">5. Test &amp; Utvecklar-PR</button>
-        </div>
-
-        <div class="bi-blueprint-grid">
-          <!-- Vänster: Visuell Hemvist-ritning (Zoner + Pilar + Central BI-motor) -->
-          <div class="bi-diagram-board" aria-label="Visuell karta över var alla instruktioner, data och skydd bor">
-            <div class="bi-zone">
-              <div class="bi-zone-label">
-                <span>Zon 1 · Styrning &amp; Domänminne (Läses in före kodning)</span>
-                <span>Lagar + Vad datan betyder</span>
-              </div>
-              <div class="bi-row-2">
-                <button type="button" class="bi-home-btn is-selected" data-bi-home="rules">
-                  <div>
-                    <div class="bi-home-top">
-                      <span class="bi-letter">A</span>
-                      <span class="bi-mode-tag">Alltid i minnet</span>
-                    </div>
-                    <span class="bi-home-title">AGENTS.md (Projektets lagbok)</span>
-                    <span class="bi-home-desc">Namnstandard (HUB/LNK/SAT), 0 % affärslogik i Raw Vault, Business Key-krav &amp; prod-spärr.</span>
-                  </div>
-                  <span class="bi-home-path">/AGENTS.md (i projektets rot)</span>
-                </button>
-
-                <button type="button" class="bi-home-btn" data-bi-home="graph">
-                  <div>
-                    <div class="bi-home-top">
-                      <span class="bi-letter">B</span>
-                      <span class="bi-mode-tag">Domän &amp; Lineage</span>
-                    </div>
-                    <span class="bi-home-title">docs/ + Kunskapsgraf</span>
-                    <span class="bi-home-desc">ELM-affärsbegrepp, PII-klassning &amp; KPI-katalog + automatisk kolumn-lineage Källa → Kub.</span>
-                  </div>
-                  <span class="bi-home-path">/docs/{elm,pii,kpi}/ → /graphify-out/</span>
-                </button>
-              </div>
-            </div>
-
-            <div class="bi-connector-arrows" aria-hidden="true">
-              <span>↓ Styr med lagar</span>
-              <span>↓ Matar domän &amp; beroenden</span>
-            </div>
-
-            <div class="bi-zone">
-              <div class="bi-zone-label">
-                <span>Zon 2 · Hantverk, Exekveringsmotor &amp; Sandlåda</span>
-                <span>Hur koden byggs &amp; provkörs</span>
-              </div>
-              <div class="bi-mid-engine">
-                <button type="button" class="bi-home-btn" data-bi-home="skills">
-                  <div>
-                    <div class="bi-home-top">
-                      <span class="bi-letter">C</span>
-                      <span class="bi-mode-tag">Laddas per skikt</span>
-                    </div>
-                    <span class="bi-home-title">5 BI-Skills (SKILL.md)</span>
-                    <span class="bi-home-desc">Recept &amp; SQL/dbt/DAX-mallar för Lake, RDV, BV, Stjärnschema/Kub och Testsvit.</span>
-                  </div>
-                  <span class="bi-home-path">/.agents/skills/01-lake..05-test/</span>
-                </button>
-
-                <div class="bi-core-node">
-                  <span class="eyebrow eyebrow-light" style="margin:0;">Självgående motor</span>
-                  <strong>BI- &amp; Data Vault-Agent</strong>
-                  <p>Tar affärsbehov på svenska → Frågar om Business Key → Profilerar rådata → Bygger SQL/dbt &amp; kubmått → Kör tester i loop tills 0 fel.</p>
-                </div>
-
-                <button type="button" class="bi-home-btn" data-bi-home="mcp">
-                  <div>
-                    <div class="bi-home-top">
-                      <span class="bi-letter">D</span>
-                      <span class="bi-mode-tag">Ögon &amp; Testbänk</span>
-                    </div>
-                    <span class="bi-home-title">MCP + Dev-Sandbox</span>
-                    <span class="bi-home-desc">Read-only profilering av Laken, eget ofarligt <code>dev</code>-schema i DW samt Jira/Git-MCP.</span>
-                  </div>
-                  <span class="bi-home-path">mcp_config.json + schema: dev_sandbox</span>
-                </button>
-              </div>
-            </div>
-
-            <div class="bi-connector-arrows" aria-hidden="true">
-              <span>↓ Tvingande självbesiktning</span>
-              <span>↓ Oberoende 4-ögon-granskning</span>
-              <span>↓ Mänskligt Go före Prod</span>
-            </div>
-
-            <div class="bi-zone">
-              <div class="bi-zone-label">
-                <span>Zon 3 · Det som gör att en icke-utvecklare kan köra tryggt!</span>
-                <span>100 % Kvalitetsspärrar före produktion</span>
-              </div>
-              <div class="bi-row-3">
-                <button type="button" class="bi-home-btn" data-bi-home="hooks">
-                  <div>
-                    <div class="bi-home-top">
-                      <span class="bi-letter">E</span>
-                      <span class="bi-mode-tag">Automatisk vakt</span>
-                    </div>
-                    <span class="bi-home-title">Hooks &amp; Avstämning</span>
-                    <span class="bi-home-desc">Stoppar lagerbrott/DROP och kräver radantals- &amp; kronsummekontroll (0,00 kr diff).</span>
-                  </div>
-                  <span class="bi-home-path">/.agents/hooks.json + CI-tester</span>
-                </button>
-
-                <button type="button" class="bi-home-btn" data-bi-home="reviewer">
-                  <div>
-                    <div class="bi-home-top">
-                      <span class="bi-letter">F</span>
-                      <span class="bi-mode-tag">Subagent (Read-only)</span>
-                    </div>
-                    <span class="bi-home-title">DV-Reviewer Subagent</span>
-                    <span class="bi-home-desc">Separat arkitekt-agent med rent minne som letar grain-dubblering &amp; glömd PII-split.</span>
-                  </div>
-                  <span class="bi-home-path">/.agents/agents/dv-reviewer.md</span>
-                </button>
-
-                <button type="button" class="bi-home-btn" data-bi-home="plugin-pr">
-                  <div>
-                    <div class="bi-home-top">
-                      <span class="bi-letter">G</span>
-                      <span class="bi-mode-tag">Paket &amp; Slutgrind</span>
-                    </div>
-                    <span class="bi-home-title">Plugin + Utvecklar-PR</span>
-                    <span class="bi-home-desc">Paketerar allt för teamet och skapar en visuell 5-minuters PR för senior BI-utvecklare.</span>
-                  </div>
-                  <span class="bi-home-path">plugin.json → GitHub Pull Request</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Höger: Detaljerat titthål för valt block eller datasteg -->
-          <article class="inspector-panel" id="bi-inspector" aria-live="polite">
-            <div class="inspector-head">
-              <h3 id="bi-detail-title">A. AGENTS.md – Projektets gemensamma lagbok</h3>
-              <span class="inspector-badge" id="bi-detail-owner">Ägare: BI-Arkitekt</span>
-            </div>
-            <p class="inspector-how" id="bi-detail-lead">
-              <strong>Hemvist:</strong> <code>/AGENTS.md</code> i projektets rot – läses alltid in av samma agent från start. <em>(Bonus i stora kodrepon: har två mappar motsatta regler, t.ex. <code>raw_vault/</code> vs <code>marts/</code>, kan man lägga en lokal <code>AGENTS.md</code> i den mappen som samma agent plockar upp när den jobbar där).</em>
-            </p>
-            <pre class="code-peek" tabindex="0" role="region" aria-label="Exempel ur BI-agentens filer"><code id="bi-detail-code"># /AGENTS.md (Stående lagbok i BI-repots rot)
-1. NOLL affärslogik, filtrering eller beräkning i Raw Data Vault (100 % källspegling).
-2. Namnstandard: HUB_&lt;BEGREPP&gt;, LNK_&lt;A&gt;_&lt;B&gt;, SAT_&lt;BEGREPP&gt;_&lt;KÄLLA&gt;.
-3. Gissa ALDRIG en Business Key – den måste finnas i /docs/elm/ eller bekräftas av användaren.
-4. Personuppgifter (GDPR) SKA alltid separeras i en egen *_PII-Satellite.</code></pre>
-            <div class="verdict-strip" id="bi-detail-takeaway">
-              <strong>Varför här och inte i en Skill?</strong> Dessa regler får <em>aldrig</em> vara valfria. Även om någon bara ber om en ”snabb tabelljustering” ligger lagboken alltid aktiv i minnet.
-            </div>
-          </article>
-        </div>
-
-        <!-- 5-stegs arbetsflöde från icke-utvecklare till prod -->
-        <div class="handoff-strip" aria-label="Arbetsflöde i fem steg från icke-utvecklare till produktion">
-          <div class="handoff-step">
-            <strong>1. Behov på affärssvenska</strong>
-            <span>Du (icke-utvecklare) beskriver vilken källdata och vilket KPI i kuben som behövs.</span>
-          </div>
-          <div class="handoff-step">
-            <strong>2. Business Key-kontroll</strong>
-            <span>Agenten slår upp ELM i <code>docs/</code> + profilerar Laken via MCP och ställer 2 kontrollfrågor.</span>
-          </div>
-          <div class="handoff-step">
-            <strong>3. Självgående bygge i Sandbox</strong>
-            <span>Agenten laddar rätt <code>Skill</code> per lager och bygger Stage → RDV → BV → Mart → Kub i <code>dev</code>.</span>
-          </div>
-          <div class="handoff-step">
-            <strong>4. Hooks + Reviewer-subagent</strong>
-            <span>Automatiska tester verifierar 0 dubbletter &amp; 0,00 kr diff mot källa; subagenten granskar.</span>
-          </div>
-          <div class="handoff-step">
-            <strong>5. 5-minuters Utvecklar-PR</strong>
-            <span>Senior BI-utvecklare granskar Hub-Link-Sat-diagram + testbevis och trycker <em>Merge</em>!</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- KAPITEL 04: PERSONAS, TEAM-AGENTER & ORKESTRERING -->
+    <!-- KAPITEL 03: PERSONAS, TEAM-AGENTER & ORKESTRERING -->
     <section id="roller" class="section-band band-light">
       <div class="container">
         <div class="section-header">
-          <span class="eyebrow eyebrow-purple">04 · Personas, Team-agenter &amp; Orkestrering</span>
+          <span class="eyebrow eyebrow-purple">03 · Personas, Team-agenter &amp; Orkestrering</span>
           <h2>Från personlig assistent till digital lagkamrat i teamet</h2>
           <p>Vad menar vi egentligen med en AI-persona, hur skriver man den så att den ger verklig effekt – och hur skalar vi från enskild konsult till agenter som hjälper hela teamet?</p>
         </div>
@@ -2697,13 +2556,37 @@ Leveransformat: Tabell med [Avvikelse | Källa § | Ekonomisk risk i SEK | Åtg�
       </div>
     </section>
 
-    <!-- KAPITEL 05: PRAKTISKA PM-FALL & BEGRÄNSNINGAR -->
+    <!-- KAPITEL 04: PRAKTISKA PM-FALL & BEGRÄNSNINGAR -->
     <section id="vardag" class="section-band band-secondary">
       <div class="container">
         <div class="section-header">
-          <span class="eyebrow eyebrow-purple">05 · Konsultens vardag &amp; ärliga begränsningar</span>
-          <h2>5 konkreta sätt en projektledare sparar timmar varje vecka</h2>
-          <p>Välj ett vardagsfall till vänster för att se exakt hur du sätter upp det och vad du måste se upp med.</p>
+          <span class="eyebrow eyebrow-purple">04 · Projektledarens vardag &amp; ärliga begränsningar</span>
+          <h2>5 konkreta sätt en projektledare sparar timmar genom hela uppdraget</h2>
+          <p>Från första dagen i ett nytt kunduppdrag till den löpande fredagsrapporten till styrgruppen – så här kopplar du in agenten i din vanliga PM-process:</p>
+        </div>
+
+        <!-- Kronologisk PM-process på vanlig svenska före fallen -->
+        <div class="handoff-strip" aria-label="Projektledarens fem vardagssteg genom ett uppdrag">
+          <div class="handoff-step">
+            <strong>1. Uppdragsstart (Dag 1)</strong>
+            <span>Få grepp om 40 spretiga avtal, planer och risker på en timme istället för tre veckor.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>2. Efter kundworkshop</strong>
+            <span>Förvandla mötesinspelningen direkt till spårbara beslut, krav och Jira-utkast.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>3. Planering &amp; Utrullning</strong>
+            <span>Kontrollräkna kapacitetstak, frysdatum och vitesrisker utan manuella Excel-missar.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>4. Samsyn med verksamheten</strong>
+            <span>Visa en klickbar skiss på 20 minuter istället för 35 abstrakta PowerPoint-bilder.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>5. Löpande styrgrupp</strong>
+            <span>Sammanställ veckans statuspuls, avvikelser och tre skarpa beslutspunkter på 10 min.</span>
+          </div>
         </div>
 
         <div class="usecase-selector">
@@ -2777,6 +2660,207 @@ Leveransformat: Tabell med [Avvikelse | Källa § | Ekonomisk risk i SEK | Åtg�
           <article class="limit-card">
             <h4>5. Mänskligt ansvar</h4>
             <p>En agent kan korsläsa på sekunder, men bär aldrig affärs- eller leveransansvar. Projektledaren granskar och äger alltid beslutet.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- KAPITEL 05: HELHETSCASE – SJÄLVGÅENDE BI-UTVECKLARE -->
+    <section id="bi-agent" class="section-band band-light">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow eyebrow-purple">05 · Helhetscase i praktiken (När alla delar samverkar i ett team)</span>
+          <h2>Exempel från verkligheten: En ”självgående BI-utvecklare”</h2>
+          <p>Så här ser det ut när man sätter ihop allt vi nyss gått igenom – så att en <strong>projektledare eller verksamhetskunnig</strong> på vanlig svenska kan beställa ett helt nytt dataflöde, medan en senior utvecklare bara behöver ägna <strong>5 minuter åt slutgodkännande</strong>:</p>
+        </div>
+
+        <!-- 1. ÖPPNAR MED BEGRIPLIGT 5-STEGSFLÖDE PÅ AFFÄRSSVENSKA HÖGST UPP! -->
+        <div class="handoff-strip" aria-label="Arbetsflöde i fem steg på begriplig svenska från behov till produktion">
+          <div class="handoff-step">
+            <strong>1. Behov på affärssvenska</strong>
+            <span>Du (icke-utvecklare) beskriver på vanlig svenska vilken källdata och vilket nyckeltal (KPI) som behövs i rapporten.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>2. Begrepps- &amp; nyckelkontroll</strong>
+            <span>Agenten läser era affärsbegrepp i <code>docs/</code>, inspekterar rådatan via MCP och ställer 2 enkla kontrollfrågor.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>3. Självgående bygge i testmiljö</strong>
+            <span>Agenten laddar rätt <code>Skill</code> per steg och bygger hela datakedjan i en trygg sandlåda (aldrig rakt i produktion).</span>
+          </div>
+          <div class="handoff-step">
+            <strong>4. Automatisk siffer- &amp; kvalitetsvakt</strong>
+            <span>Automatiska tester (<code>Hooks</code>) verifierar 0 dubbletter &amp; 0,00 kr diff mot källan, och en separat granskningsagent synar koden.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>5. 5-minuters godkännande</strong>
+            <span>En mänsklig BI-utvecklare granskar det färdiga diagrammet + testbeviset på 5 minuter och trycker <em>Godkänn</em>!</span>
+          </div>
+        </div>
+
+        <p class="sub-eyebrow-note">Hur hänger det ihop under motorhuven? Klicka på ett steg i datakedjan eller på block A–G i ritningen nedan:</p>
+
+        <!-- Horisontell Data Vault-pipeline -->
+        <div class="dv-pipeline-bar" role="group" aria-label="Filtrera ritningen per steg i BI- och Data Vault-kedjan">
+          <span class="dv-pipe-label">Datakedjan:</span>
+          <button type="button" class="dv-stage-btn" data-dv-stage="all" aria-pressed="true">Helhetsvy (A–G)</button>
+          <button type="button" class="dv-stage-btn" data-dv-stage="lake" aria-pressed="false">1. Integration &amp; Lake</button>
+          <span class="dv-stage-arrow" aria-hidden="true">→</span>
+          <button type="button" class="dv-stage-btn" data-dv-stage="rdv" aria-pressed="false">2. Raw Vault (RDV)</button>
+          <span class="dv-stage-arrow" aria-hidden="true">→</span>
+          <button type="button" class="dv-stage-btn" data-dv-stage="bv" aria-pressed="false">3. Business Vault (BV)</button>
+          <span class="dv-stage-arrow" aria-hidden="true">→</span>
+          <button type="button" class="dv-stage-btn" data-dv-stage="mart" aria-pressed="false">4. Marts &amp; Kub</button>
+          <span class="dv-stage-arrow" aria-hidden="true">→</span>
+          <button type="button" class="dv-stage-btn" data-dv-stage="pr" aria-pressed="false">5. Test &amp; Utvecklar-PR</button>
+        </div>
+
+        <div class="bi-blueprint-grid">
+          <!-- Vänster: Visuell Hemvist-ritning (Zoner + Pilar + Central BI-motor) -->
+          <div class="bi-diagram-board" aria-label="Visuell karta över var alla instruktioner, data och skydd bor">
+            <div class="bi-zone">
+              <div class="bi-zone-label">
+                <span>Zon 1 · Styrning &amp; Domänminne (Läses in före kodning)</span>
+                <span>Lagar + Vad datan betyder</span>
+              </div>
+              <div class="bi-row-2">
+                <button type="button" class="bi-home-btn is-selected" data-bi-home="rules">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">A</span>
+                      <span class="bi-mode-tag">Alltid i minnet</span>
+                    </div>
+                    <span class="bi-home-title">AGENTS.md (Projektets lagbok)</span>
+                    <span class="bi-home-desc">Namnstandard (HUB/LNK/SAT), 0 % affärslogik i Raw Vault, Business Key-krav &amp; prod-spärr.</span>
+                  </div>
+                  <span class="bi-home-path">/AGENTS.md (i projektets rot)</span>
+                </button>
+
+                <button type="button" class="bi-home-btn" data-bi-home="graph">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">B</span>
+                      <span class="bi-mode-tag">Domän &amp; Lineage</span>
+                    </div>
+                    <span class="bi-home-title">docs/ + Kunskapsgraf</span>
+                    <span class="bi-home-desc">Affärsbegrepp, GDPR-klassning &amp; KPI-katalog + automatisk spårbarhet Källa → Kub.</span>
+                  </div>
+                  <span class="bi-home-path">/docs/{begrepp,pii,kpi}/ → /graphify-out/</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="bi-connector-arrows" aria-hidden="true">
+              <span>↓ Styr med lagar</span>
+              <span>↓ Matar domän &amp; beroenden</span>
+            </div>
+
+            <div class="bi-zone">
+              <div class="bi-zone-label">
+                <span>Zon 2 · Hantverk, Exekveringsmotor &amp; Sandlåda</span>
+                <span>Hur koden byggs &amp; provkörs</span>
+              </div>
+              <div class="bi-mid-engine">
+                <button type="button" class="bi-home-btn" data-bi-home="skills">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">C</span>
+                      <span class="bi-mode-tag">Laddas per skikt</span>
+                    </div>
+                    <span class="bi-home-title">5 BI-Skills (SKILL.md)</span>
+                    <span class="bi-home-desc">Recept &amp; SQL/dbt/DAX-mallar för Lake, RDV, BV, Stjärnschema/Kub och Testsvit.</span>
+                  </div>
+                  <span class="bi-home-path">/.agents/skills/01-lake..05-test/</span>
+                </button>
+
+                <div class="bi-core-node">
+                  <span class="eyebrow eyebrow-light" style="margin:0;">Självgående motor</span>
+                  <strong>BI- &amp; Data Vault-Agent</strong>
+                  <p>Tar affärsbehov på svenska → Frågar om affärsnyckel → Profilerar rådata → Bygger SQL/dbt &amp; kubmått → Kör tester i loop tills 0 fel.</p>
+                </div>
+
+                <button type="button" class="bi-home-btn" data-bi-home="mcp">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">D</span>
+                      <span class="bi-mode-tag">Ögon &amp; Testbänk</span>
+                    </div>
+                    <span class="bi-home-title">MCP + Test-sandlåda</span>
+                    <span class="bi-home-desc">Läser rådata i Laken, provkör allt i eget ofarligt <code>dev</code>-schema samt skapar PR i Git.</span>
+                  </div>
+                  <span class="bi-home-path">mcp_config.json + schema: dev_sandbox</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="bi-connector-arrows" aria-hidden="true">
+              <span>↓ Tvingande självbesiktning</span>
+              <span>↓ Oberoende 4-ögon-granskning</span>
+              <span>↓ Mänskligt Go före Prod</span>
+            </div>
+
+            <div class="bi-zone">
+              <div class="bi-zone-label">
+                <span>Zon 3 · Det som gör att en icke-utvecklare kan köra tryggt!</span>
+                <span>100 % Kvalitetsspärrar före produktion</span>
+              </div>
+              <div class="bi-row-3">
+                <button type="button" class="bi-home-btn" data-bi-home="hooks">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">E</span>
+                      <span class="bi-mode-tag">Automatisk vakt</span>
+                    </div>
+                    <span class="bi-home-title">Hooks &amp; Avstämning</span>
+                    <span class="bi-home-desc">Stoppar lagerbrott/DROP och kräver radantals- &amp; kronsummekontroll (0,00 kr diff).</span>
+                  </div>
+                  <span class="bi-home-path">/.agents/hooks.json + CI-tester</span>
+                </button>
+
+                <button type="button" class="bi-home-btn" data-bi-home="reviewer">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">F</span>
+                      <span class="bi-mode-tag">Subagent (Read-only)</span>
+                    </div>
+                    <span class="bi-home-title">DV-Reviewer Subagent</span>
+                    <span class="bi-home-desc">Separat arkitekt-agent med rent minne som letar dubblettrisker &amp; glömd GDPR-separering.</span>
+                  </div>
+                  <span class="bi-home-path">/.agents/agents/dv-reviewer.md</span>
+                </button>
+
+                <button type="button" class="bi-home-btn" data-bi-home="plugin-pr">
+                  <div>
+                    <div class="bi-home-top">
+                      <span class="bi-letter">G</span>
+                      <span class="bi-mode-tag">Paket &amp; Slutgrind</span>
+                    </div>
+                    <span class="bi-home-title">Plugin + Utvecklar-PR</span>
+                    <span class="bi-home-desc">Paketerar allt för teamet och skapar en visuell 5-minuters PR för senior BI-utvecklare.</span>
+                  </div>
+                  <span class="bi-home-path">plugin.json → GitHub Pull Request</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Höger: Detaljerat titthål för valt block eller datasteg -->
+          <article class="inspector-panel" id="bi-inspector" aria-live="polite">
+            <div class="inspector-head">
+              <h3 id="bi-detail-title">A. AGENTS.md – Projektets gemensamma lagbok</h3>
+              <span class="inspector-badge" id="bi-detail-owner">Ägare: BI-Arkitekt</span>
+            </div>
+            <p class="inspector-how" id="bi-detail-lead">
+              <strong>Hemvist:</strong> <code>/AGENTS.md</code> i projektets rot – läses alltid in av samma agent från start. <em>(Bonus i stora kodrepon: har två mappar motsatta regler, t.ex. <code>raw_vault/</code> vs <code>marts/</code>, kan man lägga en lokal <code>AGENTS.md</code> i den mappen som samma agent plockar upp när den jobbar där).</em>
+            </p>
+            <pre class="code-peek" tabindex="0" role="region" aria-label="Exempel ur BI-agentens filer"><code id="bi-detail-code"># /AGENTS.md (Stående lagbok i BI-repots rot)
+1. NOLL affärslogik, filtrering eller beräkning i Raw Data Vault (100 % källspegling).
+2. Namnstandard: HUB_&lt;BEGREPP&gt;, LNK_&lt;A&gt;_&lt;B&gt;, SAT_&lt;BEGREPP&gt;_&lt;KÄLLA&gt;.
+3. Gissa ALDRIG en Business Key – den måste finnas i /docs/elm/ eller bekräftas av användaren.
+4. Personuppgifter (GDPR) SKA alltid separeras i en egen *_PII-Satellite.</code></pre>
+            <div class="verdict-strip" id="bi-detail-takeaway">
+              <strong>Varför här och inte i en Skill?</strong> Dessa regler får <em>aldrig</em> vara valfria. Även om någon bara ber om en ”snabb tabelljustering” ligger lagboken alltid aktiv i minnet.
+            </div>
           </article>
         </div>
       </div>
