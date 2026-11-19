@@ -2099,6 +2099,7 @@
         <a href="#vardag" class="nav-link">04 PM-vardag</a>
         <a href="#bi-agent" class="nav-link">05 Helhetscase (BI)</a>
         <a href="#proffstips" class="nav-link">06 Proffstips</a>
+        <a href="#workshop" class="nav-link">07 Workshop</a>
       </nav>
 
       <div style="display:flex; align-items:center; gap:0.5rem; flex-shrink:0;">
@@ -2232,6 +2233,16 @@
                 <span aria-hidden="true">→</span>
               </a>
             </li>
+            <li>
+              <a class="compass-link" href="#workshop">
+                <span class="compass-num">07</span>
+                <span>
+                  <span class="compass-name">Operativ Workshop: Bygg din egen Atlas</span>
+                  <span class="compass-sub">Ladda ner startpaketet &amp; skapa din långsiktiga Kunskapsgraf</span>
+                </span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </li>
           </ul>
         </aside>
       </div>
@@ -2258,12 +2269,12 @@
           </article>
 
           <article class="truth-panel is-agent">
-            <span class="truth-badge good">Styrd AI-Agent + Atlas (det vi bygger idag!)</span>
-            <h3 style="font-size:1.18rem; font-weight:800;">Språkmotorn kopplad till din Kunskapsgraf, fasta regler &amp; självkontroll</h3>
+            <span class="truth-badge good">Styrd AI-Agent (med minne, regler &amp; loop)</span>
+            <h3 style="font-size:1.18rem; font-weight:800;">Språkmotorn kopplad till ditt eget minne, fasta regler &amp; självkontroll</h3>
             <p style="font-size:0.88rem; color:var(--tom-muted-foreground);">
-              Idag kopplar vi språkmodellen till en egen långsiktig <strong>Livs- &amp; Konsult-Atlas</strong> i vanliga textfiler. Då ser agenten sambanden över både <em>privatliv, eget AB/Top of Minds och uppdrag</em> via en <strong>Kunskapsgraf</strong>, följer dina regler (<code>AGENTS.md</code>), använder färdiga <code>Skills</code> och kontrollräknar i en loop innan leverans!
+              När vi sätter ramar runt språkmodellen slipper den börja på noll. Med ett strukturerat <strong>projekt- och livsminne (Kunskapsgraf)</strong>, fasta spelregler (<code>AGENTS.md</code>), färdiga <code>Skills</code> och exakta kalkylskript granskar agenten sitt eget svar i en loop <em>innan</em> den lägger underlaget på ditt bord.
             </p>
-            <div class="truth-equation">Språkmodell + Din Atlas &amp; Kunskapsgraf + AGENTS.md + Skills + Kontroll-loop = Din personliga stabschef</div>
+            <div class="truth-equation">Språkmodell + Kunskapsgraf + Lagbok (AGENTS.md) + Mallar (Skills) + Kontroll-loop = Pålitlig partner</div>
           </article>
         </div>
 
@@ -2286,41 +2297,6 @@
             <p>Så länge konsulter bara chattar var för sig stannar kunskapen på enskilda skärmar. När Top of Minds paketerar sina bästa arbetssätt (<em>Uppdragsröntgen, Go-Live-Readiness, Styrgruppspuls</em>) som delade <code>Skills</code> får varje konsult hela bolagets samlade spets i ryggen.</p>
             <span class="card-foot-tag">Ledningsperspektivet: Delbar kvalitet &amp; lägstanivå</span>
           </article>
-        </div>
-
-        <!-- Praktisk Blåkopia: Din egen långsiktiga Livs- & Konsult-Atlas + Kunskapsgraf -->
-        <div class="persona-compare" style="margin-block-start:1.5rem; border-inline-start:4px solid var(--tom-purple);">
-          <div>
-            <span class="eyebrow eyebrow-purple">Workshopens röda tråd · Långsiktig nytta privat, i bolaget &amp; i uppdrag</span>
-            <h3 style="font-size:1.25rem; font-weight:800;">Så sätter du upp din egen ”Atlas &amp; Kunskapsgraf” som håller i 10+ år</h3>
-            <p style="font-size:0.88rem; color:var(--tom-muted-foreground); margin-block-start:0.4rem;">
-              Hemligheten är att <strong>inte</strong> låsa in ditt minne i en app som försvinner om två år – utan spara korta, vanliga textfiler (<code>.md</code>) i en mapp på datorn och låta <code>graphify</code> bygga en klickbar <strong>Kunskapsgraf</strong> ovanpå:
-            </p>
-            <ol class="checklist-5" role="list">
-              <li><span class="step-sq">1</span><span><strong>Privatliv &amp; Egna projekt:</strong> Boende/BRF, familjeplanering, avtalsdatum och egna mål på ett ställe.</span></li>
-              <li><span class="step-sq">2</span><span><strong>Eget AB &amp; Top of Minds:</strong> Revisor/månadsrutiner, kollegor, din konsultprofil och anonyma referensbevis inför kundavrop.</span></li>
-              <li><span class="step-sq">3</span><span><strong>Kunduppdrag (NDA-säkert):</strong> Övergripande lärdomar och metoder på din egen dator – skarpa kundavtal i en likadan mapp på kunddatorn!</span></li>
-              <li><span class="step-sq">4</span><span><strong>Skills idag → MCP som steg 2:</strong> Idag aktiverar vi färdiga <code>Skills</code> i mappen (0 krångel). Hemma kan du koppla på Gmail/Kalender via <code>MCP</code>!</span></li>
-            </ol>
-            <div style="display:flex; flex-wrap:wrap; gap:0.65rem; margin-block-start:1.1rem;">
-              <a href="./Min-Atlas-Start.zip" download class="btn-purple" style="text-decoration:none;">⬇ Ladda ner Min-Atlas-Start.zip</a>
-              <a href="./min-atlas-exempel.html" target="_blank" rel="noopener" class="filter-chip" style="text-decoration:none; display:inline-flex; align-items:center;">Förhandsgranska Atlas-grafen ↗</a>
-            </div>
-          </div>
-
-          <div>
-            <pre class="code-peek" tabindex="0" role="region" aria-label="Mappstruktur för Min-Atlas"><code>Min-Atlas/                       # Öppna i Antigravity &amp; skriv: "Starta min Atlas"
-├── AGENTS.md                    # Din personliga stabschef &amp; stoppregler
-├── .agents/skills/
-│   ├── atlas-coach/SKILL.md     # Ställer 4 korta frågor &amp; bygger din Atlas!
-│   ├── styrgrupps-grillare/     # Djävulens Styrgrupp (CFO + CISO + Linjechef)
-│   └── graphify/SKILL.md        # Skapar din interaktiva Kunskapsgraf
-├── 01-privat/                   # Boende, avtal, familjeprojekt &amp; årshjul
-├── 02-bolag-och-topofminds/     # Eget AB, ekonomi, kollegor &amp; CV-bevis
-├── 03-uppdrag/                  # Mål, beslutslogg &amp; återanvändbara lärdomar
-├── 04-personer-och-natverk/     # Nyckelkontakter &amp; hur alla hänger ihop
-└── graphify-out/graph.html      # Din klickbara Kunskapsgraf i webbläsaren!</code></pre>
-          </div>
         </div>
       </div>
     </section>
@@ -3339,6 +3315,69 @@ Gör ingenting än! Sammanfatta istället på 5 korta punkter:
             <p><strong>Skriv aldrig lösenord i chatten!</strong> Logga alltid in själv i Antigravitys webbläsarfönster eller via officiella inloggnings-plugins (OAuth). Sätt regeln i <code>AGENTS.md</code>: <em>”Fråga alltid om mitt OK innan du sparar en kontoinställning, raderar något eller skickar iväg ett mejl.”</em></p>
             <span class="card-foot-tag">Du håller i nycklarna – agenten gör grovjobbet</span>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- KAPITEL 07: OPERATIV WORKSHOP – STARTA DIN EGEN ATLAS & KUNSKAPSGRAF -->
+    <section id="workshop" class="section-band band-light">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow eyebrow-purple">07 · Operativ Workshop · Nu kör vi praktiskt!</span>
+          <h2>Bygg din egen långsiktiga ”Atlas &amp; Kunskapsgraf” på 15 minuter</h2>
+          <p>Nu kopplar vi ihop allt vi gått igenom på riktigt. Ladda ner startpaketet nedan, öppna mappen i Antigravity och låt din nya personliga stabschef intervjua dig och rita upp din första egna Kunskapsgraf!</p>
+        </div>
+
+        <!-- 3-stegs startinstruktion på 60 sekunder -->
+        <div class="handoff-strip cols-3" aria-label="Så startar du workshopen i tre enkla steg">
+          <div class="handoff-step">
+            <strong>Steg 1 · Ladda ner &amp; packa upp</strong>
+            <span>Klicka på <em>Ladda ner Min-Atlas-Start.zip</em> nedan och dubbelklicka på zip-filen så mappen <code>Min-Atlas</code> packas upp.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>Steg 2 · Öppna i Antigravity</strong>
+            <span>Öppna <strong>Google Antigravity</strong> på din dator → välj <em>Open Folder</em> och peka på din nya mapp <code>Min-Atlas</code>.</span>
+          </div>
+          <div class="handoff-step">
+            <strong>Steg 3 · Skriv ”Starta min Atlas”</strong>
+            <span>Skriv <code>Starta min Atlas</code> i chatten, svara kort på de 4 frågorna – och se din klickbara <code>graph.html</code> växa fram!</span>
+          </div>
+        </div>
+
+        <!-- Praktisk Blåkopia: Din egen långsiktiga Livs- & Konsult-Atlas + Kunskapsgraf -->
+        <div class="persona-compare" style="margin-block-start:0; border-inline-start:4px solid var(--tom-purple);">
+          <div>
+            <span class="eyebrow eyebrow-purple">Långsiktig nytta privat, i bolaget &amp; i uppdrag</span>
+            <h3 style="font-size:1.25rem; font-weight:800;">Så sätter du upp din egen ”Atlas &amp; Kunskapsgraf” som håller i 10+ år</h3>
+            <p style="font-size:0.88rem; color:var(--tom-muted-foreground); margin-block-start:0.4rem;">
+              Hemligheten är att <strong>inte</strong> låsa in ditt minne i en app som försvinner om två år – utan spara korta, vanliga textfiler (<code>.md</code>) i en mapp på datorn och låta <code>graphify</code> bygga en klickbar <strong>Kunskapsgraf</strong> ovanpå:
+            </p>
+            <ol class="checklist-5" role="list">
+              <li><span class="step-sq">1</span><span><strong>Privatliv &amp; Egna projekt:</strong> Boende/BRF, familjeplanering, avtalsdatum och egna mål på ett ställe.</span></li>
+              <li><span class="step-sq">2</span><span><strong>Eget AB &amp; Top of Minds:</strong> Revisor/månadsrutiner, kollegor, din konsultprofil och anonyma referensbevis inför kundavrop.</span></li>
+              <li><span class="step-sq">3</span><span><strong>Kunduppdrag (NDA-säkert):</strong> Övergripande lärdomar och metoder på din egen dator – skarpa kundavtal i en likadan mapp på kunddatorn!</span></li>
+              <li><span class="step-sq">4</span><span><strong>Skills idag → MCP som steg 2:</strong> Idag aktiverar vi färdiga <code>Skills</code> i mappen (0 krångel). Hemma kan du koppla på Gmail/Kalender via <code>MCP</code>!</span></li>
+            </ol>
+            <div style="display:flex; flex-wrap:wrap; gap:0.65rem; margin-block-start:1.1rem;">
+              <a href="./Min-Atlas-Start.zip" download class="btn-purple" style="text-decoration:none;">⬇ Ladda ner Min-Atlas-Start.zip</a>
+              <a href="./min-atlas-exempel.html" target="_blank" rel="noopener" class="filter-chip" style="text-decoration:none; display:inline-flex; align-items:center;">Förhandsgranska Exempel-Atlasen ↗</a>
+            </div>
+          </div>
+
+          <div>
+            <pre class="code-peek" tabindex="0" role="region" aria-label="Mappstruktur för Min-Atlas"><code>Min-Atlas/                       # Öppna i Antigravity &amp; skriv: "Starta min Atlas"
+├── AGENTS.md                    # Din personliga stabschef &amp; stoppregler
+├── .agents/skills/
+│   ├── atlas-coach/SKILL.md     # Ställer 4 korta frågor &amp; bygger din Atlas!
+│   ├── styrgrupps-grillare/     # Djävulens Styrgrupp (CFO + CISO + Linjechef)
+│   └── graphify/SKILL.md        # Skapar din interaktiva Kunskapsgraf
+├── 01-privat/                   # Boende, avtal, familjeprojekt &amp; årshjul
+├── 02-bolag-och-topofminds/     # Eget AB, ekonomi, kollegor &amp; CV-bevis
+├── 03-uppdrag/                  # Mål, beslutslogg &amp; återanvändbara lärdomar
+├── 04-personer-och-natverk/     # Nyckelkontakter &amp; hur alla hänger ihop
+├── 05-proffstips-och-frageteknik.md # Dina 5 mästerfrågor &amp; kontotips
+└── graphify-out/graph.html      # Din klickbara Kunskapsgraf i webbläsaren!</code></pre>
+          </div>
         </div>
       </div>
     </section>
