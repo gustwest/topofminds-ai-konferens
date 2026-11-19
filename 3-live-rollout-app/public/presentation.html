@@ -551,6 +551,12 @@
       gap: 0.9rem;
     }
 
+    @media (min-width: 641px) {
+      .tool-cards-grid > :last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+      }
+    }
+
     @media (max-width: 640px) {
       .tool-cards-grid {
         grid-template-columns: 1fr;
@@ -2413,10 +2419,10 @@ Roll: Kritisk Senior PMO-revisor på Top of Minds.
                       <span class="bi-letter">A</span>
                       <span class="bi-mode-tag">Alltid i minnet</span>
                     </div>
-                    <span class="bi-home-title">AGENTS.md &amp; Mapp-regler</span>
+                    <span class="bi-home-title">AGENTS.md (Projektets lagbok)</span>
                     <span class="bi-home-desc">Namnstandard (HUB/LNK/SAT), 0 % affärslogik i Raw Vault, Business Key-krav &amp; prod-spärr.</span>
                   </div>
-                  <span class="bi-home-path">/AGENTS.md · /models/{rdv,bv,marts}/AGENTS.md</span>
+                  <span class="bi-home-path">/AGENTS.md (i projektets rot)</span>
                 </button>
 
                 <button type="button" class="bi-home-btn" data-bi-home="graph">
@@ -2530,13 +2536,13 @@ Roll: Kritisk Senior PMO-revisor på Top of Minds.
           <!-- Höger: Detaljerat titthål för valt block eller datasteg -->
           <article class="inspector-panel" id="bi-inspector" aria-live="polite">
             <div class="inspector-head">
-              <h3 id="bi-detail-title">A. AGENTS.md &amp; Mapp-lokala Rules</h3>
+              <h3 id="bi-detail-title">A. AGENTS.md – Projektets gemensamma lagbok</h3>
               <span class="inspector-badge" id="bi-detail-owner">Ägare: BI-Arkitekt</span>
             </div>
             <p class="inspector-how" id="bi-detail-lead">
-              <strong>Hemvist:</strong> <code>/AGENTS.md</code> i roten + lokala <code>AGENTS.md</code> inne i <code>models/raw_vault/</code>, <code>business_vault/</code> och <code>marts/</code>. Laddas alltid in automatiskt för den mapp agenten arbetar i!
+              <strong>Hemvist:</strong> <code>/AGENTS.md</code> i projektets rot – läses alltid in av samma agent från start. <em>(Bonus i stora kodrepon: har två mappar motsatta regler, t.ex. <code>raw_vault/</code> vs <code>marts/</code>, kan man lägga en lokal <code>AGENTS.md</code> i den mappen som samma agent plockar upp när den jobbar där).</em>
             </p>
-            <pre class="code-peek" tabindex="0" role="region" aria-label="Exempel ur BI-agentens filer"><code id="bi-detail-code"># /models/raw_vault/AGENTS.md
+            <pre class="code-peek" tabindex="0" role="region" aria-label="Exempel ur BI-agentens filer"><code id="bi-detail-code"># /AGENTS.md (Stående lagbok i BI-repots rot)
 1. NOLL affärslogik, filtrering eller beräkning i Raw Data Vault (100 % källspegling).
 2. Namnstandard: HUB_&lt;BEGREPP&gt;, LNK_&lt;A&gt;_&lt;B&gt;, SAT_&lt;BEGREPP&gt;_&lt;KÄLLA&gt;.
 3. Gissa ALDRIG en Business Key – den måste finnas i /docs/elm/ eller bekräftas av användaren.
@@ -3297,10 +3303,10 @@ Leveransformat: Tabell med [Avvikelse | Källa § | Ekonomisk risk i SEK | Åtg�
       // ===== 5B. SECTION 03: SJÄLVGÅENDE BI- & DATA VAULT-AGENT BLUEPRINT =====
       const BI_HOMES = {
         rules: {
-          title: 'A. AGENTS.md & Mapp-lokala Rules',
+          title: 'A. AGENTS.md – Projektets gemensamma lagbok',
           owner: 'Ägare: BI-Arkitekt',
-          lead: '<strong>Hemvist:</strong> <code>/AGENTS.md</code> i roten + lokala <code>AGENTS.md</code> inne i <code>models/raw_vault/</code>, <code>business_vault/</code> och <code>marts/</code>. Laddas alltid in automatiskt för den mapp agenten arbetar i!',
-          code: `# /models/raw_vault/AGENTS.md\n1. NOLL affärslogik, filtrering eller beräkning i Raw Data Vault (100 % källspegling).\n2. Namnstandard: HUB_<BEGREPP>, LNK_<A>_<B>, SAT_<BEGREPP>_<KÄLLA>.\n3. Gissa ALDRIG en Business Key – den måste finnas i /docs/elm/ eller bekräftas av användaren.\n4. Personuppgifter (GDPR) SKA alltid separeras i en egen *_PII-Satellite.`,
+          lead: '<strong>Hemvist:</strong> <code>/AGENTS.md</code> i projektets rot – läses alltid in av samma agent från start. <em>(Bonus i stora kodrepon: har två mappar motsatta regler, t.ex. <code>raw_vault/</code> vs <code>marts/</code>, kan man lägga en lokal <code>AGENTS.md</code> i den mappen som samma agent plockar upp när den jobbar där).</em>',
+          code: `# /AGENTS.md (Stående lagbok i BI-repots rot)\n1. NOLL affärslogik, filtrering eller beräkning i Raw Data Vault (100 % källspegling).\n2. Namnstandard: HUB_<BEGREPP>, LNK_<A>_<B>, SAT_<BEGREPP>_<KÄLLA>.\n3. Gissa ALDRIG en Business Key – den måste finnas i /docs/elm/ eller bekräftas av användaren.\n4. Personuppgifter (GDPR) SKA alltid separeras i en egen *_PII-Satellite.`,
           takeaway: '<strong>Varför här och inte i en Skill?</strong> Dessa regler får <em>aldrig</em> vara valfria. Även om någon bara ber om en ”snabb tabelljustering” ligger lagboken alltid aktiv i minnet.'
         },
         graph: {
