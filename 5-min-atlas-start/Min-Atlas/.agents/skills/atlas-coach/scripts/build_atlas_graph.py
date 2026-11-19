@@ -39,10 +39,53 @@ def detect_cluster(rel_path: str) -> tuple[str, str]:
     return CLUSTER_CONFIG["root"]
 
 
-def clean_title(text: str) -> str:
-    t = re.sub(r"[#*`_~>\[\]]+", "", text).strip()
-    t = re.sub(r"\s+", " ", t)
-    return t[:64]
+def clean_text(text: str) -> str:
+    t = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)
+    t = re.sub(r"[#*`_~>]+", "", t).strip()
+    return re.sub(r"\s+", " ", t)
+
+
+def clean_title(text: str, max_len: int = 48) -> str:
+    t = clean_text(text)
+    if len(t) <= max_len:
+        return t
+    cut = t[:max_len].rsplit(" ", 1)[0]
+    return (cut or t[:max_len]) + "…"
+
+
+def extract_doc_summary(text: str, rel: str) -> str:
+    # For SKILL.md, prefer YAML frontmatter description
+    if rel.endswith("SKILL.md"):
+        desc_m = re.search(r"^description:\s*[\"']?(.+?)[\"']?\s*$", text, flags=re.MULTILINE)
+        if desc_m:
+            return clean_text(desc_m.group(1))
+    # Strip frontmatter if any
+    body = re.sub(r"^---\n.*?\n---\n", "", text, count=1, flags=re.DOTALL)
+    collected: list[str] = []
+    for line in body.splitlines():
+        s = line.strip()
+        if not s or s.startswith("#"):
+            continue
+        cleaned = clean_text(re.sub(r"^[\-\*\d\.\)]+\s*", "", s))
+        if len(cleaned) >= 12:
+            collected.append(cleaned)
+        if sum(len(c) for c in collected) >= 240 or len(collected) >= 3:
+            break
+    return " ".join(collected) if collected else f"Dokument i {rel}."
+
+
+def extract_section_summary(sec_body: str, fallback: str) -> str:
+    items: list[str] = []
+    for line in sec_body.splitlines():
+        s = line.strip()
+        if not s or s.startswith("#"):
+            continue
+        cleaned = clean_text(re.sub(r"^[\-\*\d\.\)]+\s*", "", s))
+        if len(cleaned) >= 8:
+            items.append(cleaned)
+        if sum(len(x) for x in items) >= 260 or len(items) >= 3:
+            break
+    return " • ".join(items) if items else fallback
 
 
 def build_graph() -> dict:
@@ -59,7 +102,7 @@ def build_graph() -> dict:
                 "color": color,
                 "kind": kind,
                 "source": source,
-                "summary": summary[:280],
+                "summary": summary.strip(),
                 "degree": 0,
             }
 
@@ -115,39 +158,38 @@ def build_graph() -> dict:
             label = clean_title(h1_match.group(1)) if h1_match else p.stem.replace("-", " ").title()
             kind = "Dokument"
 
-        first_para = ""
-        for line in text.splitlines():
-            s = line.strip()
-            if s and not s.startswith(("#", "-", "*", ">", "---", "name:", "description:")):
-                first_para = clean_title(s)
-                break
-
+        doc_summary = extract_doc_summary(text, rel)
         file_nid = f"file:{rel}"
-        add_node(file_nid, label, cluster, color, kind, rel, first_para or f"Källa: {rel}")
+        add_node(file_nid, label, cluster, color, kind, rel, doc_summary)
         add_edge("hub:min-atlas", file_nid, "styr / omfattar", "EXTRACTED")
         concept_to_node[label.lower()] = file_nid
 
         # Extract H2/H3 entities (skip generic headings, ignore giant reference skills)
         if not rel.endswith("graphify/SKILL.md"):
-            for hm in re.finditer(r"^#{2,3}\s+(.+)$", text, flags=re.MULTILINE):
-                htitle = clean_title(hm.group(1))
-                htitle_clean = re.sub(r"^\d+[\.\)]\s*", "", htitle).strip()
+            headings = list(re.finditer(r"^#{2,3}\s+(.+)$", text, flags=re.MULTILINE))
+            for idx, hm in enumerate(headings):
+                htitle_raw = clean_text(hm.group(1))
+                htitle_clean = re.sub(r"^\d+[\.\)]\s*", "", htitle_raw).strip()
                 if len(htitle_clean) < 3 or htitle_clean.lower() in STOP_HEADINGS:
                     continue
+                start_pos = hm.end()
+                end_pos = headings[idx + 1].start() if idx + 1 < len(headings) else len(text)
+                sec_body = text[start_pos:end_pos]
+                sec_summary = extract_section_summary(sec_body, f"Delområde i {rel}.")
                 sec_nid = f"sec:{rel}:{htitle_clean.lower()}"
-                add_node(sec_nid, htitle_clean, cluster, color, "Delområde", rel, f"Sektion i {rel}")
+                add_node(sec_nid, clean_title(htitle_clean), cluster, color, "Delområde", rel, sec_summary)
                 add_edge(file_nid, sec_nid, "innehåller", "EXTRACTED")
                 if len(htitle_clean) >= 4:
                     concept_to_node[htitle_clean.lower()] = sec_nid
 
             # Extract bolded entities (- **Namn:** beskrivning)
-            for bm in re.finditer(r"^[\-\*]\s+\*\*([^*\n]{3,42}?)\*\*[:\s–-]+([^\n]+)", text, flags=re.MULTILINE):
-                bname = clean_title(bm.group(1)).rstrip(":")
-                bdesc = clean_title(bm.group(2))
+            for bm in re.finditer(r"^[\-\*]\s+\*\*([^*\n]{3,52}?)\*\*[:\s–-]+([^\n]+)", text, flags=re.MULTILINE):
+                bname = clean_text(bm.group(1)).rstrip(":")
+                bdesc = clean_text(bm.group(2))
                 if bname.lower() in STOP_HEADINGS or len(bname) < 3:
                     continue
                 ent_nid = f"ent:{bname.lower()}"
-                add_node(ent_nid, bname, cluster, color, "Entitet / Punkt", rel, bdesc)
+                add_node(ent_nid, clean_title(bname), cluster, color, "Entitet / Punkt", rel, bdesc)
                 add_edge(file_nid, ent_nid, "beskriver", "EXTRACTED")
                 concept_to_node[bname.lower()] = ent_nid
 
