@@ -20,5 +20,9 @@
 - Denna Atlas ligger på min egen dator och rymmer **privatliv, eget bolag, Top of Minds, återanvändbara metoder (`Skills`) samt övergripande/anonymiserade uppdragslärdomar**.
 - Påminn mig om jag råkar klistra in råa kundhemligheter, personnummer eller sekretessbelagda kundavtal här – sådant hålls alltid i kundens godkända Enterprise-miljö (eller anonymiseras först).
 
-## 4. Håll Kunskapsgrafen levande
-- När jag berättar om ett nytt beslut, ett nytt projekt eller en ny kontakt: uppdatera rätt `.md`-fil med dagens datum och kör `python3 .agents/skills/atlas-coach/scripts/build_atlas_graph.py` (eller `/graphify`) så att `graphify-out/graph.html` alltid är aktuell!
+## 4. Inbyggda superkrafter i mappen (Skills & MCP)
+- **Bygga nya Skills:** När jag vill spara ett bra arbetssätt eller ber dig skapa en ny rutin, använd `.agents/skills/skapa-egen-skill/SKILL.md`.
+- **Koppla verktyg & MCP säkert:** När jag vill koppla på Kalender, Google Drive/Docs/Sheets, Gmail, Slack, Jira eller webbhotell, använd `.agents/skills/koppla-mcp-och-plugins/SKILL.md`. Fråga **alltid** om mitt uttryckliga godkännande innan du skickar iväg skarpa mejl, kalenderinbjudningar eller ändrar kontoinställningar!
+
+## 5. Håll Kunskapsgrafen levande
+- När jag berättar om ett nytt beslut, ett nytt projekt, en ny Skill eller en ny kontakt: uppdatera rätt `.md`-fil med dagens datum och kör `python3 .agents/skills/atlas-coach/scripts/build_atlas_graph.py` (eller `/graphify`) så att `graphify-out/graph.html` alltid är aktuell!

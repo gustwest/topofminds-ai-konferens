@@ -18,7 +18,17 @@
       "kind": "Kärna",
       "source": "AGENTS.md",
       "summary": "Central knutpunkt som binder ihop privatliv, eget bolag, Top of Minds, uppdrag och återanvändbara Skills.",
-      "degree": 9
+      "degree": 11
+    },
+    {
+      "id": "file:AGENTS.md",
+      "label": "AGENTS.md (Lagbok)",
+      "cluster": "Kärna & Stabschef",
+      "color": "#dc2626",
+      "kind": "Styrfil",
+      "source": "AGENTS.md",
+      "summary": "Denna fil läses alltid automatiskt av din AI-agent när du arbetar i Min-Atlas. Du är min personliga stabschef, seniora konsultkollega och kritiska sparringpartner (inte en passiv ”ja-sägare”). Du svarar alltid på klar, naturlig svenska om jag inte uttryckligen ber om engelska.",
+      "degree": 8
     },
     {
       "id": "file:03-uppdrag/aktivt-uppdrag.md",
@@ -51,13 +61,23 @@
       "degree": 6
     },
     {
-      "id": "file:AGENTS.md",
-      "label": "AGENTS.md (Lagbok)",
-      "cluster": "Kärna & Stabschef",
-      "color": "#dc2626",
-      "kind": "Styrfil",
-      "source": "AGENTS.md",
-      "summary": "Denna fil läses alltid automatiskt av din AI-agent när du arbetar i Min-Atlas. Du är min personliga stabschef, seniora konsultkollega och kritiska sparringpartner (inte en passiv ”ja-sägare”). Du svarar alltid på klar, naturlig svenska om jag inte uttryckligen ber om engelska.",
+      "id": "file:.agents/skills/skapa-egen-skill/SKILL.md",
+      "label": "Skill: skapa-egen-skill",
+      "cluster": "Skills & Agentstyrning",
+      "color": "#09213a",
+      "kind": "Skill",
+      "source": ".agents/skills/skapa-egen-skill/SKILL.md",
+      "summary": "Interaktiv svensk ”Skill-fabrik” som hjälper användaren att bygga nya återanvändbara Agent Skills (.agents/skills/<namn/SKILL.md) utifrån deras egna arbetsmoment, mallar eller rutiner. Aktivera direkt när användaren skriver \"Bygg en ny Skill\", \"Skapa en Skill\", \"Gör en Skill för...\" eller vill paketera ett arbetssätt.",
+      "degree": 6
+    },
+    {
+      "id": "file:.agents/skills/koppla-mcp-och-plugins/SKILL.md",
+      "label": "Skill: koppla-mcp-och-plugins",
+      "cluster": "Skills & Agentstyrning",
+      "color": "#09213a",
+      "kind": "Skill",
+      "source": ".agents/skills/koppla-mcp-och-plugins/SKILL.md",
+      "summary": "Interaktiv svensk guide och installationshjälp för att koppla externa verktyg, 1-klicks Plugins och MCP-servrar (Google Kalender, Drive, Docs, Sheets, Gmail, Slack, Jira/Confluence, GitHub samt webbhotell/DNS) i Google Antigravity. Aktivera direkt när användaren skriver \"Koppla mina verktyg\", \"Koppla MCP\", \"Installera plugin\" eller frågar hur man ansluter mejl, kalender, Drive, Slack eller Jira.",
       "degree": 5
     },
     {
@@ -88,7 +108,7 @@
       "kind": "Delområde",
       "source": ".agents/skills/styrgrupps-grillare/SKILL.md",
       "summary": "Mandat: Var skoningslöst konstruktiv. Håll INTE med av artighet – ditt jobb är att hitta svagheterna på kammaren så konsulten glänser i rummet imorgon. • Tre parallella specialistglasögon: • 💰 CFO / Ekonomichefen: Jagar glädjekalkyler, dolda följdkostnader, saknade reserver och oklar affärsnytta i SEK.",
-      "degree": 2
+      "degree": 3
     },
     {
       "id": "ent:månadsrutin",
@@ -118,6 +138,36 @@
       "kind": "Delområde",
       "source": "03-uppdrag/aktivt-uppdrag.md",
       "summary": "Uppdragstyp: (Fylls i vid Starta min Atlas) • Mitt mål de närmaste 30 dagarna: (Vad behöver sitta för att skapa lugn och effekt?) • Koppling till bolagsprofil: Stärker kompetensspåret i Mitt Bolag & Top of Minds.",
+      "degree": 1
+    },
+    {
+      "id": "sec:.agents/skills/koppla-mcp-och-plugins/SKILL.md:arbetsflöde när användaren skriver ”koppla mina verktyg” / ”koppla mcp”",
+      "label": "Arbetsflöde när användaren skriver ”Koppla mina…",
+      "cluster": "Skills & Agentstyrning",
+      "color": "#09213a",
+      "kind": "Delområde",
+      "source": ".agents/skills/koppla-mcp-och-plugins/SKILL.md",
+      "summary": "Delområde i .agents/skills/koppla-mcp-och-plugins/SKILL.md.",
+      "degree": 1
+    },
+    {
+      "id": "sec:.agents/skills/skapa-egen-skill/SKILL.md:arbetsflöde steg för steg",
+      "label": "Arbetsflöde steg för steg",
+      "cluster": "Skills & Agentstyrning",
+      "color": "#09213a",
+      "kind": "Delområde",
+      "source": ".agents/skills/skapa-egen-skill/SKILL.md",
+      "summary": "Delområde i .agents/skills/skapa-egen-skill/SKILL.md.",
+      "degree": 1
+    },
+    {
+      "id": "ent:bygga nya skills",
+      "label": "Bygga nya Skills",
+      "cluster": "Kärna & Stabschef",
+      "color": "#dc2626",
+      "kind": "Entitet / Punkt",
+      "source": "AGENTS.md",
+      "summary": "När jag vill spara ett bra arbetssätt eller ber dig skapa en ny rutin, använd .agents/skills/skapa-egen-skill/SKILL.md.",
       "degree": 1
     },
     {
@@ -227,7 +277,27 @@
       "color": "#dc2626",
       "kind": "Delområde",
       "source": "AGENTS.md",
-      "summary": "När jag berättar om ett nytt beslut, ett nytt projekt eller en ny kontakt: uppdatera rätt .md-fil med dagens datum och kör python3 .agents/skills/atlas-coach/scripts/buildatlasgraph.py (eller /graphify) så att graphify-out/graph.html alltid är aktuell!",
+      "summary": "När jag berättar om ett nytt beslut, ett nytt projekt, en ny Skill eller en ny kontakt: uppdatera rätt .md-fil med dagens datum och kör python3 .agents/skills/atlas-coach/scripts/buildatlasgraph.py (eller /graphify) så att graphify-out/graph.html alltid är aktuell!",
+      "degree": 1
+    },
+    {
+      "id": "sec:AGENTS.md:inbyggda superkrafter i mappen (skills & mcp)",
+      "label": "Inbyggda superkrafter i mappen (Skills & MCP)",
+      "cluster": "Kärna & Stabschef",
+      "color": "#dc2626",
+      "kind": "Delområde",
+      "source": "AGENTS.md",
+      "summary": "Bygga nya Skills: När jag vill spara ett bra arbetssätt eller ber dig skapa en ny rutin, använd .agents/skills/skapa-egen-skill/SKILL.md. • Koppla verktyg & MCP säkert: När jag vill koppla på Kalender, Google Drive/Docs/Sheets, Gmail, Slack, Jira eller webbhotell, använd .agents/skills/koppla-mcp-och-plugins/SKILL.md. Fråga alltid om mitt uttryckliga godkännande innan du skickar iväg skarpa mejl, kalenderinbjudningar eller ändrar kontoinställningar!",
+      "degree": 1
+    },
+    {
+      "id": "ent:koppla verktyg & mcp säkert",
+      "label": "Koppla verktyg & MCP säkert",
+      "cluster": "Kärna & Stabschef",
+      "color": "#dc2626",
+      "kind": "Entitet / Punkt",
+      "source": "AGENTS.md",
+      "summary": "När jag vill koppla på Kalender, Google Drive/Docs/Sheets, Gmail, Slack, Jira eller webbhotell, använd .agents/skills/koppla-mcp-och-plugins/SKILL.md. Fråga alltid om mitt uttryckliga godkännande innan du skickar iväg skarpa mejl, kalenderinbjudningar eller ändrar kontoinställningar!",
       "degree": 1
     },
     {
@@ -351,6 +421,56 @@
       "degree": 1
     },
     {
+      "id": "sec:.agents/skills/koppla-mcp-och-plugins/SKILL.md:steg 1: fråga vad som ger störst nytta direkt",
+      "label": "Steg 1: Fråga vad som ger störst nytta direkt",
+      "cluster": "Skills & Agentstyrning",
+      "color": "#09213a",
+      "kind": "Delområde",
+      "source": ".agents/skills/koppla-mcp-och-plugins/SKILL.md",
+      "summary": "Presentera de tre snabbspåren på enkel svenska och fråga vilket eller vilka verktyg användaren vill börja med: • Spår A – 1-klicks Plugins i Antigravity 2.0 (0 API-nycklar, klart på 30 sek!): • Google Kalender (gcalendar) – kolla lediga tider, se dagens schema och boka möten med rätt tidszon (Europe/Stockholm).",
+      "degree": 1
+    },
+    {
+      "id": "sec:.agents/skills/skapa-egen-skill/SKILL.md:steg 1: ställ 3 snabba fokusfrågor (om användaren inte redan angett allt)",
+      "label": "Steg 1: Ställ 3 snabba fokusfrågor (om…",
+      "cluster": "Skills & Agentstyrning",
+      "color": "#09213a",
+      "kind": "Delområde",
+      "source": ".agents/skills/skapa-egen-skill/SKILL.md",
+      "summary": "Håll det kort och konkret på vanlig svenska: • Vilket moment ska Skillen lösa? (T.ex. ”Skriva fredagens statusrapport till styrgruppen”, ”Matcha mitt CV mot ett kundavrop” eller ”Granska en tidplan mot avtal”). • Vilket underlag ska den utgå från? (T.ex. filer i 03-uppdrag/, mötesanteckningar, Excel/CSV eller inklistrad text).",
+      "degree": 1
+    },
+    {
+      "id": "sec:.agents/skills/koppla-mcp-och-plugins/SKILL.md:steg 2: genomför valt spår smidigt åt användaren",
+      "label": "Steg 2: Genomför valt spår smidigt åt användaren",
+      "cluster": "Skills & Agentstyrning",
+      "color": "#09213a",
+      "kind": "Delområde",
+      "source": ".agents/skills/koppla-mcp-och-plugins/SKILL.md",
+      "summary": "Om du har verktyget searchmarketplace tillgängligt: sök upp rätt plugin (t.ex. gcalendar, gdrive, gdocs, gsheets, atlassian, figma) och visa klickbara <plugin-card-kort direkt i chatten så användaren bara klickar Add / Sign in! • Om pluginet redan är installerat (eller om användaren vill se alla): guida dem till vänstermenyn i Antigravity 2.0 under Skills & Customizations → Plugins där de loggar in med ett klick via vanlig Google-/OAuth-inloggning.",
+      "degree": 1
+    },
+    {
+      "id": "sec:.agents/skills/skapa-egen-skill/SKILL.md:steg 2: skapa en produktionsklar skill.md med 5-punkts uppdragskontrakt",
+      "label": "Steg 2: Skapa en produktionsklar SKILL.md med…",
+      "cluster": "Skills & Agentstyrning",
+      "color": "#09213a",
+      "kind": "Delområde",
+      "source": ".agents/skills/skapa-egen-skill/SKILL.md",
+      "summary": "Skapa .agents/skills/<kebab-case-namn/SKILL.md med: • Tydlig YAML-frontmatter (name + description): Beskriv exakt när agenten ska plocka fram denna Skill automatiskt. • 5-punkts uppdragskontrakt (istället för luddigt rollspel):",
+      "degree": 1
+    },
+    {
+      "id": "sec:.agents/skills/skapa-egen-skill/SKILL.md:steg 3: uppdatera kunskapsgrafen & låt användaren provköra direkt",
+      "label": "Steg 3: Uppdatera Kunskapsgrafen & låt…",
+      "cluster": "Skills & Agentstyrning",
+      "color": "#09213a",
+      "kind": "Delområde",
+      "source": ".agents/skills/skapa-egen-skill/SKILL.md",
+      "summary": "Kör grafbyggaren så att den nya Skillen syns som en nod i användarens Kunskapsgraf: • python3 .agents/skills/atlas-coach/scripts/buildatlasgraph.py • Visa en klickbar länk till den nya SKILL.md-filen och ge användaren en kopieringsklar testmening för att provköra sin nya Skill direkt!",
+      "degree": 1
+    },
+    {
       "id": "sec:02-bolag-och-topofminds/mitt-bolag-och-profil.md:sälj, avrop & kompetensbevis",
       "label": "Sälj, Avrop & Kompetensbevis",
       "cluster": "Bolag & Top of Minds",
@@ -391,6 +511,16 @@
       "degree": 1
     },
     {
+      "id": "sec:.agents/skills/koppla-mcp-och-plugins/SKILL.md:viktiga säkerhetsprinciper (gäller alltid!)",
+      "label": "Viktiga säkerhetsprinciper (Gäller ALLTID!)",
+      "cluster": "Skills & Agentstyrning",
+      "color": "#09213a",
+      "kind": "Delområde",
+      "source": ".agents/skills/koppla-mcp-och-plugins/SKILL.md",
+      "summary": "Be ALDRIG användaren klistra in lösenord i chatten! Inloggning sker alltid via officiella OAuth-kort i Antigravity eller genom att användaren själv loggar in i den inbyggda webbläsarpanelen. • Mänskligt godkännande före skarpa utskick: När skrivverktyg (t.ex. mejl, kalenderkallelser eller Slack/Jira) kopplas på ska AGENTS.md innehålla spärren: ”Fråga alltid om mitt OK och visa utkastet innan du skickar iväg mejl, kallelser eller ändrar skarpa kontoinställningar.”",
+      "degree": 1
+    },
+    {
       "id": "sec:01-privat/oversikt.md:viktiga återkommande datum & avtal",
       "label": "Viktiga återkommande datum & avtal",
       "cluster": "Privatliv & Mål",
@@ -428,6 +558,66 @@
       "source": "hub:min-atlas",
       "target": "file:.agents/skills/graphify/SKILL.md",
       "label": "styr / omfattar",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "hub:min-atlas",
+      "target": "file:.agents/skills/koppla-mcp-och-plugins/SKILL.md",
+      "label": "styr / omfattar",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:.agents/skills/koppla-mcp-och-plugins/SKILL.md",
+      "target": "sec:.agents/skills/koppla-mcp-och-plugins/SKILL.md:viktiga säkerhetsprinciper (gäller alltid!)",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:.agents/skills/koppla-mcp-och-plugins/SKILL.md",
+      "target": "sec:.agents/skills/koppla-mcp-och-plugins/SKILL.md:arbetsflöde när användaren skriver ”koppla mina verktyg” / ”koppla mcp”",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:.agents/skills/koppla-mcp-och-plugins/SKILL.md",
+      "target": "sec:.agents/skills/koppla-mcp-och-plugins/SKILL.md:steg 1: fråga vad som ger störst nytta direkt",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:.agents/skills/koppla-mcp-och-plugins/SKILL.md",
+      "target": "sec:.agents/skills/koppla-mcp-och-plugins/SKILL.md:steg 2: genomför valt spår smidigt åt användaren",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "hub:min-atlas",
+      "target": "file:.agents/skills/skapa-egen-skill/SKILL.md",
+      "label": "styr / omfattar",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:.agents/skills/skapa-egen-skill/SKILL.md",
+      "target": "sec:.agents/skills/skapa-egen-skill/SKILL.md:arbetsflöde steg för steg",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:.agents/skills/skapa-egen-skill/SKILL.md",
+      "target": "sec:.agents/skills/skapa-egen-skill/SKILL.md:steg 1: ställ 3 snabba fokusfrågor (om användaren inte redan angett allt)",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:.agents/skills/skapa-egen-skill/SKILL.md",
+      "target": "sec:.agents/skills/skapa-egen-skill/SKILL.md:steg 2: skapa en produktionsklar skill.md med 5-punkts uppdragskontrakt",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:.agents/skills/skapa-egen-skill/SKILL.md",
+      "target": "sec:.agents/skills/skapa-egen-skill/SKILL.md:steg 3: uppdatera kunskapsgrafen & låt användaren provköra direkt",
+      "label": "innehåller",
       "confidence": "EXTRACTED"
     },
     {
@@ -648,8 +838,26 @@
     },
     {
       "source": "file:AGENTS.md",
+      "target": "sec:AGENTS.md:inbyggda superkrafter i mappen (skills & mcp)",
+      "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:AGENTS.md",
       "target": "sec:AGENTS.md:håll kunskapsgrafen levande",
       "label": "innehåller",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:AGENTS.md",
+      "target": "ent:bygga nya skills",
+      "label": "beskriver",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file:AGENTS.md",
+      "target": "ent:koppla verktyg & mcp säkert",
+      "label": "beskriver",
       "confidence": "EXTRACTED"
     },
     {
@@ -661,6 +869,12 @@
     {
       "source": "file:.agents/skills/atlas-coach/SKILL.md",
       "target": "ent:månadsrutin",
+      "label": "kopplar till",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "file:.agents/skills/skapa-egen-skill/SKILL.md",
+      "target": "sec:.agents/skills/styrgrupps-grillare/SKILL.md:5-punkts uppdragskontrakt",
       "label": "kopplar till",
       "confidence": "INFERRED"
     },
