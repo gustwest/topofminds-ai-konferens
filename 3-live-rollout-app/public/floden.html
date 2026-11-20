@@ -895,20 +895,20 @@
       <div class="container">
         <div class="section-head">
           <div>
-            <span class="eyebrow eyebrow-purple">01 · Verktygslandskapet som flöde</span>
-            <h2>Varför ett chattfönster och en mapp-agent jobbar helt olika</h2>
-            <p>Jämför de tre flödena nedan: de två översta ger ett direkt engångssvar, medan det nedersta arbetar i en kvalitetskontrollerad loop inne i er projektmapp.</p>
+            <span class="eyebrow eyebrow-purple">01 · Verktygslandskapet som flöde (Nov 2026)</span>
+            <h2>Varför läget du kör i (webbchatt vs. mapp-agent) avgör kvaliteten</h2>
+            <p>Jämför de tre flödena nedan: ren webb-/mobilchatt arbetar i en isolerad molnsandlåda, medan moderna desktop-agenter (Antigravity 2.0, ChatGPT Desktop med Work/Codex, Claude Cowork/Code) jobbar i en självkontrollerande loop direkt mot er lokala projektmapp!</p>
           </div>
           <span class="click-hint">Klicka på valfri ruta för detaljer →</span>
         </div>
 
         <div class="flow-board">
           <div class="lanes-stack">
-            <!-- SPÅR A: CHATGPT / CLAUDE WEBB -->
+            <!-- SPÅR A: REN WEBB- & MOBILCHATT -->
             <div class="lane-card">
               <div class="lane-label">
-                <span>Spår A · Bollplank &amp; Research (ChatGPT / Claude i webbläsaren)</span>
-                <span>Ingen automatisk verifieringsloop mot projektmapp</span>
+                <span>Spår A · Ren Webb- &amp; Mobilchatt (chatgpt.com / claude.ai i webbläsaren)</span>
+                <span>Isolerad molnsandlåda – ingen direkt åtkomst till lokal projektmapp</span>
               </div>
               <div class="flow-track">
                 <button type="button" class="f-node tone-trigger" data-detail="s1-chat-trigger">
@@ -918,10 +918,10 @@
                       <span class="f-more-dot">Detaljer →</span>
                     </div>
                     <span class="f-title">Du klistrar in en fråga eller 1 fil</span>
-                    <span class="f-desc">Idésparring, omvärldsresearch eller textutkast.</span>
+                    <span class="f-desc">Snabb idésparring, röstläge, textutkast eller Deep Research i webbläsaren/mobilen.</span>
                   </div>
                   <div class="f-foot">
-                    <span class="home-pill home-human">👤 Konsult i webbläsare</span>
+                    <span class="home-pill home-human">👤 Konsult i webb/mobil</span>
                   </div>
                 </button>
 
@@ -936,8 +936,8 @@
                       <span class="f-role-tag">Bearbetning</span>
                       <span class="f-more-dot">Detaljer →</span>
                     </div>
-                    <span class="f-title">ChatGPT / Claude (Webbsandlåda)</span>
-                    <span class="f-desc">Tänker och formulerar ett svar i ett svep (eller gör Deep Research på webben).</span>
+                    <span class="f-title">Webb-/Mobilsandlåda (Utan mappkoppling)</span>
+                    <span class="f-desc">Ser bara uppladdade filer i fliken – till skillnad från Desktop-apparna (Work/Codex &amp; Cowork)!</span>
                   </div>
                   <div class="f-foot">
                     <span class="home-pill home-cloud">🔌 OpenAI / Anthropic-molnet</span>
@@ -955,8 +955,8 @@
                       <span class="f-role-tag">Leverans</span>
                       <span class="f-more-dot">Detaljer →</span>
                     </div>
-                    <span class="f-title">Textutkast eller analys i chatten</span>
-                    <span class="f-desc">Du kopierar själv svaret vidare och ansvarar för all siffer- och källkontroll.</span>
+                    <span class="f-title">Textutkast eller research i chatten</span>
+                    <span class="f-desc">Du kopierar själv svaret vidare och ansvarar för all siffer- och källkontroll mot projektet.</span>
                   </div>
                   <div class="f-foot">
                     <span class="home-pill home-human">👤 Manuell kontroll</span>
@@ -968,8 +968,8 @@
             <!-- SPÅR B: M365 COPILOT / FÖRETAGSSÖK -->
             <div class="lane-card">
               <div class="lane-label">
-                <span>Spår B · Möten, Mejl &amp; Intranätsök (M365 Copilot / Gemini Enterprise)</span>
-                <span>Söker på liknande ord – ej kedjeanalys</span>
+                <span>Spår B · Kontorssvit &amp; Bolagssök (M365 Copilot / Gemini Enterprise / Glean)</span>
+                <span>Behörighetsstyrd bolagssökning + Office-agenter (Researcher / Analyst)</span>
               </div>
               <div class="flow-track">
                 <button type="button" class="f-node tone-trigger" data-detail="s1-m365-trigger">
@@ -979,10 +979,10 @@
                       <span class="f-more-dot">Detaljer →</span>
                     </div>
                     <span class="f-title">Teams-möte slutar eller sökfråga</span>
-                    <span class="f-desc">”Sammanfatta mötet” eller ”Vad säger vår resepolicy?”</span>
+                    <span class="f-desc">”Sammanfatta mötet”, ”Analysera arket (Analyst)” eller ”Vad säger vår resepolicy?”</span>
                   </div>
                   <div class="f-foot">
-                    <span class="home-pill home-cloud">🔌 Teams / Outlook / Intranät</span>
+                    <span class="home-pill home-cloud">🔌 Teams / Office / Intranät</span>
                   </div>
                 </button>
 
@@ -994,14 +994,14 @@
                 <button type="button" class="f-node tone-engine" data-detail="s1-m365-rag">
                   <div>
                     <div class="f-node-top">
-                      <span class="f-role-tag">Företags-RAG</span>
+                      <span class="f-role-tag">Work IQ / Bolagsindex</span>
                       <span class="f-more-dot">Detaljer →</span>
                     </div>
-                    <span class="f-title">Hämtar 5 matchande textstycken</span>
-                    <span class="f-desc">Följer dina AD-behörigheter i SharePoint/Drive, men ritar inte ut dolda beroenden.</span>
+                    <span class="f-title">Söker i SharePoint/Drive med AD-behörighet</span>
+                    <span class="f-desc">Starkt över tusentals bolagsfiler (+ Python i Analyst), men ej en projektspecifik beroendegraf i Git.</span>
                   </div>
                   <div class="f-foot">
-                    <span class="home-pill home-cloud">🔌 Microsoft Graph / Företagsindex</span>
+                    <span class="home-pill home-cloud">🔌 Microsoft Graph / Gemini Ent. / Glean</span>
                   </div>
                 </button>
 
@@ -1016,8 +1016,8 @@
                       <span class="f-role-tag">Leverans</span>
                       <span class="f-more-dot">Detaljer →</span>
                     </div>
-                    <span class="f-title">Mötesnotering eller direktutkast</span>
-                    <span class="f-desc">Snabb vardagsnytta inne i Word, PowerPoint och Teams.</span>
+                    <span class="f-title">Mötesnotering, kalkyl eller rapportutkast</span>
+                    <span class="f-desc">Snabb vardagsnytta inne i Word, Excel, PowerPoint och Teams hos låsta storbolagskunder.</span>
                   </div>
                   <div class="f-foot">
                     <span class="home-pill home-human">👤 Direkt i Office</span>
@@ -1026,11 +1026,11 @@
               </div>
             </div>
 
-            <!-- SPÅR C: ANTIGRAVITY AGENTISK ARBETSYTA -->
+            <!-- SPÅR C: LOKAL MAPP- & DESKTOP-AGENT -->
             <div class="lane-card" style="background:#faf8ff; border-color:rgb(124 58 237 / 0.35);">
               <div class="lane-label">
-                <span style="color:var(--tom-purple);">Spår C · Agentisk Arbetsyta (Google Antigravity / Claude Code)</span>
-                <span style="color:var(--tom-purple);">Jobbar med loop &amp; skriptkontroll i hela projektmappen!</span>
+                <span style="color:var(--tom-purple);">Spår C · Lokal Mapp- &amp; Desktop-Agent (Antigravity 2.0 / ChatGPT Desktop Codex / Claude Cowork &amp; Code)</span>
+                <span style="color:var(--tom-purple);">Jobbar med loop, skriptkontroll, AGENTS.md &amp; Git i hela projektmappen!</span>
               </div>
               <div class="flow-track">
                 <button type="button" class="f-node tone-trigger" data-detail="s1-ag-trigger">
@@ -1538,79 +1538,79 @@
       // ===== 1. ALL CLICKABLE STEP DETAILS (PLAIN SWEDISH + EXACT HOME + LOOP INFO) =====
       const DETAILS = {
         's1-chat-trigger': {
-          eyebrow: '01 · Verktygsflöde A (Chattfönster)',
-          title: 'Manuell fråga i webbläsaren',
-          home: 'Din webbläsare (chatgpt.com / claude.ai)',
-          trigger: 'Du skriver en prompt eller laddar upp enstaka fil',
-          summary: 'Så här startar 95 % av alla AI-användare idag. Perfekt när du vill tänka högt, formulera ett utkast eller göra omvärldsresearch.',
+          eyebrow: '01 · Verktygsflöde A (Ren webb- & mobilchatt)',
+          title: 'Manuell fråga i webbläsaren eller mobilen',
+          home: 'Din webbläsare eller mobilapp (chatgpt.com / claude.ai)',
+          trigger: 'Du skriver en prompt eller laddar upp enstaka fil i webbläsaren',
+          summary: 'Perfekt när du snabbt vill tänka högt på språng, formulera ett utkast eller köra Deep Research på webben utan lokal mappkoppling.',
           bullets: [
-            'Lägst tröskel av alla verktyg – noll installation.',
+            'Lägst tröskel när du sitter på mobil eller lånad webbläsare – noll installation.',
             'Viktigt: Använd alltid företagslicens (Team/Enterprise) om kundnamn eller intern kontext nämns.'
           ]
         },
         's1-chat-box': {
-          eyebrow: '01 · Verktygsflöde A (Webbsandlåda)',
-          title: 'ChatGPT / Claude arbetar isolerat från din projektmapp',
-          home: 'OpenAI / Anthropics molnsandlåda (Projects / Custom GPT)',
-          trigger: 'Din inskickade meddelandeprompt',
-          summary: 'Modellen har tillgång till det du klistrat in i samtalet (eller i ett avgränsat webb-Project), men den ser inte din övriga mappstruktur, kan inte uppdatera lokala filer och har inga tvingande projekt-Hooks.',
+          eyebrow: '01 · Verktygsflöde A (Molnsandlåda i webb/mobil)',
+          title: 'Begränsningen ”isolerad webbsandlåda” gäller idag bara i webbläsare/mobil!',
+          home: 'OpenAI / Anthropics molnsandlåda (webbfliken)',
+          trigger: 'Din inskickade meddelandeprompt i webbläsaren',
+          summary: 'När du kör ChatGPT eller Claude i webbläsaren eller mobilen ser modellen bara det du klistrat in i samtalet (eller i ett webb-Project) – inte lokala mappar eller Git. Obs: Sedan juli 2026 har däremot ChatGPT Desktop (med Work & Codex) samt Claude Desktop (med Cowork) fått direkt lokal mapp- och filåtkomst och hör då till Spår C!',
           bullets: [
-            'Deep Research i ChatGPT gör dock en egen sökloop ute på öppna internet.',
-            'För kundprojekt med 30+ interna filer blir manuellt uppladdande snabbt en flaskhals.'
+            'Deep Research i webbchatten gör en egen sökloop ute på öppna internet.',
+            'Vill du arbeta rakt i lokala mappar och Git? Öppna Antigravity 2.0, ChatGPT Desktop (Work/Codex) eller Claude Desktop (Cowork)!'
           ]
         },
         's1-chat-out': {
           eyebrow: '01 · Verktygsflöde A (Leverans)',
-          title: 'Engångssvar som du själv kopierar och verifierar',
+          title: 'Svar i chattfliken som du själv kopierar vidare',
           home: 'Chattfönstret → Urklipp',
           trigger: 'Modellen har skrivit klart svaret',
-          summary: 'Du får snabbt bra text och struktur, men kvalitets- och sifferkontrollen ligger till 100 % på dig manuellt.',
+          summary: 'Du får snabbt bra text och research, men i webbchatten saknas lokala projekt-Hooks som automatiskt stämmer av mot resten av din projektmapp.',
           bullets: [
-            'Utmärkt för mejlutkast, presentationsstruktur och bollplank.',
-            'Farligt om man ber chatten ”summera dessa 300 rader i huvudet” utan skriptkontroll.'
+            'Utmärkt för mejlutkast, röstsparring och omvärldsanalys.',
+            'Undvik att be en webbchatt ”summera 300 rader i huvudet” utan Python-kalkylkontroll.'
           ]
         },
         's1-m365-trigger': {
-          eyebrow: '01 · Verktygsflöde B (Kontorsflödet)',
-          title: 'Mötesavslut i Teams eller fråga i intranätet',
-          home: 'Microsoft Teams, Outlook, Word eller företagsportal',
-          trigger: 'Ett inspelat möte avslutas eller du frågar Copilot',
-          summary: 'Copilot och företags-RAG möter konsulten direkt inne i de vanliga kontorsprogrammen utan att du behöver flytta några dokument.',
+          eyebrow: '01 · Verktygsflöde B (Kontorssvit & Bolagssök)',
+          title: 'Mötesavslut i Teams, Analyst-fråga i Excel eller bolagssök',
+          home: 'Microsoft 365, Gemini Enterprise (f.d. Agentspace) eller Glean',
+          trigger: 'Ett inspelat möte avslutas eller du frågar Copilot / bolagssöket',
+          summary: 'Möter konsulten direkt inne i kundens vanliga kontorsprogram och intranät med dina befintliga AD-/SSO-behörigheter.',
           bullets: [
             'Sparar direkt 15–30 minuter efter varje Teams-möte.',
-            'Ärver automatiskt exakt de behörigheter du redan har i kundens Microsoft 365 / Google Workspace.'
+            'Ofta det verktyg som redan är säkerhetsgodkänt inne hos hårt låsta storbolag.'
           ]
         },
         's1-m365-rag': {
-          eyebrow: '01 · Verktygsflöde B (Sökmotorn)',
-          title: 'Företags-RAG hämtar de mest liknande textbitarna',
-          home: 'Microsoft Graph / Centralt företagsindex i molnet',
-          trigger: 'Din sökfråga i Copilot eller Gemini Enterprise',
-          summary: 'Systemet söker efter dokument som innehåller liknande ord eller begrepp som din fråga och klistrar in de 5 bästa textstyckena bakom kulisserna.',
+          eyebrow: '01 · Verktygsflöde B (Work IQ, Researcher & Analyst)',
+          title: 'Behörighetsstyrd bolagssökning + 2026 års Office-agenter',
+          home: 'Microsoft Graph (Work IQ) / Gemini Enterprise / Glean',
+          trigger: 'Din fråga i Copilot, Researcher, Analyst eller Glean',
+          summary: 'Under 2026 har både M365 Copilot (med flerstegsagenterna Researcher och Python-drivna Analyst) samt Gemini Enterprise/Glean tagit stora kliv. De söker säkert över tusentals bolagsfiler – men tilläggsagenter och egna MCP-kopplingar kräver ofta extra licens och central IT-admin.',
           bullets: [
-            'Oslagbart för ”Vad står i vår säkerhetspolicy om VPN?”.',
-            'Svaghet: Missar flerstegs-dominoeffekter (t.ex. hur en försening i bilaga A spräcker ett viteskrav i avtal B och en resurs i Excel C).'
+            'Oslagbart för ”Vad står i vår säkerhetspolicy?” eller kalkylanalys i Excel med Analyst.',
+            'För djup beroenderöntgen i ett specifikt leveransprojekt kompletteras de bäst med en projektspecifik Kunskapsgraf.'
           ]
         },
         's1-m365-out': {
           eyebrow: '01 · Verktygsflöde B (Leverans)',
-          title: 'Mötesnotering och utkast direkt i Office',
-          home: 'Teams-sammanfattning / Word / PowerPoint',
-          trigger: 'Sammanfattning klar från de hämtade styckena',
-          summary: 'Ger en snabb första version direkt där teamet samarbetar – men ska ses som en smart sekreterare snarare än en granskande projekt-revisor.',
+          title: 'Mötesnotering, kalkyl och utkast direkt i Office',
+          home: 'Teams / Word / Excel / PowerPoint',
+          trigger: 'Analys eller sammanfattning klar',
+          summary: 'Ger snabb vardagshävstång direkt där kundteamet samarbetar – särskilt om du kombinerar den med våra 5-punkts Persona-kontrakt!',
           bullets: [
-            'Kontrollera alltid att ”beslut” i Teams-sammanfattningen faktiskt beslutades och inte bara diskuterades löst!'
+            'Kontrollera alltid att ”beslut” i en automatisk Teams-sammanfattning faktiskt beslutades på mötet.'
           ]
         },
         's1-ag-trigger': {
-          eyebrow: '01 · Verktygsflöde C (Agentisk arbetsyta)',
-          title: 'Du öppnar en hel projektmapp i Google Antigravity',
-          home: 'Lokal arbetsmapp på din dator (gärna synkad med Git)',
+          eyebrow: '01 · Verktygsflöde C (Lokal Mapp- & Desktop-agent)',
+          title: 'Du öppnar en hel lokal projektmapp i en Desktop-agent',
+          home: 'Lokal arbetsmapp på datorn (Antigravity 2.0, ChatGPT Desktop Codex, Claude Cowork/Code)',
           trigger: 'Du beskriver målet, t.ex. ”Granska vågplanen mot alla avtal”',
-          summary: 'Istället för att ladda upp filer en och en pekar du Antigravity på hela mappen med avtal, Excel-ark, mötesanteckningar och mallar.',
+          summary: 'Istället för att ladda upp filer en och en pekar du din desktop-agent rakt på mappen på hårddisken (med avtal, Excel-ark, mötesnoteringar och Git). Under 2026 stöder nästan alla dessa verktyg samma öppna AGENTS.md-, SKILL.md- och MCP-standard!',
           bullets: [
-            'Agenten ser hela sammanhanget på en gång.',
-            'Alla regler och metoder sparas som vanliga filer i mappen så kollegorna kan återanvända dem.'
+            'Agenten ser hela mappstrukturen på en gång och kan skapa/uppdatera filer direkt på disken.',
+            'Alla regler och metoder sparas som vanliga textfiler i Git så hela teamet kan återanvända dem.'
           ]
         },
         's1-ag-work': {

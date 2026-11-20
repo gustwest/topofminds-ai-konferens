@@ -828,20 +828,28 @@
       color: var(--tom-purple);
     }
 
+    [hidden]:not([hidden="until-found"]) {
+      display: none !important;
+    }
+
     .table-scroll {
-      overflow-x: auto;
+      overflow: auto;
+      max-inline-size: 100%;
+      max-block-size: min(560px, 80vh);
+      container-type: inline-size;
       scrollbar-gutter: stable;
     }
 
     .tom-table {
       inline-size: 100%;
-      border-collapse: collapse;
+      border-collapse: separate;
+      border-spacing: 0;
       font-size: 0.84rem;
       text-align: start;
     }
 
     .tom-table caption {
-      padding: 0.75rem 1.25rem 0.25rem;
+      padding: 0.75rem 1.25rem 0.45rem;
       text-align: start;
       font-size: 0.8rem;
       color: var(--tom-muted-foreground);
@@ -854,6 +862,12 @@
       vertical-align: top;
     }
 
+    .tom-table thead {
+      position: sticky;
+      inset-block-start: 0;
+      z-index: 2;
+    }
+
     .tom-table thead th {
       background: var(--tom-background);
       font-size: 0.74rem;
@@ -861,6 +875,14 @@
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--tom-muted-foreground);
+    }
+
+    .tom-table tbody th {
+      position: sticky;
+      inset-inline-start: 0;
+      z-index: 1;
+      background: var(--tom-card);
+      white-space: nowrap;
     }
 
     /* ===== SECTION 02: INTERAKTIV AGENTKARTA (#09213a DARK BAND) ===== */
@@ -2278,8 +2300,8 @@
           </article>
         </div>
 
-        <!-- 3 strategiska frågor för PM, konsulter och ledning -->
-        <div class="subgrid-3">
+        <!-- 3 strategiska frågor för PM, konsulter och ledning (dolda efter önskemål) -->
+        <div class="subgrid-3" hidden>
           <article class="tom-card">
             <h3>1. Var blir konsulten 10× viktigare?</h3>
             <p><strong>Delegera grovjobbet (80 % av tråk-tiden):</strong> Korsläsa 40 filer, kontrollräkna Excel-planer och formatera statusrapporter.<br><strong>Behåll spetsen hos människan:</strong> Läsa det politiska spelet i rummet, lösa målkonflikter, leda människor genom förändring och bära affärsansvaret.</p>
@@ -2305,24 +2327,24 @@
     <section id="verktyg" class="section-band band-light">
       <div class="container">
         <div class="section-header">
-          <span class="eyebrow eyebrow-purple">01 · Verktygslandskapet idag</span>
-          <h2>Rätt verktyg för rätt jobb – inte en hammare för allt</h2>
-          <p>Börja alltid i hur du ska jobba – inte i vilket verktyg som trendar. Här är grundskillnaden på vanlig svenska innan du klickar runt i verktygskartan:</p>
+          <span class="eyebrow eyebrow-purple">01 · Verktygslandskapet (November 2026)</span>
+          <h2>Rätt verktyg och rätt läge – mycket har hänt under 2026</h2>
+          <p>Gränsen går inte längre mellan ”chattverktyg” och ”utvecklarverktyg” – utan mellan <strong>webbläsarchatt</strong>, <strong>inbäddade kontorsagenter</strong> och <strong>desktop-agenter med lokal mappåtkomst</strong>. Bäst av allt: nästan alla stora verktyg har under 2026 enats kring samma öppna standarder (<code>AGENTS.md</code>, <code>SKILL.md</code> och <code>MCP</code>)!</p>
         </div>
 
-        <!-- Enkel 3-stegs vardagskompass på ren svenska -->
-        <div class="handoff-strip cols-3" aria-label="Tre huvudkategorier av AI-verktyg på enkel svenska">
+        <!-- Enkel 3-stegs vardagskompass uppdaterad för Nov 2026 -->
+        <div class="handoff-strip cols-3" aria-label="Tre huvudlägen för AI-verktyg i november 2026">
           <div class="handoff-step">
-            <strong>1. Bollplank i ett fönster (ChatGPT &amp; Claude)</strong>
-            <span>När du snabbt vill bolla en tanke, göra omvärldsresearch eller få feedback på ett enskilt utkast i webbläsaren.</span>
+            <strong>1. Snabbchatt i webb &amp; mobil (Molnsandlåda)</strong>
+            <span>När du öppnar <code>chatgpt.com</code> eller <code>claude.ai</code> i webbläsaren/mobilen för snabb idésparring, röst eller Deep Research utan lokal filkoppling.</span>
           </div>
           <div class="handoff-step">
-            <strong>2. Inuti mötet &amp; intranätet (Copilot &amp; Företagssök)</strong>
-            <span>När du vill få mötesnoteringar direkt i Teams eller söka fram en policy bland tusentals dokument på SharePoint.</span>
+            <strong>2. Inuti Office &amp; intranätet (M365 &amp; Enterprise)</strong>
+            <span>Mötesnoteringar i Teams, <em>Researcher/Analyst</em> i M365 Copilot och bolagsbred sökning via Gemini Enterprise eller Glean med AD-behörigheter.</span>
           </div>
           <div class="handoff-step">
-            <strong>3. Självgående i en projektmapp (Antigravity)</strong>
-            <span>När AI:n ska korsläsa 30 projektfiler, följa fasta projektregler, kontrollräkna siffror och bygga ett klickbart underlag.</span>
+            <strong>3. Desktop-agent i lokal mapp &amp; Git</strong>
+            <span><strong>Antigravity 2.0</strong>, <strong>ChatGPT Desktop (Work/Codex)</strong>, <strong>Claude Cowork/Code</strong> &amp; <strong>VS Code/Cursor</strong> – jobbar rakt i mappar på hårddisken!</span>
           </div>
         </div>
 
@@ -2344,158 +2366,158 @@
                 <span class="tool-category-tag">Agentisk arbetsyta</span>
               </div>
               <span class="tool-card-title">Google Antigravity 2.0</span>
-              <span class="tool-card-summary">Arbetar rakt i en projektmapp med avtal, Excel, kod, Skills, kunskapsgrafer, webbläsare och subagenter.</span>
+              <span class="tool-card-summary">Desktop-app, IDE &amp; CLI som jobbar rakt i lokala mappar med Skills, kunskapsgrafer, inbyggd webbläsaragent, schemalagda jobb och valfri modell (Gemini/Claude).</span>
             </button>
 
             <button type="button" class="tool-card-btn" data-tool="chatgpt">
               <div class="tool-card-top">
                 <span class="icon-plate" aria-hidden="true">GPT</span>
-                <span class="tool-category-tag">Allround-chatt &amp; Research</span>
+                <span class="tool-category-tag">Webbchatt + Desktop/Codex</span>
               </div>
-              <span class="tool-card-title">ChatGPT (Team / Enterprise)</span>
-              <span class="tool-card-summary">Marknadens vanligaste AI-bollplank med Projects, Custom GPTs, Deep Research, röstläge och dataanalys i sandlåda.</span>
+              <span class="tool-card-title">ChatGPT (Webb vs. Desktop Work/Codex)</span>
+              <span class="tool-card-summary">Sedan juli 2026 har Desktop-appen integrerat Work &amp; Codex: öppnar lokala mappar, ändrar filer på disken och jobbar mot Git &amp; AGENTS.md!</span>
             </button>
 
             <button type="button" class="tool-card-btn" data-tool="m365-copilot">
               <div class="tool-card-top">
                 <span class="icon-plate" aria-hidden="true">M365</span>
-                <span class="tool-category-tag">Kontorsassistent</span>
+                <span class="tool-category-tag">Office &amp; Företagsagenter</span>
               </div>
-              <span class="tool-card-title">Microsoft 365 Copilot</span>
-              <span class="tool-card-summary">Inbyggd i Teams, Outlook, Word, PowerPoint och SharePoint utifrån dina befintliga behörigheter.</span>
+              <span class="tool-card-title">M365 Copilot &amp; Copilot Studio</span>
+              <span class="tool-card-summary">Inbyggd i Teams/Office med AD-behörigheter – under 2026 utbyggd med resonerande Researcher, Python-drivna Analyst och MCP i Copilot Studio.</span>
             </button>
 
             <button type="button" class="tool-card-btn" data-tool="claude">
               <div class="tool-card-top">
                 <span class="icon-plate" aria-hidden="true">CL</span>
-                <span class="tool-category-tag">Resonemang &amp; CLI-agent</span>
+                <span class="tool-category-tag">Lokal kunskaps- &amp; Kodagent</span>
               </div>
-              <span class="tool-card-title">Claude (Desktop / Cowork / Code)</span>
-              <span class="tool-card-summary">Spets på djup text- och avtalsanalys, kravarbete, Projects-arbetsrum och terminalagenten Claude Code.</span>
+              <span class="tool-card-title">Claude (Desktop Cowork / Code)</span>
+              <span class="tool-card-summary">Claude Cowork jobbar rakt i lokala dokumentmappar och skapar skarpa Excel/PPT/Word-filer via Agent Skills, medan Claude Code styr tunga repon.</span>
             </button>
 
             <button type="button" class="tool-card-btn" data-tool="vscode">
               <div class="tool-card-top">
                 <span class="icon-plate" aria-hidden="true">IDE</span>
-                <span class="tool-category-tag">Utvecklar-IDE</span>
+                <span class="tool-category-tag">Agentisk Utvecklar-IDE</span>
               </div>
-              <span class="tool-card-title">VS Code + GitHub Copilot / Cursor</span>
-              <span class="tool-card-summary">Utvecklarnas kodmiljö för rad-för-rad-kodning, refaktorering, enhetstester och Git-granskning.</span>
+              <span class="tool-card-title">VS Code (Copilot Agent) / Cursor</span>
+              <span class="tool-card-summary">Utvecklarnas kodmiljö med full flerstegs Agent Mode, bakgrunds-PR-agenter och inbyggt stöd för både AGENTS.md, SKILL.md och MCP.</span>
             </button>
 
             <button type="button" class="tool-card-btn" data-tool="lovable">
               <div class="tool-card-top">
                 <span class="icon-plate" aria-hidden="true">LV</span>
-                <span class="tool-category-tag">Prompt-till-app</span>
+                <span class="tool-category-tag">Prompt-till-Fullstack</span>
               </div>
               <span class="tool-card-title">Lovable / v0 / Bolt</span>
-              <span class="tool-card-summary">Genererar en visuell, klickbar webbapplikation direkt i webbläsaren på minuter utan lokal installation.</span>
+              <span class="tool-card-summary">Bygger på minuter körbara fullstack-webbappar med databas/inloggning (Supabase/Cloud), visuell redigering och tvåvägs GitHub-synk.</span>
             </button>
 
             <button type="button" class="tool-card-btn" data-tool="enterprise-rag">
               <div class="tool-card-top">
                 <span class="icon-plate" aria-hidden="true">ENT</span>
-                <span class="tool-category-tag">Företagssök / Moln</span>
+                <span class="tool-category-tag">Bolagssök &amp; Agenter</span>
               </div>
-              <span class="tool-card-title">Gemini Enterprise / Företags-RAG</span>
-              <span class="tool-card-summary">Centralt sökindex över hela bolagets Google Drive, Confluence, Jira och SharePoint med SSO-säkerhet.</span>
+              <span class="tool-card-title">Gemini Enterprise &amp; Glean</span>
+              <span class="tool-card-summary">Ersättaren till Google Agentspace samt Glean: behörighetsstyrd sökning, bolags-Deep Research och MCP-brygga över 100+ affärssystem.</span>
             </button>
           </div>
 
           <article class="inspector-panel" id="tool-inspector" aria-live="polite">
             <div class="inspector-head">
               <h3 id="tool-detail-title">Google Antigravity 2.0</h3>
-              <span class="inspector-badge" id="tool-detail-badge">Agentisk arbetsyta</span>
+              <span class="inspector-badge" id="tool-detail-badge">Agentisk arbetsyta &amp; Plattform</span>
             </div>
             <p class="inspector-how" id="tool-detail-how">
-              Öppnar en hel arbetsmapp på datorn (inte bara ett chattfönster). Agenten läser projektets regler i <code>AGENTS.md</code>, laddar återanvändbara metoder via <code>Skills</code>, bygger lokala kunskapsgrafer, kör Python/JS för exakt sifferkontroll och kopplar upp mot system via <code>MCP</code>.
+              Förenar en ren desktop-arbetsyta för icke-kodare (<code>Antigravity 2.0</code> med Projects, Scheduled Tasks, Plugins och interaktiva sidopaneler) med <code>Antigravity IDE</code> och CLI (<code>agy</code>). Arbetar direkt i lokala mappar med <code>AGENTS.md</code>, <code>Skills</code>, kunskapsgrafer, inbyggd webbläsaragent, terminal-sandlåda och fri modellväxling (Gemini / Claude).
             </p>
             <div class="inspector-cols">
               <div class="mini-box good">
                 <h4>Lämpar sig bäst för</h4>
                 <ul class="bullet-list" id="tool-detail-pros" role="list">
-                  <li><span>✓</span><span>Korsgranska 10–100 projektfiler (avtal, protokoll, CSV/Excel) utan gissningar.</span></li>
-                  <li><span>✓</span><span>Paketera egna konsultmetoder som återanvändbara <code>SKILL.md</code>.</span></li>
-                  <li><span>✓</span><span>Bygga och vidareutveckla riktiga verktyg samt orkestrera subagenter.</span></li>
+                  <li><span>✓</span><span>Korsgranska 10–100 projektfiler, köra exakta beräkningsskript och bygga klickbara appar i samma flöde.</span></li>
+                  <li><span>✓</span><span>1-klicks Plugin Marketplace (Google Workspace, Figma, Linear m.fl.), inbyggd webbläsaragent och schemalagda bakgrundsjobb.</span></li>
+                  <li><span>✓</span><span>Modellfrihet (Gemini + Claude Sonnet/Opus) och öppna standarder (<code>AGENTS.md</code>, <code>SKILL.md</code>, <code>MCP</code>).</span></li>
                 </ul>
               </div>
               <div class="mini-box warn">
                 <h4>Begränsningar &amp; fällor</h4>
                 <ul class="bullet-list" id="tool-detail-cons" role="list">
-                  <li><span>!</span><span>Kräver att filerna finns i en mapp eller via en aktiverad MCP-kontakt.</span></li>
-                  <li><span>!</span><span>Ovant första 15 minuterna för den som aldrig öppnat en mappbaserad miljö.</span></li>
+                  <li><span>!</span><span>Kräver lokal installation på datorn (fungerar direkt på egen dator, men kräver IT-godkännande på låsta kundklienter).</span></li>
+                  <li><span>!</span><span>Kraftfulla verktyg kräver tydliga ramar i <code>AGENTS.md</code> och rätt behörighetsnivå (<code>Terminal Sandbox</code> / <code>request-review</code>).</span></li>
                 </ul>
               </div>
             </div>
             <div class="verdict-strip" id="tool-detail-verdict">
-              <strong>Konsultens tumregel:</strong> Välj Antigravity när uppgiften kräver spårbarhet över flera filer, återanvändbara arbetsmetoder eller kombination av analys och bygge.
+              <strong>Konsultens tumregel:</strong> Välj Antigravity 2.0 när du vill ha en komplett, modelloberoende agentarbetsyta som kombinerar dokumentanalys, kunskapsgraf, webbläsarstyrning och appbygge.
             </div>
           </article>
         </div>
 
         <details class="matrix-details">
-          <summary>Visa hela jämförelsetabellen sida vid sida (Alla 7 verktygsfamiljer)</summary>
-          <div class="table-scroll">
+          <summary>Visa hela jämförelsetabellen sida vid sida (Alla 7 verktygsfamiljer – Nov 2026)</summary>
+          <div class="table-scroll" tabindex="0" role="region" aria-labelledby="tools-table-caption">
             <table class="tom-table">
-              <caption>Översikt över primär målgrupp, styrka, djup i beroendeanalys och anpassningsgrad</caption>
+              <caption id="tools-table-caption">Uppdaterad lägesbild november 2026: primär målgrupp, kärnstyrka, styrfiler/standarder och faktisk begränsning</caption>
               <thead>
                 <tr>
-                  <th scope="col">Verktyg</th>
+                  <th scope="col">Verktyg (Nov 2026)</th>
                   <th scope="col">Primär användare</th>
-                  <th scope="col">Kärnstyrka</th>
-                  <th scope="col">Styrfiler &amp; Minne</th>
-                  <th scope="col">Typisk begränsning</th>
+                  <th scope="col">Kärnstyrka idag</th>
+                  <th scope="col">Styrfiler &amp; Standarder</th>
+                  <th scope="col">Faktisk begränsning idag</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <th scope="row">Antigravity 2.0</th>
                   <td>PM, Arkitekt, Utvecklare</td>
-                  <td>Mappbaserad agent + Skills + MCP + Browser + Subagenter</td>
-                  <td><code>AGENTS.md</code>, <code>SKILL.md</code>, <code>graphify</code></td>
-                  <td>Kräver installation på datorn (olåst klient)</td>
+                  <td>Mapp-agent + Browser-agent + Plugins + Schemalagda jobb + Svärmar (Gemini &amp; Claude)</td>
+                  <td><code>AGENTS.md</code>, <code>SKILL.md</code>, <code>Hooks</code>, <code>MCP</code>, <code>graphify</code></td>
+                  <td>Kräver desktop-installation på olåst/godkänd dator</td>
                 </tr>
                 <tr>
-                  <th scope="row">ChatGPT (Team / Ent.)</th>
-                  <td>Alla konsulter &amp; beslutsfattare</td>
-                  <td>Snabb idésparring, Deep Research, Canvas, röst &amp; Custom GPTs</td>
-                  <td>Projects-instruktioner &amp; uppladdade filer</td>
-                  <td>Arbetar i webbsandlåda – ser inte en hel lokal projektmapp/Git-repo</td>
+                  <th scope="row">ChatGPT (Webb vs. Desktop)</th>
+                  <td>Alla konsulter &amp; team</td>
+                  <td>Desktop-appen har nu <strong>Work &amp; Codex</strong> (lokala mappar, filer &amp; Git) + Deep Research &amp; röst</td>
+                  <td><code>AGENTS.md</code>, <code>MCP</code> (i Desktop/Codex) + Projects</td>
+                  <td><em>Isolerad sandlåda</em> gäller numera bara i <strong>webbläsare/mobil</strong>; kunddata kräver Team/Enterprise</td>
                 </tr>
                 <tr>
-                  <th scope="row">M365 Copilot</th>
-                  <td>Alla kontorsanvändare</td>
-                  <td>Mötesnoteringar i Teams, utkast i Word/PPT, M365-behörigheter</td>
-                  <td>Microsoft Graph (automatisk RAG)</td>
-                  <td>Ytlig vid flerstegsberoenden; låst till Office-gränssnittet</td>
+                  <th scope="row">M365 Copilot + Studio</th>
+                  <td>Alla i Microsoft-miljö</td>
+                  <td>Teams/Office + nya flerstegsagenterna <strong>Researcher</strong> &amp; <strong>Analyst</strong> (Python på Excel!)</td>
+                  <td>Work IQ / Graph + <code>MCP</code> i Copilot Studio</td>
+                  <td>Researcher/Analyst &amp; egna MCP-kopplingar kräver ofta tilläggslicens och central IT-admin</td>
                 </tr>
                 <tr>
                   <th scope="row">Claude (Cowork / Code)</th>
-                  <td>Konsult, Kravanalytiker, Dev</td>
-                  <td>Skarp språk- &amp; kontraktsanalys, Artifacts &amp; CLI-agent</td>
-                  <td><code>CLAUDE.md</code>, Projects, Skills, MCP</td>
-                  <td>Kräver Pro/Max/Team-licens för tungt dagligt bruk</td>
+                  <td>PM, Kravanalytiker, Dev</td>
+                  <td><strong>Cowork</strong> jobbar i lokala mappar &amp; skapar Excel/PPT/Word; <strong>Claude Code</strong> för tunga repon</td>
+                  <td><code>CLAUDE.md</code>, <code>SKILL.md</code>, <code>Hooks</code>, <code>MCP</code></td>
+                  <td>Ren webb (<code>claude.ai</code>) är molnsandlåda; tunga Cowork/Opus-körningar äter kvot snabbt</td>
                 </tr>
                 <tr>
-                  <th scope="row">VS Code + GH Copilot</th>
-                  <td>Systemutvecklare</td>
-                  <td>Snabb kodkomplettering, PR-stöd och felsökning i stora repon</td>
-                  <td><code>.github/copilot-instructions.md</code></td>
-                  <td>Byggt för kodfiler – hög tröskel för icke-kodande PM</td>
+                  <th scope="row">VS Code Copilot / Cursor</th>
+                  <td>Systemutvecklare &amp; Tech</td>
+                  <td>Full flerstegs <strong>Agent Mode</strong>, bakgrunds-PR-agenter i GitHub och automatisk testloop</td>
+                  <td><code>AGENTS.md</code>, <code>SKILL.md</code>, <code>copilot-instructions</code>, <code>MCP</code></td>
+                  <td>Utvecklar-IDE i grunden – högre visuell tröskel för icke-kodande projektledare</td>
                 </tr>
                 <tr>
-                  <th scope="row">Lovable / v0</th>
+                  <th scope="row">Lovable / v0 / Bolt</th>
                   <td>PM, Affärsutvecklare, UX</td>
-                  <td>Från idé på ett möte till delbar webbprototyp på 15 minuter</td>
-                  <td>Projektprompt i webbläsaren</td>
-                  <td>Blir snabbt spretigt vid tung affärslogik eller strikt enterprise-IT</td>
+                  <td>Från svensk prompt till fullstack-MVP med databas/auth (Supabase) &amp; tvåvägs GitHub-synk</td>
+                  <td>Projektinstruktioner + GitHub-repo + <code>MCP</code> (v0)</td>
+                  <td>Autogenererade databasregler (RLS) måste säkerhetshärdas före skarp kunddata; ej dokumentröntgen</td>
                 </tr>
                 <tr>
-                  <th scope="row">Gemini Enterprise / RAG</th>
+                  <th scope="row">Gemini Enterprise &amp; Glean</th>
                   <td>Hela organisationen</td>
-                  <td>Säker behörighetsstyrd sökning över Drive, SharePoint &amp; Jira</td>
-                  <td>Centralt företagsindex (ACL)</td>
-                  <td>Hittar liknande textstycken men ritar inte ut projektets kritiska linje</td>
+                  <td>Ersatt Agentspace: behörighetsstyrd sökning + bolags-Deep Research över 100+ SaaS-system</td>
+                  <td>Centralt ACL-index + <code>MCP</code> / Agent2Agent</td>
+                  <td>Kräver central bolagsupphandling/IT; bred sökning ersätter ej lokal kalkyl-/beroendegraf i ett projekt</td>
                 </tr>
               </tbody>
             </table>
@@ -3456,119 +3478,119 @@ Gör ingenting än! Sammanfatta istället på 5 korta punkter:
 
   <script>
     (() => {
-      // ===== 1. DATA FOR SECTION 01: TOOLS =====
+      // ===== 1. DATA FOR SECTION 01: TOOLS (UPDATED NOVEMBER 2026) =====
       const TOOLS = {
         antigravity: {
           title: 'Google Antigravity 2.0',
-          badge: 'Agentisk arbetsyta',
+          badge: 'Agentisk arbetsyta & Plattform',
           scenarios: ['pm-audit', 'prototype', 'dev'],
-          how: 'Öppnar en hel arbetsmapp på datorn (inte bara ett chattfönster). Agenten läser projektets regler i <code>AGENTS.md</code>, laddar återanvändbara metoder via <code>Skills</code>, bygger lokala kunskapsgrafer, kör Python/JS för exakt sifferkontroll och kopplar upp mot system via <code>MCP</code>.',
+          how: 'Förenar en ren desktop-arbetsyta för icke-kodare (<code>Antigravity 2.0</code> med Projects, Scheduled Tasks, Plugins och interaktiva sidopaneler) med <code>Antigravity IDE</code> och CLI (<code>agy</code>). Arbetar direkt i lokala mappar med <code>AGENTS.md</code>, <code>Skills</code>, kunskapsgrafer, inbyggd webbläsaragent, terminal-sandlåda och fri modellväxling (Gemini / Claude).',
           pros: [
-            'Korsgranska 10–100 projektfiler (avtal, protokoll, CSV/Excel) utan huvudräkningsfel.',
-            'Paketera egna konsultmetoder som återanvändbara <code>SKILL.md</code>.',
-            'Bygga skarpa appar, styra webbläsare och orkestrera subagenter parallellt.'
+            'Korsgranska 10–100 projektfiler, köra exakta beräkningsskript och bygga klickbara appar i samma flöde.',
+            '1-klicks Plugin Marketplace (Google Workspace, Figma, Linear m.fl.), inbyggd webbläsaragent och schemalagda bakgrundsjobb.',
+            'Modellfrihet (Gemini + Claude Sonnet/Opus) och öppna standarder (<code>AGENTS.md</code>, <code>SKILL.md</code>, <code>MCP</code>).'
           ],
           cons: [
-            'Kräver lokal installation på datorn (olåst klient eller godkänd utvecklarmiljö).',
-            'Ovant första 15 minuterna för den som bara använt webbchatt tidigare.'
+            'Kräver lokal installation på datorn (fungerar direkt på egen dator, men kräver IT-godkännande på låsta kundklienter).',
+            'Kraftfulla verktyg kräver tydliga ramar i <code>AGENTS.md</code> och rätt behörighetsnivå (<code>Terminal Sandbox</code> / <code>request-review</code>).'
           ],
-          verdict: '<strong>Konsultens tumregel:</strong> Välj Antigravity när uppgiften kräver spårbarhet över många filer, återanvändbara PM-metoder eller kombination av analys och bygge.'
+          verdict: '<strong>Konsultens tumregel:</strong> Välj Antigravity 2.0 när du vill ha en komplett, modelloberoende agentarbetsyta som kombinerar dokumentanalys, kunskapsgraf, webbläsarstyrning och appbygge.'
         },
         chatgpt: {
-          title: 'ChatGPT (Plus / Team / Enterprise)',
-          badge: 'Allround-chatt & Deep Research',
-          scenarios: ['office', 'pm-audit', 'prototype'],
-          how: 'OpenAI:s webb- och desktopassistent – det verktyg flest konsulter och kunder redan använder dagligen. Kombinerar snabb dialog, <em>Projects</em> (mappar med fasta instruktioner), <em>Deep Research</em> för omvärldsbevakning, <em>Canvas</em> för textredigering och Python-sandlåda för enstaka Excel-filer.',
+          title: 'ChatGPT – Webb/Mobil vs. Desktop (Work & Codex)',
+          badge: 'Allround + Lokal Desktop-agent',
+          scenarios: ['office', 'pm-audit', 'prototype', 'dev'],
+          how: 'Inte längre låst till en webbsandlåda! I juli 2026 integrerades <strong>ChatGPT Work och Codex direkt i ChatGPT Desktop-appen</strong> (Mac/Windows). Desktop-versionen kan nu öppna lokala mappar på hårddisken, läsa/skapa/ändra filer, arbeta mot Git, läsa <code>AGENTS.md</code> och ansluta via <code>MCP</code> – sida vid sida med <em>Deep Research</em>, <em>Projects</em>, <em>Canvas</em> och röstläge.',
           pros: [
-            'Lägst tröskel av alla – suveränt bollplank för omvärldsanalys (Deep Research), workshops och textutkast.',
-            '<em>Custom GPTs</em> och <em>Projects</em> gör det enkelt att spara en rollinstruktion för ett avgränsat moment.',
-            'Mycket starkt röstläge och bild-/diagramstöd när man vill tänka högt på språng.'
+            'Med <strong>ChatGPT Desktop (Work/Codex)</strong> kan du nu arbeta direkt i en lokal projektmapp och mot Git i ett bekant gränssnitt.',
+            'Marknadsledande bredd för <em>Deep Research</em> på webben, <em>Projects</em>, bild/diagram och naturligt röstläge på språng.',
+            'Läser numera samma öppna <code>AGENTS.md</code>- och <code>MCP</code>-standard som Antigravity, VS Code och Cursor.'
           ],
           cons: [
-            'Jobbar i en isolerad webbsandlåda – kan inte arbeta direkt i en hel lokal projektmapp eller versionshantera Skills i Git.',
-            'Kräver Team- eller Enterprise-licens (med avstängd modellträning) innan kundspecifik information får klistras in!'
+            '<strong>Viktig gräns:</strong> Kör du ChatGPT i <strong>webbläsaren eller mobilen</strong> gäller fortfarande isolerad molnsandlåda utan åtkomst till lokala mappar eller Git.',
+            'Kräver alltid <strong>Team-, Enterprise- eller Edu-licens</strong> (med avstängd modellträning) innan kundspecifik information får hanteras!'
           ],
-          verdict: '<strong>Konsultens tumregel:</strong> Oslagbar vardagspartner för research, strukturering och bollplank i webbläsaren – men byt till en mappbaserad agent (Antigravity/Claude Code) när 30 projektfiler ska korsgranskas eller byggas ihop.'
+          verdict: '<strong>Konsultens tumregel:</strong> Använd webb/mobil för snabb research och röstbollplank – och växla till <strong>ChatGPT Desktop med Work/Codex</strong> när du vill jobba direkt mot lokala mappar på datorn.'
         },
         'm365-copilot': {
-          title: 'Microsoft 365 Copilot',
-          badge: 'Kontorsassistent i Office',
-          scenarios: ['office', 'enterprise-search'],
-          how: 'Sitter inbäddad direkt i Teams, Outlook, Word, Excel och PowerPoint. Använder Microsoft Graph (inbyggd företags-RAG) för att söka i dokument och mejl som din användare redan har behörighet till.',
+          title: 'Microsoft 365 Copilot & Copilot Studio',
+          badge: 'Office-svit & Företagsagenter',
+          scenarios: ['office', 'enterprise-search', 'pm-audit'],
+          how: 'Inbäddad i Teams, Outlook, Word, Excel och PowerPoint med Microsoft Graph (<em>Work IQ</em>). Under 2026 har den byggts ut rejält med resonerande flerstegsagenter som <strong>Researcher</strong> (djupanalyser över M365 + webben), <strong>Analyst</strong> (skriver och kör riktig Python-kod mot Excel-data!) samt <strong>Copilot Studio</strong> med autonoma händelsetriggers och <code>MCP</code>-stöd.',
           pros: [
-            'Oslagbar friktion för mötessammanfattningar och åtgärdspunkter direkt i Teams.',
-            'Snabba första utkast i Word och PowerPoint utifrån befintliga SharePoint-filer.',
-            'Ärver kundens befintliga säkerhets- och behörighetsmodell i Microsoft 365.'
+            'Oslagbart friktionsfritt för mötesanteckningar i Teams, mejlutkast i Outlook och utkast i Word/PowerPoint med befintliga AD-behörigheter.',
+            '<strong>Analyst</strong>-agenten undviker klassiska huvudräkningsfel genom att köra inspekterbar Python på kalkylark.',
+            'Ofta redan säkerhetsgodkänd och förinstallerad inne hos hårt låsta storbolag och myndigheter.'
           ],
           cons: [
-            'Tappar snabbt skärpan vid djup korsgranskning av avtal mot stora Excel-tidplaner.',
-            'Svårt att bygga egna strikta arbetsflöden, skriptverifiering eller anpassade verktyg.'
+            'Tillgång till <em>Researcher</em>, <em>Analyst</em>, <em>Copilot Studio</em> och egna MCP-kopplingar kräver ofta tilläggslicenser och central IT-admin.',
+            'Kretsar kring molnfiler i SharePoint/OneDrive – tyngre att sätta upp egna lokala kunskapsgrafer, Git-versionerade Skills och Hooks på egen hand.'
           ],
-          verdict: '<strong>Konsultens tumregel:</strong> Perfekt som daglig sekreterare i Teams och Outlook – men lita inte på den för komplex konsekvensanalys i projektstyrningen.'
+          verdict: '<strong>Konsultens tumregel:</strong> Din bästa hävstång inne på en låst Microsoft-kund: kombinera dina 5-punkts Persona-kontrakt med <strong>Researcher</strong> och <strong>Analyst</strong> om licensen finns på plats!'
         },
         claude: {
-          title: 'Claude (Desktop / Cowork / Claude Code)',
-          badge: 'Djup analys & CLI-agent',
-          scenarios: ['pm-audit', 'dev', 'prototype'],
-          how: 'Anthropics modellfamilj (Sonnet/Opus) i tre former: webb/desktop med <em>Projects</em> &amp; <em>Artifacts</em>, <em>Cowork</em> för dokumentarbete och <em>Claude Code</em> i terminalen styrd av <code>CLAUDE.md</code>. (Kan även väljas som modell inuti Antigravity!).',
+          title: 'Claude – Desktop (Cowork) & Claude Code',
+          badge: 'Lokal kunskaps- & Kodagent',
+          scenarios: ['pm-audit', 'dev', 'prototype', 'office'],
+          how: 'Anthropics Sonnet/Opus i tre former: webb med <em>Artifacts</em>, <strong>Claude Desktop med Cowork</strong> (låter icke-kodare peka ut en lokal mapp på datorn för flerstegsanalys och genererar riktiga Excel-, PowerPoint- och Word-filer via <code>Agent Skills</code>) samt <strong>Claude Code</strong> i terminal/IDE med <code>CLAUDE.md</code>, <code>Hooks</code>, <code>Subagents</code> och <code>MCP</code>.',
           pros: [
-            'Branschledande nyans i svensk och engelsk avtalstext, kravspecar och arkitekturresonemang.',
-            '<em>Artifacts</em> låter dig förhandsgranska diagram och interaktiva skisser direkt i chatten.',
-            '<code>CLAUDE.md</code>, Skills och MCP fungerar enligt samma öppna principer som i Antigravity.'
+            'Branschledande skärpa och nyans i svensk och engelsk avtalstext, kravspecifikationer och arkitekturresonemang.',
+            '<strong>Claude Cowork</strong> ger projektledare lokal mappåtkomst och färdiga Office-leveranser utan att behöva öppna en terminal.',
+            'Skapare av de öppna standarderna <code>SKILL.md</code> (<code>agentskills.io</code>) och <code>MCP</code> – samma Skills fungerar rakt av i Antigravity!'
           ],
           cons: [
-            'Webbversionen har begränsat filutrymme per Project jämfört med en lokal mappagent.',
-            'Gratisnivån slår snabbt i taket – kräver Pro-, Max- eller Team/Enterprise-abonnemang.'
+            'Kör du enbart <code>claude.ai</code> i webbläsaren är du i en molnsandlåda – lokal mappåtkomst kräver <strong>Claude Desktop (Cowork)</strong> eller <strong>Claude Code</strong>.',
+            'Autonoma flerstegskörningar i Cowork och Opus förbrukar kvot snabbt (kräver Pro/Max eller Team/Enterprise).'
           ],
-          verdict: '<strong>Konsultens tumregel:</strong> Din skarpaste sparringpartner för svåra kravtexter, kontraktsgranskning och tung systemarkitektur.'
+          verdict: '<strong>Konsultens tumregel:</strong> Toppval för skarp kontrakts-/kravgranskning, färdiga dokumentleveranser i lokala mappar (Cowork) och tung systemarkitektur.'
         },
         vscode: {
-          title: 'VS Code + GitHub Copilot / Cursor',
-          badge: 'Utvecklarnas kodmiljö',
+          title: 'VS Code (GitHub Copilot Agent Mode) & Cursor',
+          badge: 'Agentisk Utvecklar-IDE',
           scenarios: ['dev'],
-          how: 'Traditionella kodredigerare (IDE) förstärkta med AI-komplettering rad-för-rad, agentchatt och direktkoppling mot Git, kompilatorer och testsviter.',
+          how: 'Har under 2026 gått från ”kodkomplettering rad-för-rad” till fullfjädrade kodagenter. Både <strong>VS Code (GitHub Copilot Agent Mode + bakgrunds-Coding Agent)</strong> och <strong>Cursor</strong> planerar ändringar över dussintals filer, kör terminaltester i självläkande loopar och läser numera både <code>AGENTS.md</code>, portabla <code>SKILL.md</code> och <code>MCP</code>!',
           pros: [
-            'Standardverktyget hos majoriteten av våra kunders utvecklingsteam idag.',
-            'Extremt snabbt för kodkomplettering, enhetstester och refaktorering i stora kodbaser.',
-            'Företagslicenser för GitHub Copilot finns ofta redan upphandlade hos storbolag.'
+            'Standardmiljön hos majoriteten av våra kunders utvecklingsteam – ofta redan godkänd och upphandlad på Enterprise-nivå.',
+            'GitHubs bakgrundsagent kan tilldelas ett ärende/issue och själv leverera en färdigtestad Pull Request för granskning.',
+            'Tack vare stödet för <code>AGENTS.md</code> och <code>SKILL.md</code> kan du som PM/arkitekt dela affärs- och kvalitetsregler rakt in i utvecklarnas IDE!'
           ],
           cons: [
-            'Gränssnittet är byggt för mjukvaruutvecklare – hög tröskel för projektledare och verksamhetskonsulter.',
-            'Mindre anpassat för att visualisera projektportföljer, mötesflöden och dokumentgrafer.'
+            'Gränssnittet är byggt från grunden som en kodredigerare för utvecklare – högre visuell tröskel för icke-kodande projektledare.',
+            'Mindre naturligt för personlig portfölj-, mötes- och dokumentöversikt än Antigravity 2.0, Claude Cowork eller ChatGPT Desktop.'
           ],
-          verdict: '<strong>Konsultens tumregel:</strong> Rätt hemmaplan för utvecklingsteamet i leveransen – och som PM vinner du stort på att förstå hur deras <code>copilot-instructions.md</code> styrs!'
+          verdict: '<strong>Konsultens tumregel:</strong> Utvecklingsteamets naturliga hemmaplan – och idag kan dina <code>AGENTS.md</code>-regler och <code>Skills</code> styra deras kodagenter direkt!'
         },
         lovable: {
           title: 'Lovable / v0 / Bolt',
-          badge: 'Visuell snabbprototypning',
+          badge: 'Prompt-till-Fullstack-MVP',
           scenarios: ['prototype'],
-          how: 'Webbläsarbaserade ”prompt-till-app”-tjänster. Du beskriver en applikation på vanlig svenska och får inom några minuter ett modernt gränssnitt med publicerad demoadress (exempelvis startade designskissen till Top of Minds nya sajt i Lovable!).',
+          how: 'Har under 2026 vuxit från enkla UI-skisser till snabba fullstack-byggare i webbläsaren. <strong>Lovable</strong> (med inbyggd databas/inloggning via <em>Lovable Cloud / Supabase</em>, visuell peka-och-ändra-redigering och <strong>tvåvägs GitHub-synk</strong>), <strong>v0</strong> (Next.js + Vercel + MCP + GitHub PRs) och <strong>Bolt</strong> bygger körbara webbappar på minuter (så startade t.ex. designskissen till Top of Minds nya sajt!).',
           pros: [
-            'Noll teknisk installation – vem som helst kan bygga en klickbar skiss inför en kundworkshop.',
-            'Ersätter abstrakta 40-sidiga kravdokument med något kunden faktiskt kan klicka på och reagera på.',
-            'Snabb visuell iteration av vyer, formulär och dashboards.'
+            'Noll lokal installation – gå från en workshopidé till en klickbar webbapp med riktig testdata och inloggning på 15–20 minuter.',
+            'Tvåvägs GitHub-synk gör att koden inte blir inlåst, utan kan tas vidare av utvecklingsteamet i Antigravity eller VS Code.',
+            'Skapar omedelbar samsyn mellan affär och IT jämfört med en 40-sidig kravspec i text.'
           ],
           cons: [
-            'Blir lätt skört när man ska bygga komplex affärslogik, strikta behörigheter eller tung integration.',
-            'Inte byggt för att analysera 50 lokala kunddokument, avtal eller driva projektstyrning.'
+            '<strong>Kritisk säkerhetsdetalj:</strong> Autogenererade databas- och behörighetsregler (t.ex. Supabase RLS) måste alltid säkerhetsgranskas av människa innan skarp kunddata läggs in!',
+            'Byggt för nya webbappar – inte för att korsgranska 50 lokala kundavtal eller integrera mot tunga befintliga ERP-system.'
           ],
-          verdict: '<strong>Konsultens tumregel:</strong> Använd Lovable för att vinna kundens förståelse på 20 minuter i förstudien – lämna sedan över koden till Antigravity/IDE när den ska bli produktionsklar.'
+          verdict: '<strong>Konsultens tumregel:</strong> Oslagbart för snabba kundprototyper och fristående MVP:er i förstudien – synka sedan till GitHub och säkra arkitektur &amp; behörigheter i Antigravity/IDE före skarp drift.'
         },
         'enterprise-rag': {
-          title: 'Gemini Enterprise / Företags-RAG',
-          badge: 'Centralt bolagsindex',
+          title: 'Gemini Enterprise (f.d. Agentspace) & Glean',
+          badge: 'Bolagssök & Enterprise-agenter',
           scenarios: ['enterprise-search', 'office'],
-          how: 'Molnplattformar (t.ex. Google Cloud Gemini Enterprise eller Azure AI Search) som kopplar ihop hela bolagets Google Drive, SharePoint, Jira och Confluence med respekt för varje anställds inloggning och läsrättigheter.',
+          how: 'Under 2026 ersattes Google Agentspace av <strong>Gemini Enterprise</strong>, som tillsammans med plattformar som <strong>Glean</strong> kopplar samman behörighetsstyrd sökning över 100+ bolagssystem (Drive, SharePoint, Jira, Confluence, Slack, Salesforce) med företags-<em>Deep Research</em>, <em>NotebookLM Enterprise</em> och delning via <code>MCP</code>.',
           pros: [
-            'Hittar rätt policy, gammalt anbud eller kompetensprofil tvärs över tusentals dokument på bolaget.',
-            'Enterprise-säkerhet: ingen data tränar publika modeller och behörigheter (ACL) hålls strikt.',
-            'Ingen lokal filhantering krävs för slutanvändaren.'
+            'Hittar rätt policy, gammalt kundcase, offert eller expert tvärs över tiotusentals dokument i hela koncernen.',
+            'Full enterprise-säkerhet med SSO och strikta läsrättigheter (ACL) – ingen bolagsdata tränar publika modeller.',
+            'Kan numera kopplas via t.ex. <strong>Glean MCP</strong> så att även dina mapp-agenter kan ställa säkra frågor mot bolagsindexet!'
           ],
           cons: [
-            'Bygger på vektorsökning (liknande ord) – missar ofta dolda dominoeffekter i ett specifikt projekt.',
-            'Kräver central uppsättning av IT/molnarkitekt på bolagsnivå.'
+            'Kräver central bolagsupphandling och IT-integration – ingenting en enskild konsult slår på själv första morgonen i ett uppdrag.',
+            'Bred företagsindexering ersätter fortfarande inte en projektspecifik Kunskapsgraf + kalkylskript när du ska spåra exakta viten och datumkrockar i ett leveransprojekt.'
           ],
-          verdict: '<strong>Konsultens tumregel:</strong> Bäst som bolagets gemensamma ”bibliotekarie” – kombinera med lokal kunskapsgraf när du behöver djup röntgen i ett enskilt kundprojekt.'
+          verdict: '<strong>Konsultens tumregel:</strong> Bolagets gemensamma ”superbibliotekarie” – kombinera den med en lokal Kunskapsgraf i din projektmapp när du behöver full röntgenblick i en leverans.'
         }
       };
 
@@ -3618,17 +3640,17 @@ Gör ingenting än! Sammanfatta istället på 5 korta punkter:
       // ===== 2. DATA FOR SECTION 02: INTERACTIVE AGENT MAP =====
       const ANATOMY_NODES = {
         'agents-md': {
-          eyebrow: 'Komponent 01 · Stående styrning (Alltid aktiv)',
+          eyebrow: 'Komponent 01 · Stående styrning (Öppen standard 2026)',
           title: 'AGENTS.md / CLAUDE.md – Projektets lagbok',
-          lead: 'En helt vanlig textfil i rotmappen som agenten läser automatiskt innan den gör något alls. Här sätter du ramarna en gång för alla så du slipper upprepa samma instruktioner i varje chatt.',
+          lead: 'En helt vanlig textfil i rotmappen som agenten läser automatiskt innan den gör något alls. Under 2026 har <code>AGENTS.md</code> blivit en öppen branschstandard som läses av både <strong>Google Antigravity</strong>, <strong>ChatGPT Desktop (Work/Codex)</strong>, <strong>VS Code</strong> och <strong>Cursor</strong> (samt <code>CLAUDE.md</code> i Claude)!',
           code: `# AGENTS.md (Kundprojekt – Utrullning)\nRoll: Kritisk Senior PMO-revisor på Top of Minds.\n1. Gissa ALDRIG datum eller belopp – citera exakt fil & paragraf.\n2. Vid sifferanalys i CSV/Excel: kör alltid ett skript, huvudräkna inte.\n3. Kvantifiera alltid affärsrisk i SEK (t.ex. ombokningsavgift eller vite).`,
           pitfall: '<strong>Viktig insikt:</strong> Håll <code>AGENTS.md</code> kort och skarp (max 50–100 rader). Om du klistrar in 20 sidor rutiner här dränks kontextfönstret – lägg detaljerade arbetsmetoder i <code>Skills</code> istället!',
           extraLink: ''
         },
         skills: {
-          eyebrow: 'Komponent 02 · Progressive Disclosure (Laddas på begäran)',
+          eyebrow: 'Komponent 02 · Progressive Disclosure (Portabel standard: agentskills.io)',
           title: 'Skills (SKILL.md) – Konsultens paketerade metodbok',
-          lead: 'En mapp med en <code>SKILL.md</code> (och ev. hjälpskript/mallar) som beskriver exakt hur en viss konsultleverans ska utföras. Agenten ser bara titeln från start och öppnar hela instruktionen först när uppgiften matchar!',
+          lead: 'En mapp med en <code>SKILL.md</code> (och ev. hjälpskript/mallar) som beskriver exakt hur en viss konsultleverans ska utföras. Agenten ser bara titeln från start och öppnar hela instruktionen först när uppgiften matchar – och samma <code>SKILL.md</code>-mapp kan nu flyttas rakt mellan Antigravity, Claude Cowork/Code, VS Code och Cursor!',
           code: `---\nname: go-live-readiness\ndescription: Granskar utrullningsplan mot avtal, SLA, kapacitet och frysdatum.\n---\n1. Korsläs SOW § 2.1 (Gate G2) mot alla datum i Excel 1.\n2. Kontrollera fältteamens kapacitetstak (max 4 butiker/vecka).\n3. Leverera beslutsunderlag med RÖD/GUL/GRÖN status + kostnadsrisk i SEK.`,
           pitfall: '<strong>Varför detta är en gamechanger för Top of Minds:</strong> Era bästa konsulters arbetsmetoder (förstudie, readiness-revision, datamodellering, teststrategi) kan paketeras som <code>Skills</code> och delas med hela teamet på 1 minut.',
           extraLink: ''
